@@ -3,7 +3,7 @@ layout: post
 title: "andriod访问网NetworkOnMainThreadException解决方法"
 description: "Andriod"
 category: Network
-tags: [andriod][network]
+tags: [andriod]
 ---
 
 ##访问网络##
