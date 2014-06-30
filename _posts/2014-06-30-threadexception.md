@@ -9,9 +9,10 @@ tags: [andriod]
 ##访问网络##
 andriod应用在进行网络访问时，需要在Manifest文件中加入权限访问允许：
 
-<code>
+{% highlight objc %}
     <uses-permission android:name="android.permission.INTERNET"/> 
-</code>
+{% endhighlight %}
+
 
 否则会抛出异常。
 
@@ -23,15 +24,16 @@ andriod应用在进行网络访问时，需要在Manifest文件中加入权限�
 
 android.os.NetworkOnMainThreadException
 
-在[这里][01]找到解决方法。
+在[1]找到解决方法。
 
 在MainActivity文件的setContentView(R.layout.activity_main)下面加上如下代码
 
-    <!-- lang: java -->
+{% highlight objc %}
     if (android.os.Build.VERSION.SDK_INT > 9) {
     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
     StrictMode.setThreadPolicy(policy);
     }
+{% endhighlight %}
 
 Client和Server能正常进行通信。
 
@@ -48,4 +50,3 @@ Also see StrictMode.
 
 [2].http://hb.qq.com/a/20110914/000054.htm
 
-  [01]: http://www.2cto.com/kf/201402/281526.html
