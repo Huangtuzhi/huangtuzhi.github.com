@@ -9,9 +9,9 @@ tags: [andriod]
 ##访问网络##
 andriod应用在进行网络访问时，需要在Manifest文件中加入权限访问允许：
 
-    <!-- lang: xml -->
+<code>
     <uses-permission android:name="android.permission.INTERNET"/> 
-
+</code>
 否则会抛出异常。
 
 在C8815手机上进行测试，写一个Client端与Mini2440开发板上C写的的Server进行Socket通信。应用出现闪退。而用这种调试模式无法显示调试信息，只是提示无法捕捉异常。
@@ -44,6 +44,7 @@ Also see StrictMode.
 -----------------------------------------------------
 ##References##
 [1].http://www.2cto.com/kf/201402/281526.html
+
 [2].http://hb.qq.com/a/20110914/000054.htm
 
   [01]: http://www.2cto.com/kf/201402/281526.html
