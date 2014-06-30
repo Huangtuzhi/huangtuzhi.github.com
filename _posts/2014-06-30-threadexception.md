@@ -10,7 +10,7 @@ tags: [andriod]
 andriod应用在进行网络访问时，需要在Manifest文件中加入权限访问允许：
 
 {% highlight objc %}
-    <uses-permission android:name="android.permission.INTERNET"/> 
+<uses-permission android:name="android.permission.INTERNET"/> 
 {% endhighlight %}
 
 
