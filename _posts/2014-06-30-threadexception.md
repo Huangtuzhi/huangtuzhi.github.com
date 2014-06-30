@@ -9,10 +9,7 @@ tags: [andriod]
 ##访问网络##
 andriod应用在进行网络访问时，需要在Manifest文件中加入权限访问允许：
 
-{% highlight objc %}
 <uses-permission android:name="android.permission.INTERNET"/> 
-{% endhighlight %}
-
 
 否则会抛出异常。
 
@@ -20,9 +17,7 @@ andriod应用在进行网络访问时，需要在Manifest文件中加入权限�
 
 于是安装Genmotion模拟器进行调试。具体介绍和安装方法见http://www.genymotion.com/。
 
-安装模拟器后，eclipse出现错误信息。
-
-android.os.NetworkOnMainThreadException
+安装模拟器后，eclipse出现错误信息:android.os.NetworkOnMainThreadException。
 
 在[1]找到解决方法。
 
