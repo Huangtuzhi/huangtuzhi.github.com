@@ -7,9 +7,7 @@ tags: [andriod]
 ---
 
 ##访问网络##
-andriod应用在进行网络访问时，需要在Manifest文件中加入权限访问允许：
-
-<uses-permission android:name="android.permission.INTERNET"/> 
+andriod应用在进行网络访问时，需要在Manifest文件中加入权限访问允许：uses-permission android:name="android.permission.INTERNET"
 
 否则会抛出异常。
 
