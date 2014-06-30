@@ -30,8 +30,8 @@ tags: [shell]
 ##加入系统服务##
 还需要把脚本添加为系统服务，让脚本开机自启动。本方法采用适用于linux-ubuntu与Debian系统中的update-rc.d(创建/注册系统服务) 。
 
-- 编写服务脚本放在/etc/init.d下。
-- 在/etc/rc*.d中制作相关的link。K开头是kill, S开头是start, 数字顺序代表启动的顺序。可以采用update-rc.d 简化过程。
++ 编写服务脚本放在/etc/init.d下。
++ 在/etc/rc*.d中制作相关的link。K开头是kill, S开头是start, 数字顺序代表启动的顺序。可以采用update-rc.d 简化过程。
 
 ![在此输入图片描述][01]
 
