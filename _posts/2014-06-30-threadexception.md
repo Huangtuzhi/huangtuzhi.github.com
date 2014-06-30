@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "S3C2440的GPIO控制驱动"
-description: "ARM"
-category: ARM
-tags: [Driver]
+title: "andriod访问网NetworkOnMainThreadException解决方法"
+description: "Andriod"
+category: Network
+tags: [andriod][network]
 ---
 
 ##访问网络##
