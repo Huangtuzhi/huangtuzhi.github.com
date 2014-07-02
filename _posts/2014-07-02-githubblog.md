@@ -26,7 +26,7 @@ git是Linus Torvalds编写的版本控制工具，github是基于git托管代码
 
 Huangtuzhi为笔者在github上的用户名，huangtuzhi.github.com是github上为blog建的repository。
 
-设置ssh公钥。(见)
+设置ssh公钥。(见[1])
 
      cd ~/.ssh
     
