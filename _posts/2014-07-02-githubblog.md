@@ -16,17 +16,17 @@ git是Linus Torvalds编写的版本控制工具，github是基于git托管代码
 ##构建网站文件##
 我们可以从Jekyll的官网上下载源代码上传到github上，或者直接fork别人修改好的Repository。下面是我采用的步骤：
 
- + 在linux下安装git：
+ +在linux下安装git：
 
     sudo apt-get install git
    
- + 把自己github上博客相关的repository下载到自己的pc上，作为一个本地的仓库用来同步代码。
+ +把自己github上博客相关的repository下载到自己的pc上，作为一个本地的仓库用来同步代码。
 
      git clone git@github.com:Huangtuzhi/huangtuzhi.github.com.git ~/huangtuzhi.github.com
 
 Huangtuzhi为笔者在github上的用户名，huangtuzhi.github.com是github上为blog建的repository。
 
- + 设置ssh公钥。(见)
+ +设置ssh公钥。(见)
 
      cd ~/.ssh
     
