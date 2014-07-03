@@ -16,17 +16,17 @@ git是Linus Torvalds编写的版本控制工具，github是基于git托管代码
 ##构建网站文件##
 我们可以从Jekyll的官网上下载源代码上传到github上，或者直接fork别人修改好的Repository。下面是我采用的步骤：
 
-+ 在linux下安装git：
+在linux下安装git：
 
     sudo apt-get install git
    
-+ 把自己github上博客相关的repository下载到自己的pc上，作为一个本地的仓库用来同步代码。
+把自己github上博客相关的repository下载到自己的pc上，作为一个本地的仓库用来同步代码。
 
      git clone git@github.com:Huangtuzhi/huangtuzhi.github.com.git ~/huangtuzhi.github.com
 
 Huangtuzhi为笔者在github上的用户名，huangtuzhi.github.com是github上为blog建的repository。
 
-+ 设置ssh公钥。(见)
+设置ssh公钥。(见[1])
 
      cd ~/.ssh
     
@@ -38,29 +38,30 @@ Huangtuzhi为笔者在github上的用户名，huangtuzhi.github.com是github上�
 
 ----------------------
 ##开始写博客##
-+ 连接到远程机
+
+连接到远程机
   
       git remote set-url origin git@github.com:Huangtuzhi/huangtuzhi.github.com.git
 
-+ 查看连接状态
+查看连接状态
 
        git status -s
 
-+ 添加博客文章
+添加博客文章
 
        git add blog.md 
 
-+ 删除博客文章
+删除博客文章
   
       git rm blog.md
 
-+ 提交更改到Head区
+提交更改到Head区
  
        git commit -m "comment"
 
 上面的add只是把更改从working dir提交到缓存区index，并没有提交到.git下面的本地仓库里。而commit命令式提交到本地仓库里。
 
-+ 推送更改到github
+推送更改到github
 
        git push origin master
 
