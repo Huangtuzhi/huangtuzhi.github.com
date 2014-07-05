@@ -47,6 +47,8 @@ typedef struct node{
 }HuffmanNode;
 typedef HuffmanNode Node;
 int NodeNum=0; //节点个数
+
+
 HuffmanNode * InputNodes()
 {
 float w;
@@ -69,6 +71,8 @@ Leaves[i].next=&Leaves[i+1];//这里的表达真奇葩
 }
 return Leaves;
 }
+
+
 HuffmanNode* MakeQueue(HuffmanNode *l)
 {
 Node *p,*q,*m,*n;
@@ -118,6 +122,8 @@ temp2=temp2->next;
 }
 printf("\n");
 }
+
+
 HuffmanNode* HuffmanForest(HuffmanNode *forest)
 {
 int i;
@@ -143,6 +149,8 @@ forest=(forest->next)->next;//删除前两个节点
 }
 return forest;
 }
+
+
 void PreOrder(HuffmanNode *root)
 {
 if(root!=NULL)
@@ -155,10 +163,14 @@ PreOrder(root->Lnode);
 PreOrder(root->Rnode);
 }
 }
+
+
 void MakeCode(HuffmanNode *root)
 {
 //构建好了排序二叉树，还需要完善打印code的程序
 }
+
+
 int main()
 {
 int i;
