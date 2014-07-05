@@ -54,7 +54,7 @@ int i=0;
 printf("Input the size of nodes\n");
 scanf("%d",&NodeNum);
     HuffmanNode *Leaves;//定义指向结构体缓存区的指针,被返回了。所以是局部变量也没关系。
-Leaves=(HuffmanNode*)malloc(sizeof(HuffmanNode)*NodeNum);//申请存放节点的全局空间，什么时候被释放？
+Leaves=(HuffmanNode*)malloc(sizeof(HuffmanNode)*NodeNum);//申请存放节点的全局空间
 printf("Please input the weight of nodes to perform Lossless Compression \n");
 for(i=0;i<NodeNum;i++)
 {
