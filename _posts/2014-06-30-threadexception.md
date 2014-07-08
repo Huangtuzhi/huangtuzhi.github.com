@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "andriod访问网NetworkOnMainThreadException解决方法"
+title: "andriod访问网络NetworkOnMainThreadException解决方法"
 description: "Andriod"
 category: Network
 tags: [andriod]
