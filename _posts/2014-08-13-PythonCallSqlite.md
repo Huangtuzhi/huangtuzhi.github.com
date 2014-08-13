@@ -33,7 +33,7 @@ sqlite库已经成为了python的标准库，接口和使用说明参见[1]。
 
 ----------------------------------------------
 ##实现##
-把sqlite提供的操作函数封装成类和成员函数的方式来调用。
+把python库提供的操作函数封装成类和成员函数的方式来调用。
 
 {% highlight objc %}
 #! /usr/bin/python
@@ -43,7 +43,7 @@ class SqliteFunction:
     def __init__(self,db_name):
         self.dbname = db_name
         try:
-            self.conn = sqlite3.connect(db_name) #创建/连接数据库
+            self.conn = sqlite3.connect(db_name) 
             self.cur = self.conn.cursor()
             print("Database "+db_name+" is opened successfully!")
         except Exception as err:
@@ -72,12 +72,17 @@ SqliteDB=SqliteFunction("test.db")
 SqliteDB.run("insert into mytable(ld,name,age)values(3,'vitual',0);")
 SqliteDB.run("select * from mytable;")
 SqliteDB.close()   
-
 {% endhighlight %} 
 
+##总结##
+以上就是使用python操作sqlite数据库的简单例子，其实开始笔者想做的是用C++调用Python接口来操作sqlite数据库，借此复习一下python和C++。其实sqlite [3]中已经直接提供了C/C++接口。如果在嵌入式系统中需要数据库存储用户数据或者大量的命令参数，sqlite是一个不错的选择。
 --------------------------------------------
 
 ##Reference#
 [1].http://docspy3zh.readthedocs.org/en/latest/library/sqlite3.html
 
 [2].http://my.oschina.net/mlgb/blog/288261
+
+[3].http://www.sqlite.org/cintro.html
+
+[4].http://www.blogjava.net/xylz/archive/2012/09/25/388519.html
