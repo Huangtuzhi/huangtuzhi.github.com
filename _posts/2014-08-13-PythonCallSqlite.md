@@ -7,7 +7,7 @@ tags: [python]
 ---
 ##安装sqlite3##
 
-sqlite是一个轻型的关系型数据库。它的设计目标是针对嵌入式设备，目前已经在很多嵌入式产品中使用了它。
+sqlite是一个轻型的关系型数据库。它的设计目标是针对嵌入式设备，目前已经在很多嵌入式产品中使用了它。也可以实现像[用户登录验证](http://www.linuxidc.com/Linux/2012-04/58069.htm)这样的功能。
 
 笔者在ubuntu14.04环境下进行安装。
 
@@ -105,3 +105,5 @@ SqliteDB.close()
 [3].http://www.sqlite.org/cintro.html
 
 [4].http://www.blogjava.net/xylz/archive/2012/09/25/388519.html
+
+[5].http://blog.csdn.net/jianchi88/article/details/7037524
