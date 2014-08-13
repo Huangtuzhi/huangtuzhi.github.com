@@ -72,11 +72,10 @@ SqliteDB=SqliteFunction("test.db")
 SqliteDB.run("insert into mytable(ld,name,age)values(3,'vitual',0);")
 SqliteDB.run("select * from mytable;")
 SqliteDB.close()   
+{% endhighlight %}
 
-{% endhighlight %} 
-
-
----------------------------------------------
+在终端下执行 `./SqliteFunction`之后，进入到test.db数据库中可以看见多了一条记录` 3|vitual|0`
+------------------------------------------------------------------------------------
 
 ##总结##
 以上就是使用python操作sqlite数据库的简单例子，其实开始笔者想做的是用C++调用Python接口来操作sqlite数据库，借此复习一下python和C++。其实sqlite [3]中已经直接提供了C/C++接口。如果在嵌入式系统中需要数据库存储用户数据或者大量的命令参数，sqlite是一个不错的选择。
