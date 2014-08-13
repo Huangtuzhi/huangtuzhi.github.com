@@ -72,7 +72,10 @@ SqliteDB=SqliteFunction("test.db")
 SqliteDB.run("insert into mytable(ld,name,age)values(3,'vitual',0);")
 SqliteDB.run("select * from mytable;")
 SqliteDB.close()   
+
 {% endhighlight %} 
+
+
 ---------------------------------------------
 
 ##总结##
