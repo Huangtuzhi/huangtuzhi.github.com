@@ -32,7 +32,7 @@ ld|name|age
 ##sqlite python库##
 sqlite库已经成为了python的标准库，接口和使用说明参见[1]。
 
-> sqlite3 was written by Gerhard Häring and provides a SQL interface compliant with the DB-API 2.0 specification。
+> SQLite is a C library that provides a lightweight disk-based database that doesn’t require a separate server process and allows accessing the database using a nonstandard variant of the SQL query language. sqlite3 was written by Gerhard Häring and provides a SQL interface compliant with the DB-API 2.0 specification。
 
 ----------------------------------------------
 ##实现##
