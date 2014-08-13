@@ -17,6 +17,7 @@ sqlite是一个轻型的关系型数据库。它的设计目标是针对嵌入�
 + 输入 insert into mytable(ld,name,age) values(1, "huangyi",24);向数据表中插入第1个数据;
 输入 insert into mytable(ld,name,age) values(2, "wangrubi",24);向数据表中插入第2个数据;
 + 执行命令 select * from mytable;可以显示数据表中的所有数据。如下所示：
+
 sqlite> select * from mytable;
 ld|name|age
 1|huangyi|24
