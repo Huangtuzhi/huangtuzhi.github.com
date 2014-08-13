@@ -29,162 +29,268 @@ MakeQueue() 函数用来对链表进行选择排序
 
 HuffmanForest()函数用来构建哈弗曼二叉树
 
-PreOrder() 函数用来输出叶子节点
+PreOrder() 函数用来遍历输出Huffman编码，用了一个递归调用
 
-MakeCode() 函数用来输出编码，具体程序还没写出
 
 {% highlight objc %}
+
 #include <stdio.h>
 #include <math.h>
 #include <unistd.h>
 #include <malloc.h>
-
-typedef struct node{	
-     float weight;
-     struct node *Lnode;
-     struct node *Rnode; 
-     struct node *next;
-}HuffmanNode;
-typedef HuffmanNode Node;
-int NodeNum=0; //节点个数
-
-
-HuffmanNode * InputNodes()
+typedef struct node
 {
-float w;
-int i=0;
-printf("Input the size of nodes\n");
-scanf("%d",&NodeNum);
+	float weight;
+    struct node *Lnode;
+	struct node *Rnode;
+	struct node *Parent;
+	struct node *next;
+}HuffmanNode,Node;
+
+int NodeNum=0;      //节点个数
+HuffmanNode * InputNodes(void)
+{
+	float w;
+	int i=0;
+	printf("Input the size of nodes\n");
+	scanf("%d",&NodeNum);
     HuffmanNode *Leaves;//定义指向结构体缓存区的指针,被返回了。所以是局部变量也没关系。
-Leaves=(HuffmanNode*)malloc(sizeof(HuffmanNode)*NodeNum);//申请存放节点的全局空间
-printf("Please input the weight of nodes to perform Lossless Compression \n");
-for(i=0;i<NodeNum;i++)
-{
+	Leaves=(HuffmanNode*)malloc(sizeof(HuffmanNode)*NodeNum);//申请存放节点的全局空间，什么时候被释放？
+	printf("Please input the weight of nodes to perform Lossless Compression \n");
+	for(i=0;i<NodeNum;i++)
+	{
         scanf("%f",&w);
-Leaves[i].weight=w;
-Leaves[i].Lnode=NULL;
-Leaves[i].Rnode=NULL;
-}
-for(i=0;i<NodeNum-1;i++)
-{
-Leaves[i].next=&Leaves[i+1];//这里的表达真奇葩
-}
-return Leaves;
-}
-
-
-HuffmanNode* MakeQueue(HuffmanNode *l)
-{
-Node *p,*q,*m,*n;
-Node *temp1,*temp2;
-if(l->next==NULL)
-printf("NO LINKLIST!!!");
-else
-{
-p=l;q=l->next;
-while(q->next!=NULL)
-{
-m=p->next;
-n=q->next;
-temp1=m;
-while(temp1->next!=NULL)
-{
-if(temp1->next->weight<q->weight && temp1->next->weight < n->weight)
-{
-m=temp1;n=temp1->next;
-}
-temp1=temp1->next;
-}/*_*====此循环用于找到基准(q)以后的序列的最小的节点=====*_*/
-if(m!=p->next || (m==p->next && m->weight>n->weight))
-{
-p->next=n;
-p=n;
-m->next=q;
-m=q;
-q=q->next;
-n=n->next;
-p->next=q;
-m->next=n;
-}/*_*======此条件用于交换两个节点*_*/
-else
-{
-p=p->next;
-q=q->next;
-}/*_*======此条件用于没有找到最小值时的p，q后移操作*_*/
-}/*_*=====外循环用于从前往后扫描，通过移动p,q指针实现=======*_*/
-temp2=l->next;
-// printf("List after sorting is:\n");
-while(temp2!=NULL)
-{
-printf("%f",temp2->weight);
-temp2=temp2->next;
-}
-}
-printf("\n");
+		Leaves[i].weight=w;
+		Leaves[i].Lnode=NULL;
+		Leaves[i].Rnode=NULL;
+	}
+	for(i=0;i<NodeNum-1;i++)
+	{
+		Leaves[i].next=&Leaves[i+1];//这里的表达真奇葩
+	}
+	Leaves[NodeNum-1].next=NULL;
+	return Leaves;
 }
 
+HuffmanNode* MakeQueue(HuffmanNode *innode)//形成队列 排序算法有问题,不应该是简单换weight，而是链表的插入操作
+{
+	HuffmanNode *p, *p_follow, *q_follow, *q, *temp;
+	p_follow=p;//p跟随指针初始化
+	for(p=innode;p->next!=NULL;p=p->next)
+	{
+		if(p==innode && p->next->next!=NULL)//当p是头节点,且有>=3个节点。
+		{
+			q_follow=p;
+			for(q=p->next;q!=NULL;)//小心q溢出
+			{
+				if(q_follow==p)
+				{
+					if(p->weight > q->weight)
+					{
+						p->next=q->next;
+						q->next=p;
+						temp=q;
+						q=p;
+						p=temp;
+					//	printf("case:p是头节点，p和q相邻\n");
+				   	}
+					innode=p;
+					q_follow=q;
+					q=q->next;
+				}
+				else
+				{
+					if(p->weight > q->weight)
+				   	{
+						temp=p->next;//防止p的指针发生改变
+						p->next=q->next;
+						q_follow->next=p;
+						q->next=temp;
+
+						temp=q;
+						q=p;
+						p=temp;
+						innode=p;
+					//	printf("case:p是头节点，p和q至少相邻1个,交换完毕\n");
+					}
+				
+					if(q->next==NULL)
+					{
+					//	printf("q的下一个为空，程序中止\n");
+						break;
+					}
+					else
+					{
+						q_follow=q;
+						q=q->next;
+					//	printf("case:p是头节点，p和q至少相邻一个，q移向下一个\n");
+					}
+				}
+			 }
+			 innode=p;
+		}
+		
+		else if((p==innode) && (p->next!=NULL) && (p->next->next==NULL))//当p是头节点，且有2个节点。
+		{
+			//printf("case:Sorting 2 points\n");
+			q=p->next;
+			if(p->weight > q->weight)
+			{
+				q->next=p;
+				p->next=NULL;
+			
+				innode=q; 
+			//	printf("Num=2，2个节点交换成功\n");
+				return innode;
+			}
+			else
+			{
+			//	printf("Num=2，2个节点排序正确，不用交换\n");
+			}
+
+		}
+
+		else if((p!=innode) && (p->next->next==NULL))//当p是尾节点的前一个节点
+		{
+	  	   // printf("p不是头节点，且p是倒数第二个节点\n");
+			q=p->next;
+			if(p->weight > q->weight)
+				{
+					p->next=NULL;
+					q->next=p;
+					p_follow->next=q;
+		
+		     		temp=q;
+		    		q=p;
+					p=temp;
+				}
+		}
+
+		else //当p是其它节点
+		{
+		//	printf("This situation is popular points\n");
+			q_follow=p;
+			for(q=p->next;q!=NULL;q=q->next)
+			{
+				if(q_follow==p)
+				{
+					if(p->weight > q->weight)
+				   {
+					p->next=q->next;
+					q->next=p;
+					p_follow->next=q;
+					
+					temp=q;
+					q=p;
+					p=temp;
+				   }
+				}
+				else
+				{
+					if(p->weight > q->weight)
+				   {
+					temp=p->next;//在链路改版前保存下来
+					p->next=q->next;
+					q_follow->next=p;
+					q->next=temp;
+					p_follow->next=q;
+					
+					temp=q;
+					q=p;
+					p=temp;
+				   }
+				} 
+		   q_follow=q;
+		   }
+		}
+		p_follow=p;
+		}
+	return innode;
+}
 
 HuffmanNode* HuffmanForest(HuffmanNode *forest)
 {
-int i;
-HuffmanNode *current=NULL;
-HuffmanNode *NewNode=NULL;
-for(i=0;i<NodeNum-1;i++)
-{
-MakeQueue(forest);// 节点组成链表，看成一个队列 进行排序
-printf("every loop : sort output\n");
-for(current=forest;current->next!=NULL;current=current->next)
-{
-printf("data %f\n",current->weight);
+	int i;
+	HuffmanNode *current=NULL;
+	HuffmanNode *NewNode=NULL;
+	HuffmanNode *Head=NULL;
+	for(i=0;i<NodeNum-1;i++)
+	{
+		printf("-----------------------------------------------\n");
+		printf("第%d次调用MakeQueue函数对输入的树进行排序\n",i+1);
+		Head=MakeQueue(forest);//节点组成链表，看成一个队列 进行排序。这里必须用Head去接受返回值，不然出错。
+		for(current=Head;current!=NULL;current=current->next)
+		{
+			printf("%f  ",current->weight);
+		}
+		printf("\n");
+		
+	
+		NewNode=(HuffmanNode*)malloc(sizeof(HuffmanNode));
+		NewNode->weight=(Head->weight)+((Head->next)->weight);//这里的节点不能写作forest，必须写作Head。
+		NewNode->Lnode =Head;
+		NewNode->Rnode =Head->next;
+		Head->Parent=Head->next->Parent=NewNode;
+		
+	    
+		for(current=Head;current->next != NULL;current=current->next){}
+		current->next=NewNode;   //加入新节点
+		NewNode->next=NULL;
+		Head=(Head->next)->next;//删除前两个节点
+		forest=Head;
+	}
+	return forest;
 }
-printf("data %f\n",current->weight);
-NewNode=(HuffmanNode*)malloc(sizeof(HuffmanNode));
-NewNode->weight=(forest->weight)+((forest->next)->weight);
-NewNode->Lnode =forest;
-NewNode->Rnode =forest->next;
-for(current=forest;current->next!=NULL;current=current->next){}
-current->next=NewNode; //加入新节点
-NewNode->next=NULL;
-forest=(forest->next)->next;//删除前两个节点
-}
-return forest;
-}
-
 
 void PreOrder(HuffmanNode *root)
 {
-if(root!=NULL)
-{
-if(root->Lnode==NULL && root->Rnode==NULL)
-{
-printf("Node weight:%f\n",root->weight);
-}
-PreOrder(root->Lnode);
-PreOrder(root->Rnode);
-}
-}
+	HuffmanNode *Increase=NULL;
+	if(root!=NULL)
+	{
+		if(root->Lnode==NULL && root->Rnode==NULL)
+		{
+			printf("Node weight:%f\n",root->weight);
+			for(Increase=root;Increase->Parent!=NULL;Increase=Increase->Parent)
+			{
+				if(Increase->Parent->Lnode==root)
+				{
+					printf("code 1\n");
+				}
+				else
+				{
+					printf("code 0\n");
+				}
 
+			}
 
-void MakeCode(HuffmanNode *root)
-{
-//构建好了排序二叉树，还需要完善打印code的程序
+		}
+		PreOrder(root->Lnode);
+		PreOrder(root->Rnode);
+	}
 }
-
 
 int main()
 {
-int i;
+	int i;
     HuffmanNode *p=NULL;
+	HuffmanNode *current=NULL;
     HuffmanNode *Head=NULL;
     p=InputNodes();
-for(i=0;i<NodeNum;i++)
-{
-printf("Sorted Nodes %f\n",p[i].weight);
+
+	// Test the function of MakeQueue
+	/*	Head=MakeQueue(p);
+	printf("Data after sorting:\n");
+	for(current=Head;current!=NULL;current=current->next)
+	{
+		printf("%f  ",current->weight);
+	}
+	*/
+
+	Head=HuffmanForest(p);
+	PreOrder(Head);
+	
 }
-Head=HuffmanForest(p);
-PreOrder(Head);
-MakeCode(Head);
-}
+
 {% endhighlight %}
 
 ----------------------------------------------------------
