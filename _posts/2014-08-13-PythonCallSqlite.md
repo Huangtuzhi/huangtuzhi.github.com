@@ -10,13 +10,15 @@ tags: [python]
 sqlite是一个轻型的关系型数据库。它的设计目标是针对嵌入式设备，目前已经在很多嵌入式产品中使用了它。
 
 笔者在ubuntu14.04环境下进行安装。
+
 + 执行命令 sudo apt-get install sqlite sqlite3,完成后数据库就安装好了。
 + 执行命令 sqlite -version，可以查看 sqlite 的版本
 + cd ~下创建一个目录sqlite (mkdir sqlite)，执行命令 sqlite3 test.db，创建一个名为test.db 的数据库
 + 输入 create table mytable(ld,name,age); 创建了一个名字叫mytabel的数据表，该数据表内定义了三个字段，分别为 id、name、age。
 + 输入 insert into mytable(ld,name,age) values(1, "huangyi",24);向数据表中插入第1个数据;
 输入 insert into mytable(ld,name,age) values(2, "wangrubi",24);向数据表中插入第2个数据;
-+ 执行命令 select * from mytable;可以显示数据表中的所有数据。如下所示：
+
+执行命令 select * from mytable;可以显示数据表中的所有数据。如下所示：
 
 sqlite> select * from mytable;
 
@@ -29,7 +31,8 @@ ld|name|age
 --------------------------------------------
 ##sqlite python库##
 sqlite库已经成为了python的标准库，接口和使用说明参见[1]。
-sqlite3 was written by Gerhard Häring and provides a SQL interface compliant with the DB-API 2.0 specification。
+
+> sqlite3 was written by Gerhard Häring and provides a SQL interface compliant with the DB-API 2.0 specification。
 
 ----------------------------------------------
 ##实现##
