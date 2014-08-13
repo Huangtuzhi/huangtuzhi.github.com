@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Python访问Sqlite数据库"
+title: "Sqlite数据库的访问"
 description: "sqlite"
 category: network
 tags: [python]
