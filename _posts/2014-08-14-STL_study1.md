@@ -1,0 +1,84 @@
+---
+layout: post
+title: "STL Vector学习笔记"
+description: ""
+category: C&&C++
+tags: []
+---
+##关于STL##
+STL是Standard Template Library的简称，主要包括三部分：algorithm，container和iterator。
+
+##容器向量Vector##
+Vector属于STL中的container，是一个container向量。
+
+在g++环境下实验几个例子：
+
+{% highlight objc %}
+#include <iostream>
+#include <vector>
+using namespace std;
+int main(){
+    vector<int>vi;
+    int a;
+    while(true)
+    {
+    cout<<"输入一个整数，按0停止输入：";
+    cin>>a;
+    if(a==0)
+    break;
+    vi.push_back(a);  
+    vector<int>::iterator iter;
+    for(iter=vi.begin();iter!=vi.end();++iter)
+    cout<<*iter;     
+    }
+    return 0;
+    }
+{% endhighlight %}
+
+测试结果：
+
+输入8，屏幕打印8
+
+输入0，屏幕打印80
+
+输入2，屏幕打印802
+
+输入3，屏幕打印8023
+
+这个程序会在每次输入后，输出从开始到当前的所有输入。这些值全部是存在vi这个向量数组中，而输出是用一个迭代器指针进行输出。这里的` vector<int>vi`声明vi存储int类型。
+
+{% highlight objc %}
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+int main(){
+    string str="tuzhi";
+    vector<string> vecstr;
+    vecstr.push_back(str);
+    vector<string>::iterator iter= vecstr.begin();
+    //定义一个可以迭代string型vector的迭代器iter，它指向vecstr的首位
+    cout<<*iter<<endl;
+    return 0;
+}
+{% endhighlight %}
+
+
+这个程序打印出tuzhi，这里的` vector<string>vecstr`声明vecstr存储string类型。
+
+##容器的iterator类型##
+
+上面两个例子都用到了类似` vector<T>::iterator iter`这种东西。它是一个迭代器。每种容器类型都定义了自己的迭代器类型，如vector：
+
+    vector<int>::iterator iter;
+
+这条语句定义了一个名为iter的变量，它的数据类型是由vector<int>定义的iterator类型。#每个标准库容器类型都定义了一个名为iterator的成员#，这里的iterator与迭代器实际类型的含义相同。
+
+不同的容器类定义了自己的iterator类型，用于访问容器内的元素。换句话说，每个容器定义了一种名为iterator的类型，而这种类型支持（概念上的）迭代器的各种行为。
+
+--------------------------------------------
+
+##Reference#
+[1].http://www.cnblogs.com/shiyangxt/archive/2008/09/11/1289493.html
+
+[2].http://www.cplusplus.com/reference/vector/vector/
