@@ -45,7 +45,7 @@ typedef struct node
 	struct node *Rnode;
 	struct node *Parent;
 	struct node *next;
-}HuffmanNode,Node;
+}HuffmanNode;
 
 int NodeNum=0;      //节点个数
 HuffmanNode * InputNodes(void)
