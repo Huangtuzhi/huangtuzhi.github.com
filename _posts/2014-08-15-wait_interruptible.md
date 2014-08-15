@@ -30,8 +30,8 @@ LDD在第十章**中断处理** 中说：
 
 {% highlight objc %}
 (Part2)
-#define __wait_event_interruptible(wq, condition, ret)                                                                                            \
-do {                  \
+#define __wait_event_interruptible(wq, condition, ret)
+    do { \
     DEFINE_WAIT(__wait);   \
                             \
     for (;;) {              \
@@ -61,7 +61,9 @@ do {                  \
 
 ------------------------------------------------------------------
 ##如何唤醒被wait_event_interruptuble睡眠的进程##
+
 由上面的分析可以看出唤醒被wait_event_interruptuble睡眠的进程需要两个条件：
+
 + condition为真。满足此条件才能从Part2程序中的for循环跳出来。不然从schedule()返回的此进程一直会被`prepare_to_wait(&wq, &__wait, TASK_INTERRUPTIBLE)`置为TASK_INTERRUPTIBLE状态，接下来执行schedule()的结果是再次被从runqueue队列中删除。
 
 + 调用wake_up_interruptible()。这个函数会把队列中睡眠的进程放入到runqueue队列中，这样就可以被schedule()调度进入运行状态。
