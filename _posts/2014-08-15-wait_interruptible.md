@@ -57,7 +57,8 @@ LDD在第十章**中断处理** 中说：
 + 声明__wait进程节点
 + `prepare_to_wait`把__wait进程结点放到wq进程头节点中
 
-如果这时等待事件来临，跳出Part2部分。如果没有来自处理器的信号且等待事件没有来临，进行schedule调度。schedule调度可以参见(进程调度函数schedule()解读)[http://huangtuzhi.github.io/2014/06/29/schedule/]。调度会将当前置为TASK_INTERRUPTIBLE状态的进程从runqueue中删除，当前的进程不再参与调度，除非通过其他函数将这个进程重新放入到runqueue队列中，这个就是wake_up_interruptible()函数的作用。
+如果这时等待事件来临，跳出Part2部分。如果没有来自处理器的信号且等待事件没有来临，进行schedule调度。schedule调度可以参见[
+进程函数schedule()解读](http://huangtuzhi.github.io/2014/06/29/schedule)。调度会将当前置为TASK_INTERRUPTIBLE状态的进程从runqueue中删除，此进程不再参与调度，除非通过其他函数将这个进程重新放入到runqueue队列中，这个就是wake_up_interruptible()函数的作用。
 
 ------------------------------------------------------------------
 ##如何唤醒被wait_event_interruptuble睡眠的进程##
