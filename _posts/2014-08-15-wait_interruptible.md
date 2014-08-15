@@ -19,12 +19,12 @@ LDD在第十章**中断处理** 中说：
 
 {% highlight objc %}
 (Part1)
-#define wait_event_interruptible(wq, condition)     \
-({                           \
+#define wait_event_interruptible(wq, condition)   \
+({ \
     int __ret = 0;                  \
     if (!(condition))          \
-        __wait_event_interruptible(wq, condition, __ret);                                                                                            \
-    __ret;             \
+        __wait_event_interruptible(wq, condition, __ret);  \
+    __ret;   \
 })
 {% endhighlight %}
 
@@ -52,10 +52,9 @@ do {                  \
 
 在C语言中`{a,b,......,x}`的值等于最后一项x，因此Part1代码的返回值是__ret。
 
-当进程等待的事件还没来临，也就是condition=0时，会调用Part2代码`__wait_event_interruptible(wq, condition, __ret)`。它做了下面这些事情：
+当进程等待的事件还没来临，也就是condition=0时，会调用Part2代码`__wait_event_interruptible(wq, condition, __ret)`。它做了如下事情：
 
 + 声明__wait进程节点
-
 + `prepare_to_wait`把__wait进程结点放到wq进程头节点中
 
 如果这时等待事件来临，跳出Part2部分。如果没有来自处理器的信号且等待事件没有来临，进行schedule调度。schedule调度可以参见(进程调度函数schedule()解读)[http://huangtuzhi.github.io/2014/06/29/schedule/]。调度会将当前置为TASK_INTERRUPTIBLE状态的进程从runqueue中删除，当前的进程不再参与调度，除非通过其他函数将这个进程重新放入到runqueue队列中，这个就是wake_up_interruptible()函数的作用。
