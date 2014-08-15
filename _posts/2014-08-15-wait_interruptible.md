@@ -1,11 +1,11 @@
 ---
 layout: post
-title: "wait_event_interruptible"
+title: "wait_event_interruptible的唤醒问题"
 description: ""
 category: linux
 tags: []
 ---
-这段时间准备重写一下一个红外代码学习的控制驱动，发现还有很多linux内核的基础没有真正理解，对进程跳转的运行逻辑不清楚。比如读一个字符设备阻塞是怎么实现的？来自哪儿的信号通知进程可以开始读数据？
+这段时间准备重写一个红外代码学习的控制驱动，发现还有很多linux内核的基础没有真正理解，对进程跳转的运行逻辑不清楚。比如读一个字符设备阻塞是怎么实现的？来自哪儿的信号通知进程可以开始读数据？
 
 LDD在第十章**中断处理** 中说：
 
@@ -20,32 +20,32 @@ LDD在第十章**中断处理** 中说：
 {% highlight objc %}
 (Part1)
 #define wait_event_interruptible(wq, condition)     \
-({                                                                                       \
-    int __ret = 0;                                                              \
-    if (!(condition))                                                            \
+({                           \
+    int __ret = 0;                  \
+    if (!(condition))          \
         __wait_event_interruptible(wq, condition, __ret);                                                                                            \
-    __ret;                                                                          \
+    __ret;             \
 })
 {% endhighlight %}
 
 {% highlight objc %}
 (Part2)
 #define __wait_event_interruptible(wq, condition, ret)                                                                                            \
-do {                                                                                  \
-    DEFINE_WAIT(__wait);                                            \
-                                                                                         \
-    for (;;) {                                                                         \
-        prepare_to_wait(&wq, &__wait, TASK_INTERRUPTIBLE);                                              \
-        if (condition)                                                           \
-            break;                                                                  \
-        if (!signal_pending(current)) {                              \
-            schedule();                                                          \
-            continue;                                                            \
-        }                                                                               \
-        ret = -ERESTARTSYS;                                           \
-        break;                                                                     \
-    }                                                                                   \
-    finish_wait(&wq, &__wait);                                     \
+do {                  \
+    DEFINE_WAIT(__wait);   \
+                            \
+    for (;;) {              \
+        prepare_to_wait(&wq, &__wait, TASK_INTERRUPTIBLE); \
+        if (condition)        \
+            break;            \
+        if (!signal_pending(current)) {    \
+            schedule();       \
+            continue;            \
+        }                   \
+        ret = -ERESTARTSYS;   \
+        break;        \
+    }                  \
+    finish_wait(&wq, &__wait);   \
 } while (0)
 {% endhighlight %}
 
@@ -58,7 +58,7 @@ do {                                                                            
 
 + `prepare_to_wait`把__wait进程结点放到wq进程头节点中
 
-如果这时等待事件来临，跳出Part2部分。如果没有来自处理器的信号且等待事件没有来临，进行schedule调度(可以参见[进程调度函数schedule()解读](http://huangtuzhi.github.io/2014/06/29/schedule/))。这个调度会将当前置为TASK_INTERRUPTIBLE状态的进程从runqueue中删除，当前的进程不再参与调度，除非通过其他函数将这个进程重新放入到runqueue队列中，这个就是wake_up_interruptible()函数的作用。
+如果这时等待事件来临，跳出Part2部分。如果没有来自处理器的信号且等待事件没有来临，进行schedule调度。schedule调度可以参见(进程调度函数schedule()解读)[http://huangtuzhi.github.io/2014/06/29/schedule/]。调度会将当前置为TASK_INTERRUPTIBLE状态的进程从runqueue中删除，当前的进程不再参与调度，除非通过其他函数将这个进程重新放入到runqueue队列中，这个就是wake_up_interruptible()函数的作用。
 
 ------------------------------------------------------------------
 ##如何唤醒被wait_event_interruptuble睡眠的进程##
