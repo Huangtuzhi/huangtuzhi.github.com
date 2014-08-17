@@ -18,7 +18,7 @@ comments: no
 
 ###联系方式：        
 
-email  : `echo 'aGV5aW5nMTk5MUBnbWFpbC5jb20K' |base64 -d`
+email  :  `echo 'aGV5aW5nMTk5MUBnbWFpbC5jb20K' |base64 -d`
 
 github :  [小 逸](https://github.com/huangtuzhi)      
 
