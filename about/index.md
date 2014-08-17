@@ -18,9 +18,9 @@ comments: no
 
 ###联系方式：        
 
-个人邮箱: `[heying1991@gmail.com](heying1991@gmail.com)`
+email  : `echo 'aGV5aW5nMTk5MUBnbWFpbC5jb20K' |base64 -d`
 
-github  : `[小 逸](https://github.com/huangtuzhi) `       
+github :  [小 逸](https://github.com/huangtuzhi)      
 
 ----
 
