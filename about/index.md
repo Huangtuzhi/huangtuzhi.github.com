@@ -22,7 +22,6 @@ email  :  `echo 'aGV5aW5nMTk5MUBnbWFpbC5jb20K' |base64 -d`
 
 github :  [小 逸](https://github.com/huangtuzhi)      
 
-blog   :  [莹莹青碧](http://tuzhi.letiantian.me)
 
 ----
 
