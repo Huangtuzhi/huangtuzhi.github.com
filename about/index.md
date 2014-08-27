@@ -18,7 +18,7 @@ comments: no
 
 ###联系方式：        
 
-email  :  `echo 'aGV5aW5nMTk5MUBnbWFpbC5jb20K' |base64 -d`
+email  :  heying1991@gmail.com
 
 github :  [小 逸](https://github.com/huangtuzhi)      
 
