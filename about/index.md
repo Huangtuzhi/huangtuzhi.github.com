@@ -18,7 +18,7 @@ comments: no
 
 ###联系方式：        
 
-email  :  heying1991@gmail.com
+email  :   heying1991@gmail.com
 
 github :  [小 逸](https://github.com/huangtuzhi)      
 
