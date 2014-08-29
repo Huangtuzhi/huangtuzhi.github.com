@@ -7,7 +7,7 @@ tags: [C]
 ---
 
 
-Huffman编码是一种无损的数据压缩熵编码。编码过程可以通过构造Huffman二叉树来进行。
+Huffman编码是一种无损的数据压缩熵编码。编码过程可以通过构造Huffman二叉树来进行。算法过程和证明可以参见Introduction to Algorithms Page245~249。
 
 -----------------------------------
 ##举个栗子
@@ -303,3 +303,5 @@ int main()
 [3].http://www.nowamagic.net/librarys/veda/detail/1852
 
 [4].http://zh.wikipedia.org/wiki/%E9%9C%8D%E5%A4%AB%E6%9B%BC%E7%BC%96%E7%A0%81
+
+[5].Introduction to Algorithms.Page245~249
