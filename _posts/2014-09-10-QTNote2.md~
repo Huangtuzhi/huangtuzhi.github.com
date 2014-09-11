@@ -1,0 +1,56 @@
+---
+layout: post
+title: "QT学习笔记2"
+description: ""
+category: C&&C++
+tags: []
+---
+
+前面大概介绍了QT的机制和控件的使用，现在开始写一个记事本，可以打开和保存文本文件。
+
+---------------------------------------------------------------------
+##头文件notepad.h##
+头文件一般用来定义用户自己写或者继承的类，定义构造函数和其他实现功能逻辑的成员函数，还有一些私有成员变量。
+{% highlight objc %}
+#ifndef NOTEPAD_H
+#define NOTEPAD_H
+#include <QMainWindow>
+#include <QTextEdit>
+#include <QAction>
+#include <QMenu>
+class Notepad : public QMainWindow
+{
+    Q_OBJECT
+public:
+    Notepad();
+private slots：
+    void open();
+    void save();
+    void quit();
+private:
+    QTextEdit *textEdit;
+    QAction *openAction;
+    QAction *saveAction;
+    QAction *exitAction;
+    QMenu *fileMenu;
+};
+#endif 
+{% endhighlight %}
+
+其中open(),save(),quit()是用来接受信号后处理的槽函数，具体的实现在notepad.cpp中。
+
+-------------------------------------------------------------------------------
+##源文件notepad.cpp##
+{% highlight objc %}
+
+
+{% endhighlight %}
+
+
+![图片](/assets/images/QT2.png)
+
+
+
+--------------------------------------------------------------------
+##Reference##
+[1].http://qt-project.org/doc/qt-4.8/gettingstartedqt.html
