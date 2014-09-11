@@ -21,7 +21,5 @@ email  : heying1991@gmail.com
 
 github : [小 逸](https://github.com/huangtuzhi)      
 
-stackoverflow:[huangtuzhi](http://stackoverflow.com/users/3981239/huangtuzhi)
-
 ----
 
