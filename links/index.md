@@ -13,4 +13,4 @@ comments: yes
 
 闫航：永远的闫老师     [叶落西城](http://www.urbem.org)
 
-小司：北方夜晚的琴音   [Amnesia](http://sinb.github.io/)
+小司：北方夜晚的琴声   [Amnesia](http://sinb.github.io/)
