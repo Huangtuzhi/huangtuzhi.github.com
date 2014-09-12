@@ -14,3 +14,5 @@ comments: yes
 闫航：永远的闫老师     [叶落西城](http://www.urbem.org)
 
 小司：北方夜晚的琴声   [Amnesia](http://sinb.github.io/)
+
+小逸：也曾是绿衣吹笛人 [莹莹青碧](http://tuzhi.letiantian.me/)
