@@ -124,3 +124,5 @@ Android底层开发和linux设备驱动程序开发有很大的重合。
 ##Reference##
 
 [1].http://tech.meituan.com/mt-wifi-locate-practice-part1.html
+
+[2].http://my.oschina.net/lvyi/blog/324311
