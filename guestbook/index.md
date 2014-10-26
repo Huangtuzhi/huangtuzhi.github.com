@@ -6,7 +6,7 @@ comments: yes
 
 当你在注视我的时候，我也在注视着你。
 
-<div class="ds-recent-visitors" data-num-items="5"></div>
+<div class="ds-recent-visitors" ></div>
 <!--多说js加载开始，一个页面只需要加载一次 -->
 <script type="text/javascript">
 var duoshuoQuery = {short_name:"huangtuzhi"};
