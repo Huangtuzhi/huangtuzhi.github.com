@@ -21,8 +21,8 @@ tags: []
     struct ed_device *edp;
     DECLARE_WAITQUEUE(wait,current);
     edp = (struct ed_device *)file->private_data;
-    add_wait_queue(&edp->rwait,&wait);//手工休眠，由kernel_write唤醒
-    for(;;){//内核中轮询，是否有数据可以读取，没有就阻塞用户进程。
+    add_wait_queue(&edp->rwait,&wait);
+    for(;;){
         set_current_state(TASK_INTERRUPTIBLE);
         if ( file->f_flags & O_NONBLOCK)
             break;
@@ -36,7 +36,7 @@ tags: []
     }
     printk("Have been waked\n");
     set_current_state(TASK_RUNNING);
-    remove_wait_queue(&edp->rwait,&wait);//有数据时唤醒用户进程
+    remove_wait_queue(&edp->rwait,&wait);
     spin_lock(&edp->lock);
     if(edp->tx_len == 0) {
          spin_unlock(&edp->lock);
