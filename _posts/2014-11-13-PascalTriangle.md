@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[LeetCode] Pascal's Triangle"
+title: "Pascal's Triangle"
 description: ""
 category: c&&C++
 tags: [LeetCode]
@@ -67,4 +67,3 @@ Return
 
 [1].https://oj.leetcode.com/
 
-[3].http://blog.csdn.net/yikai2009/article/details/8653697
