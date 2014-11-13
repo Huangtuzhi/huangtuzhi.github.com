@@ -12,6 +12,8 @@ tags: []
 
 2.负责唤醒read进程的函数没有正确执行
 
+-----------------------------------------------------------
+
 ##手工休眠##
 
     ssize_t device_read(struct file *file,char *buffer,
