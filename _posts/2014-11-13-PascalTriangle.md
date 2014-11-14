@@ -27,7 +27,6 @@ Given numRows, generate the first numRows of Pascal's triangle.For example, give
 思路：顺序加入每一个vector。显然每个vector的大小不一样。
 
 
-###Solution###
 
     class Solution {
     public:
