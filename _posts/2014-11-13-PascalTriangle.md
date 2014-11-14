@@ -12,11 +12,7 @@ tags: [LeetCode]
 
 ##Pascal's Triangle##
 
-Given numRows, generate the first numRows of Pascal's triangle.
-
-For example, given numRows = 5,
-
-Return
+Given numRows, generate the first numRows of Pascal's triangle.For example, given numRows = 5,Return
  
 1
 
@@ -30,9 +26,8 @@ Return
 
 思路：顺序加入每一个vector。显然每个vector的大小不一样。
 
--------------------------------------------------
 
-##Solution##
+###Solution###
 
     class Solution {
     public:
@@ -60,6 +55,37 @@ Return
         }
     };
     
+
+----------------------------------------
+
+##Same Tree##
+
+Given two binary trees, write a function to check if they are equal or not.
+Two binary trees are considered equal if they are structurally identical and the nodes have the same value. 
+
+
+
+    /**
+    * Definition for binary tree
+    * struct TreeNode {
+    *     int val;
+    *     TreeNode *left;
+    *     TreeNode *right;
+    *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    * };
+    */
+    class Solution {
+    public:
+        bool isSameTree(TreeNode *p, TreeNode *q) {
+        if( (!p)&&(!q) )
+        return true;
+        if( (!p&&q) || (p&&!q) || (p->val != q->val) )
+        return false;
+        return( isSameTree(p->left, q->left) && isSameTree(p->right, q->right) );
+        }
+    };
+
+
 
 --------------------------------------------------------------------
 
