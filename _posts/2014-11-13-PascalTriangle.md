@@ -62,7 +62,7 @@ Given numRows, generate the first numRows of Pascal's triangle.For example, give
 Given two binary trees, write a function to check if they are equal or not.
 Two binary trees are considered equal if they are structurally identical and the nodes have the same value. 
 
-
+思路：采用递归，分别判别左节点和右节点，两边节点都满足时才返回true。
 
     /**
     * Definition for binary tree
