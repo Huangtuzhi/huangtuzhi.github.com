@@ -84,6 +84,52 @@ Two binary trees are considered equal if they are structurally identical and the
         }
     };
 
+----------------------------------------
+
+## Min Stack##
+
+Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
+
+push(x) -- Push element x onto stack.
+
+pop() -- Removes the element on top of the stack.
+
+top() -- Get the top element.
+
+getMin() -- Retrieve the minimum element in the stack.
+
+思路：因为题目要求retrieving the minimum element in constant time，所以不能对堆栈整个进行搜索。必须另用一个堆栈来记录最小的元素。
+
+    class MinStack {
+    public:
+    void push(int x) {
+        elements.push(x);
+        if ( mins.empty() || x<=mins.top() )
+        mins.push(x);
+    }
+
+    void pop() {
+        if ( elements.empty() )
+        return;
+        if(elements.top()==mins.top())
+        mins.pop();
+        elements.pop();
+        
+    }
+
+    int top() {
+        return elements.top();
+    }
+
+    int getMin() {
+        return mins.top();
+    }
+    
+    
+    private:
+    stack <int> elements;
+    stack <int> mins;
+    };
 
 
 --------------------------------------------------------------------
