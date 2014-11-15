@@ -83,8 +83,27 @@ tags: []
 
 进行测试，发现当为阻塞读时，device_read停在Start going to sleep。当为非阻塞读时，会一直打印信息Have been waked。两种情况下都无法显示buffer中的数据，或许是因为应用层的read调用导致buffer里再也无法接受数据。
 
+在ednet_tx中加入调试信息，`dmesg`可以发现read调用之后，直接内核管理的ednet_tx依然会被调用。而ednet_hw_tx和kernel_write都没有调用。这就是问题所在。
 
+    int ednet_tx(struct sk_buff *skb, struct device *dev)
+    {int len;
+    char *data;
+    struct ednet_priv *priv = (struct ednet_priv *) dev->priv;
+    if( ed[ED_TX_DEVICE].busy ==1){
+     return -EBUSY;
+     ...
+    ednet_hw_tx(data, len, dev);
+    }
 
+在应用层是这样的：
+
+    ioctl(fd_tx,IOCTL_SET_BUSY,1);
+    if((nbytes = read(fd_tx, tx_ptr, BUFFER_SIZE-1)) > 0)
+
+read为阻塞读，ioctl设置ed[ED_TX_DEVICE].busy为1。当内核要发数据时调用ednettx，到了
+`if( ed[ED_TX_DEVICE].busy ==1)`这里就返回了，无法执行包含在ednet_hw_tx里的唤醒，因此读进程永远睡眠。
+    
+    
 --------------------------------------------------------------------
 
 ##Reference##
