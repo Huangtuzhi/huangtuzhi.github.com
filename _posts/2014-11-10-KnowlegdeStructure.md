@@ -10,9 +10,9 @@ tags: []
 
 > when you don't create things, you become defined by your tastes rather than ability. your tastes only narrow & exclude people. so create.
 
-EE是一个很尴尬的专业，计算机和传统电子信息科学的交叉学科。虽然接触的广，但其实学艺不精。
+EE是一个很尴尬的专业，CS和传统电子信息科学的交叉学科。虽然接触的广，但其实学艺不精。
 
-问题：[为什么研究生阶段一大堆EE转CS的却很少听说有CS转EE的？](http://www.zhihu.com/question/24930239)
+那么问题来了：[为什么研究生阶段一大堆EE转CS的却很少听说有CS转EE的？](http://www.zhihu.com/question/24930239)
 
 一直在想找工作以什么方向为突破口，后来找到嵌入式和linux的结合点，可以向linux软件方向和嵌入式硬件方向发展。精力有限，也不可能什么都看，重要的是核心竞争力。自知算法部分是薄弱点，还要多加强编程实现的能力。
 
