@@ -131,6 +131,8 @@ getMin() -- Retrieve the minimum element in the stack.
     stack <int> mins;
     };
 
+---------------------------------------------------------
+
 ##Sqrt(x)##
 
 Implement int sqrt(int x).Compute and return the square root of x.
