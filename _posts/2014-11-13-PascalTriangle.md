@@ -131,7 +131,32 @@ getMin() -- Retrieve the minimum element in the stack.
     stack <int> mins;
     };
 
+##Sqrt(x)##
 
+Implement int sqrt(int x).Compute and return the square root of x.
+
+思路：二分法
+
+    class Solution {
+    public:
+        int sqrt(int x) {
+        int low=1,high=x,mid;
+        if(x<=1) return x;
+        while(low<=high)
+            {
+            mid=low+((high-low)>>1);
+            if(mid==x/mid) return mid;
+            if(mid>x/mid)
+            {
+                high=mid-1;
+            }
+            else low=mid+1;
+            }
+         return high;
+        }
+    };
+
+ 
 --------------------------------------------------------------------
 
 ##Reference##
