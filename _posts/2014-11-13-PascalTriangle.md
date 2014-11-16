@@ -135,7 +135,7 @@ getMin() -- Retrieve the minimum element in the stack.
 
 Implement int sqrt(int x).Compute and return the square root of x.
 
-思路：二分法
+思路：二分法，注意二分的时候不能溢出，为了加快运算速度采用移位操作符。
 
     class Solution {
     public:
