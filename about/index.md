@@ -21,7 +21,5 @@ email  : heying1991@gmail.com
 
 github : [小 逸](https://github.com/huangtuzhi)
 
-OSChina: [绿 衣](http://my.oschina.net/lvyi/blog)
-
 ----
 
