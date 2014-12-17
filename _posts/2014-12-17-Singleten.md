@@ -2,7 +2,7 @@
 layout: post
 title: "仿singleten模式的客户-服务方法"
 description: ""
-category: c&&从++
+category: c&&c++
 tags: []
 ---
 
@@ -39,7 +39,8 @@ class Singleton
 QLocalSocket socket;//Connect to the local server
 socket.connectToServer(LOCAL_SOCKET_NAME);
 if (socket.waitForConnected(500)) {
-        qWarning() << "There is already a instance running, raising it up";
+        qWarning() << "There is already a instance running, /
+        raising it up";
         return 0;
 }
 
@@ -60,6 +61,7 @@ server.listen(LOCAL_SOCKET_NAME);
 
 QLocalServer则新建一个服务器，同时监听客户端消息。
 
+------------------------------------------------------------------------
 ##Reference##
 [1].http://www.raychase.net/2556
 
