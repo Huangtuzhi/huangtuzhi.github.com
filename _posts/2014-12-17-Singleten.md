@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "仿singleten模式的客户-服务方法"
+title: "仿singleten模式的Client-Server方法"
 description: ""
 category: c&&c++
 tags: []
