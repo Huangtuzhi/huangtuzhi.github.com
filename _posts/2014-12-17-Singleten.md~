@@ -58,7 +58,7 @@ server.listen(LOCAL_SOCKET_NAME);
 
 这里，先用QLocalSocket新建连接来连接本地服务器，如果能连上，说明已经存在服务器，即有一个实例进程了。这时退出。
 
-QLocalServer则新建一个服务器。
+QLocalServer则新建一个服务器，同时监听客户端消息。
 
 ##Reference##
 [1].http://www.raychase.net/2556
