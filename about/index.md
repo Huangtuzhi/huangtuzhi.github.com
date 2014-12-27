@@ -4,14 +4,11 @@ layout: page
 comments: no
 ---
 
-在读学生，来自南方。住在梨花岛。四面环水。
+来自长江以南。住在梨花岛。四面环水。
 
-专业电子信息(EE)，主要学习研究嵌入式系统软硬件开发设计。
+专业电子信息科学(EE)+计算机(CS)。
 
-关注电子信息科学技术和互联网、文学。
-
-现在正在努力提高自己各方面能力，做有意义的事情。
-
+“吾尝终日而思矣，不如须臾之所学也”
 
 ----
 
@@ -20,6 +17,8 @@ comments: no
 email  : heying1991@gmail.com
 
 github : [小 逸](https://github.com/huangtuzhi)
+
+oschina: [绿 衣](http://my.oschina.net/lvyi/blog)
 
 ----
 
