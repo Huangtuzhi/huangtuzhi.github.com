@@ -22,19 +22,19 @@ filp_open()在kernel中可以打开文件，其原形如下：
 --------------------------------------------------
 
 ##读写文件##
-kernel中文件的读写操作可以使用vfs_read()和vfs_write，在使用这两个函数前需要说明一下get_fs()和 set_fs()这两个函数。
+kernel中文件的读写操作可以使用vfs\_read()和vfs\_write，在使用这两个函数前需要说明一下get\_fs()和 set_fs()这两个函数。
 
-vfs_read() 和vfs_write()两函数的原形如下：
+vfs\_read() 和vfs_write()两函数的原形如下：
+
 ```
 ssize_t vfs_read(struct file* filp, char __user* buffer, size_t len, loff_t* pos);
-
 ssize_t vfs_write(struct file* filp, const char __user* buffer, size_t len, loff_t* pos);
 ```
-这两个函数的第二个参数buffer，前面都有__user修饰符，这就要求这两个buffer指针都应该指向用空的内存，如果对该参数传递kernel空间的指针，这两个函数都会返回失败-EFAULT。但在Kernel中，我们一般不容易生成用户空间的指针，或者不方便独立使用用户空间内存。要使这两个读写函数使用kernel空间的buffer指针也能正确工作，需要使用set_fs()函数，其原形如下：
+这两个函数的第二个参数buffer，前面都有user修饰符，这就要求这两个buffer指针都应该指向用空的内存，如果对该参数传递kernel空间的指针，这两个函数都会返回失败-EFAULT。但在Kernel中，我们一般不容易生成用户空间的指针，或者不方便独立使用用户空间内存。要使这两个读写函数使用kernel空间的buffer指针也能正确工作，需要使用set_fs()函数，其原形如下：
 
 `void set_fs(mm_segment_t fs)`
 
-该函数的作用是改变kernel对内存地址检查的处理方式，其实该函数的参数fs只有两个取值：USER_DS，KERNEL_DS，分别代表用户空间和内核空间，默认情况下，kernel取值为USER_DS，即对用户空间地址检查并做变换。那么要在这种对内存地址做检查变换的函数中使用内核空间地址，就需要使用set_fs(KERNEL_DS)进行设置。get_fs()一般也可能是宏定义，它的作用是取得当前的设置，这两个函数的一般用法为：
+该函数的作用是改变kernel对内存地址检查的处理方式，其实该函数的参数fs只有两个取值：USER\_DS，KERNEL\_DS，分别代表用户空间和内核空间，默认情况下，kernel取值为USER\_DS，即对用户空间地址检查并做变换。那么要在这种对内存地址做检查变换的函数中使用内核空间地址，就需要使用set_fs(KERNEL_DS)进行设置。get_fs()一般也可能是宏定义，它的作用是取得当前的设置，这两个函数的一般用法为：
 
 ```
 mm_segment_t old_fs;
