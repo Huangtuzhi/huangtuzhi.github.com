@@ -27,8 +27,10 @@ kernel中文件的读写操作可以使用vfs\_read()和vfs\_write，在使用�
 vfs\_read() 和vfs_write()两函数的原形如下：
 
 ```
-ssize_t vfs_read(struct file* filp, char __user* buffer, size_t len, loff_t* pos);
-ssize_t vfs_write(struct file* filp, const char __user* buffer, size_t len, loff_t* pos);
+ssize_t vfs_read(struct file* filp, char __user* buffer, 
+    size_t len, loff_t* pos);
+ssize_t vfs_write(struct file* filp, const char __user* buffer,
+    size_t len, loff_t* pos);
 ```
 这两个函数的第二个参数buffer，前面都有user修饰符，这就要求这两个buffer指针都应该指向用空的内存，如果对该参数传递kernel空间的指针，这两个函数都会返回失败-EFAULT。但在Kernel中，我们一般不容易生成用户空间的指针，或者不方便独立使用用户空间内存。要使这两个读写函数使用kernel空间的buffer指针也能正确工作，需要使用set_fs()函数，其原形如下：
 
