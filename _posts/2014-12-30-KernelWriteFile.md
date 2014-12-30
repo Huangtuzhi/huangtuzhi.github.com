@@ -8,7 +8,7 @@ tags: []
 
 在linux内核驱动开发中，大多是把要实现的逻辑功能写成设备驱动的形式，设备驱动在文件系统中以设备文件的形式表示。应用层调用驱动只需要读写或者ioctl设备文件即可。
 
-但有时也需要在内核中读写文件，显然open/read/write这些应用层的标准库方法用不了。这就需要利用利用kernel的一些函数，这些函数主要有`file_open()`,`file_read()`,'vfs_read()',`vfs_write()`等。
+但有时也需要在内核中读写文件，显然open/read/write这些应用层的标准库方法用不了。这就需要利用利用kernel的一些函数，这些函数主要有`file_open()`,`file_read()`,`vfs_read()`,`vfs_write()`等。
 
 ----------------------------------------
 
@@ -52,16 +52,17 @@ set_fs(old_fs);
 void WriteSerial(char* buf)
 {
     mm_segment_t old_fs;
-    printk("Hello, I'm the module that intends to write messages to file/n");
+    printk("write messages to file/n");
     if(file == NULL)
-        file = filp_open("/dev/ttyS0",  O_RDWR | O_APPEND | O_CREAT, 0644 );
+        file = filp_open("/dev/ttyS0",O_RDWR|O_APPEND|O_CREAT,0644 );
     if (IS_ERR(file)) {
-        printk("error occured while opening file %s./n", "/dev/ttyS0");
+        printk("error occured while opening file %s./n","/dev/ttyS0");
         return;
     }
     old_fs = get_fs();
     set_fs(KERNEL_DS);
-    file->f_op->write(file, buf, sizeof(buf), &file->f_pos);//把buf数据写到串口中
+    file->f_op->write(file, buf, sizeof(buf), &file->f_pos);
+    //把buf数据写到串口中
     set_fs(old_fs);
 }
 ```
