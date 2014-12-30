@@ -34,7 +34,7 @@ ssize_t vfs_write(struct file* filp, const char __user* buffer, size_t len, loff
 
 `void set_fs(mm_segment_t fs)`
 
-该函数的作用是改变kernel对内存地址检查的处理方式，其实该函数的参数fs只有两个取值：USER\_DS，KERNEL\_DS，分别代表用户空间和内核空间，默认情况下，kernel取值为USER\_DS，即对用户空间地址检查并做变换。那么要在这种对内存地址做检查变换的函数中使用内核空间地址，就需要使用set_fs(KERNEL_DS)进行设置。get_fs()一般也可能是宏定义，它的作用是取得当前的设置，这两个函数的一般用法为：
+该函数的作用是改变kernel对内存地址检查的处理方式，其实该函数的参数fs只有两个取值：USER\_DS，KERNEL\_DS，分别代表用户空间和内核空间，默认情况下，kernel取值为USER\_DS，即对用户空间地址检查并做变换。那么要在这种对内存地址做检查变换的函数中使用内核空间地址，就需要使用set\_fs(KERNEL\_DS)进行设置。get_fs()一般也可能是宏定义，它的作用是取得当前的设置，这两个函数的一般用法为：
 
 ```
 mm_segment_t old_fs;
