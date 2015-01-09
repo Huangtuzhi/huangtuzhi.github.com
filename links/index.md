@@ -18,4 +18,4 @@ comments: yes
 小逸：也曾是绿衣吹笛人 [青碧](http://blog.tuzhii.com)
 )
 
-youly:说出你的梦想     [LastWW](http://blog.lastww.com)
+youly: 说出你的梦想     [LastWW](http://blog.lastww.com)
