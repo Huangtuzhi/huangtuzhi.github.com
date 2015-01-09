@@ -16,3 +16,6 @@ comments: yes
 小司：北方夜晚的琴声   [Amnesia](http://sinb.github.io/)
 
 小逸：也曾是绿衣吹笛人 [青碧](http://blog.tuzhii.com)
+)
+
+youly:说出你的梦想     [LastWW](http://blog.lastww.com)
