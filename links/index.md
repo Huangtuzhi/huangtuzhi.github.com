@@ -11,7 +11,7 @@ comments: yes
 
 阿飞：少年飞呀飞驰     [Gray Times](http://kangkona.github.io)
 
-闫航：永远的闫老师     [叶落西城](http://yayua.github.io)
+闫航：永远的闫老师     [涯余](http://yayua.github.io)
 
 小司：北方夜晚的琴声   [Amnesia](http://sinb.github.io/)
 
