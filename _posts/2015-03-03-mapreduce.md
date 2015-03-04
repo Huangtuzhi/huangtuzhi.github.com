@@ -85,8 +85,50 @@ print str2int('12345')
 
 ----------------------------------------------------
 
+##filter##
+filter(function, iterable)使用function的规则滤除iterable对象中不满足规则的元素。
+
+```
+def is_odd(n):
+    return n % 2 == 1
+    
+result = filter(is_odd, [1, 2, 3, 4, 5, 6])
+print result
+```
+结果是[1, 3, 5]。
+
+现在尝试用filter()删除1~100中的素数。
+
+```
+def is_prime(n):
+    div = 2
+    if (n ==1):
+        return 0
+    elif (n == 2):
+        return 1
+    else:
+        while(div < n):
+            if(n % div == 0):
+                return 0
+            else:
+                div += 1
+        return 1
+
+def del_prime(n):
+    if not(is_prime(n)):
+        return n
+result2 = filter(del_prime, range(1,100))
+print result2
+```
+
+判断素数的算法有很多优化，参见_编程珠玑(续)_中的第一章性能监视工具。
+
+
+---------------------------------------------------
+
 ##Reference##
 [1].https://docs.python.org/2/library/functions.html#reduce
 
 [2].http://www.liaoxuefeng.com/
 
+[3].http://blog.csdn.net/tianshuai1111/article/details/7636856
