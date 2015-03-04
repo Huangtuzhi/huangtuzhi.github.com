@@ -54,8 +54,6 @@ print result
 ##reduce##
 reduce(function, iterable[, initializer])把函数从左到右累积作用在元素上，产生一个数值。如reduce(lambda x, y: x+y, [1, 2, 3, 4, 5])就是计算((((1+2)+3)+4)+5)。
 
-Apply function of two arguments cumulatively to the items of iterable, from left to right, so as to reduce the iterable to a single value.
-
 Python提供的sum()函数可以接受一个list并求和，现实现一个prod()函数，可以接受一个list并利用reduce()求积。
 
 ```
