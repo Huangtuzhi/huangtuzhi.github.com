@@ -168,8 +168,10 @@ def PrintDate():
 
 这样调用PrintDate函数的结果就是打印
 
+```
 call function PrintDate()
 2015-3-19
+```
 
 Flask框架中返回所有用户的信息可以使用route装饰器来对应URL和执行的函数。在浏览器中输入http://202..../user就能调用web_user函数获取所有的用户列表。
 
@@ -179,7 +181,7 @@ def web_user():
 	db = LinkDB()
 	users = db.get_all_user_info()
 	return render_template('homepage.html', users=users)
-
+```
 
 再看看C++中代理模式实现
 
@@ -263,6 +265,8 @@ int main()
      return 0;
 }
 ```
+
+
 打印结果为：
 
 ```
