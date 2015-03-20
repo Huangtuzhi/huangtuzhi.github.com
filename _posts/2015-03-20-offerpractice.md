@@ -57,25 +57,36 @@ int main(void)
 ```
 上面这段程序用Str测试正常，而用test异常。这是因为str是变量，可以进行swap运算，而test是存储在全局静态区的常量，无法进行swap。会出现段错误。段错误由以下几种情况引起：
 
-+ 访问不存在的内存地址
-+ 访问系统保护的内存地址
-+ 访问只读的内存地址
-+ 栈溢出
+1. 访问不存在的内存地址
+2. 访问系统保护的内存地址
+3. 访问只读的内存地址
+4. 栈溢出
+
+<br/>
 
 全排列主要用了递归算法。下面展示算法步骤:
 
-abcd进行全排列，pCh和pBegin都指向a，第1次相当于没交换。下一步是递归处理bcd，先不看。然后交换pCh和pBegin，相当于没交换。
+1. abcd进行全排列，pCh和pBegin都指向a，第1次相当于没交换。下一步是递归处理bcd，先不看。然后交换pCh和pBegin，相当于没交换。
 
-第二次循环，pCh+1,交换得到bacd。然后递归处理acd，也先不看。然后交换ab还原为abcd，这样是为了让a和后面的每个数字交换。
+2. 第二次循环，pCh+1,交换得到bacd。然后递归处理acd，也先不看。然后交换ab还原为abcd，这样是为了让a和后面的每个数字交换。
 
-第三次循环，得到cbad。第四次得到dbca。
+3. 第三次循环，得到cbad。第四次得到dbca。
 
-四次循环之后a就和所有的四个数字（包括自己）交换完了，然后是递归处理第一个字符后面的剩余字符。处理方法同上。
+4. 四次循环之后a就和所有的四个数字（包括自己）交换完了，然后是递归处理第一个字符后面的剩余字符。处理方法同上。
+
+<br/>
 
 再看看八皇后问题：在8*8国际象棋棋盘上，要求在每一行放置一个皇后，且能做到在竖方向，斜方向都没有冲突。
 
-我们将八皇后表示为Queen[8] = {0,1,2,3,4,5,6,7}。这样每个皇后的坐标可以表示为：(idx, Queen[idx])。
-这样完全可以保证它们在不同行和列，下面只需要保证斜方向不冲突。即满足关系：abs(i-j) != abs(Queen[i]-Queen[j])。我们只需要将Queen[8]数字全排列之后剔除不满足关系的组合即可。
+![图片](/assets/images/EightQueen-2.png)
+
+我们将八皇后表示为Queen[8] = {0,1,2,3,4,5,6,7}。每个皇后的坐标可以表示为：(idx, Queen[idx])。
+
+这样完全可以保证它们在不同行和列，下面只需要保证斜方向不冲突。即满足关系：
+
+    abs(i-j) != abs(Queen[i]-Queen[j])。
+
+我们只需要将Queen[8]数字全排列之后剔除不满足关系的组合即可。
 
 先写一个判断摆法是否正确的判断函数。
 
@@ -119,7 +130,7 @@ void Permutation(char* pStr, char* pBegin)
 }
 ```
 
-测试程序写为：
+测试程序为：
 
 ```
 int main(void)
@@ -132,13 +143,15 @@ int main(void)
 
 可以得到八皇后的解为92种。四皇后的解为2种。
 
+![图片](/assets/images/EightQueen.png)
+
 八皇后还有其他的优化算法，如回溯法，还有这个 [如何用C++在10行内写出八皇后？](http://www.zhihu.com/question/28543312)。
 
+优化算法如下：
+
 ```
-using namespace std;
 //函数功能 ： 检查皇后cur的摆法
-//函数参数 ： n为皇后数，cur为当前检查的皇后，col为皇后的列位置，sum为找到的摆法
-//返回值 ：   无
+//函数参数 ： n为皇后数，cur为当前检查的皇后，col为皇后的列位置
 void Queen(int n, int cur, int *col, int *sum)
 {
     if(cur == n)  //找到一种摆法
@@ -155,7 +168,8 @@ void Queen(int n, int cur, int *col, int *sum)
         //检查当前考虑的皇后是不是可以放在位置i
         for(j = 0; j < cur; j++)
         {
-            if(abs(j-cur) == abs(col[j]-i) || col[j] == i) //与之前的皇后有冲突，不用考虑下一个皇后了
+            if(abs(j-cur) == abs(col[j]-i) || col[j] == i)
+            //与之前的皇后有冲突，不用考虑下一个皇后了
                 break;
         }   
         if(j == cur) 
@@ -166,9 +180,6 @@ void Queen(int n, int cur, int *col, int *sum)
     }
 }
 
-//函数功能 ： n皇后的摆法
-//函数参数 ： n为皇后数
-//返回值 ：   摆法的数量
 int NQueenProblem(int n)
 {
     int *col = new int[n];
@@ -186,7 +197,9 @@ int main(void)
 }
 ```
 
-陈硕在知乎上针对服务器C++并行编程提出了一个练习题，[N-皇后问题的多机并行求解](http://www.zhihu.com/question/22608820/answer/21968467?utm_source=weibo&utm_medium=weibo_share&utm_content=share_answer&utm_campaign=share_button)。
+<br/>
+
+陈硕在知乎上针对服务器C++并行编程提出了一个练习题，[N-皇后问题的多机并行求解](http://www.zhihu.com/question/22608820/answer/21968467?utm_source=weibo&utm_medium=weibo_share&utm_content=share_answer&utm_campaign=share_button)。可以思考一下八皇后问题的多机实现。
 
 --------------------------------------------
 
@@ -203,7 +216,7 @@ long snums[NUMNUM];
 pthread_barrier_t b;
 extern int heapsort(void *, size_t, size_t,int (*)(const void *, const void *));
 
-//Compare two long integers (helper function for heapsort)
+//传入heapsort函数的比较long型大小的辅助函数
 int complong(const void *arg1, const void *arg2)
 {
     long l1 = *(long *)arg1;
@@ -217,8 +230,7 @@ int complong(const void *arg1, const void *arg2)
         return 1;
 }
 
-//Worker thread to sort a portion of the set of numbers.
-void *thr_fn(void *arg)
+void *thr_fn(void *arg)//分组排序的工作线程
 {
     long idx = (long)arg;
     heapsort(&nums[idx], TNUM, sizeof(long), complong);
@@ -226,8 +238,7 @@ void *thr_fn(void *arg)
     return((void *)0);
 }
 
-//Merge the results of the individual sorted ranges.
-void merge()
+void merge()//合并排序结果
 {
     long    idx[NTHR];
     long    i, minidx, sidx, num;
@@ -254,14 +265,11 @@ int main()
     long long       startusec, endusec;
     double          elapsed;
     int             err;
-    pthread_t       tid;
-
+    pthread_t       tid;    
     srandom(1);
     for (i = 0; i < NUMNUM; i++)
         nums[i] = random();
-
-    //Create 8 threads to sort the numbers.
-    gettimeofday(&start, NULL);
+    gettimeofday(&start, NULL);//Create 8 threads to sort the numbers.
     pthread_barrier_init(&b, NULL, NTHR+1);
     for (i = 0; i < NTHR; i++) {
         err = pthread_create(&tid, NULL, thr_fn, (void *)(i * TNUM));
@@ -272,7 +280,7 @@ int main()
     merge();
     gettimeofday(&end, NULL);
 
-    //Print the sorted list.
+    //打印排序结果
     startusec = start.tv_sec * 1000000 + start.tv_usec;
     endusec = end.tv_sec * 1000000 + end.tv_usec;
     elapsed = (double)(endusec - startusec) / 1000000.0;
@@ -282,8 +290,11 @@ int main()
     exit(0);
 }
 ```
+<br/>
+
 -----------------------------------
 ##函数指针##
+
 题目：求1+2+...+n，要求不能用乘除法，for,while,if,else,switch,case等关键字及条件判断语句(A?B:C)。
 
 ```
@@ -305,7 +316,11 @@ unsigned int Sum(unsigned int n)
 
 Sum(50)的调用过程为：
 
-Sum(50) = 50 + f[!!50](即Sum函数)(49)，这里是一个递归。巧妙之处是用！！解决了递归结束的条件。当n = 0,f[!!n]变为Solution函数，因此返回0。
+    Sum(50) = 50 + f[!!50](即Sum函数)(49)
+
+这里是一个递归。巧妙之处是用！！解决了递归结束的条件。当n = 0,f[!!n]变为Solution函数，因此返回0。
+
+<br/>
 
 ----------------------------------
 
@@ -362,7 +377,9 @@ public:
     ~Try(){}
 }
 ```
-SealedClass2被申明为MakeSealed类的友元类，可以调用它的私有构造函数，因此可以和一般类一样在堆/栈上建立实例。而当Try试图继承SealedClass2时，会跳过SealedClass2的构造函数而直接调用MakeSealed的构造函数(因为SealedClass2是虚继承而来的)。这样就满足了题目的要求。
+SealedClass2被申明为MakeSealed类的友元类，可以调用它的私有构造函数，因此可以和一般类一样在堆/栈上建立实例。
+
+而当Try试图继承SealedClass2时，会跳过SealedClass2的构造函数而直接调用MakeSealed的构造函数(因为SealedClass2是虚继承而来的)。这样就满足了题目的要求。
 
 ----------------------------------
 
