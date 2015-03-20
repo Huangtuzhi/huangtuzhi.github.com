@@ -212,7 +212,8 @@ long nums[NUMNUM];
 long snums[NUMNUM];
 
 pthread_barrier_t b;
-extern int heapsort(void *, size_t, size_t,int (*)(const void *, const void *));
+extern int heapsort(void *, size_t, size_t,   \
+            int (*)(const void *, const void *));
 
 //传入heapsort函数的比较long型大小的辅助函数
 int complong(const void *arg1, const void *arg2)
