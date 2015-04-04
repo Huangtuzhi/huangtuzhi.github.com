@@ -16,7 +16,7 @@ github : [小 逸](https://github.com/huangtuzhi)
 
 oschina: [绿 衣](http://my.oschina.net/lvyi/blog)
 
-StackOverflow: [tuzhi](http://stackoverflow.com/users/3981239/huangtuzhi)
+stackoverflow: [tuzhi](http://stackoverflow.com/users/3981239/huangtuzhi)
 
 ----
 
