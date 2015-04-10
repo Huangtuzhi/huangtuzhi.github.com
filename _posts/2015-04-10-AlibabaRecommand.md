@@ -1,3 +1,11 @@
+---
+layout: post
+title: "天池大数据比赛算法设计"
+description: ""
+category: Algorithm
+tags: []
+---
+
 Alibaba 2015 mobile recommending algorithm competition.
 
 -----------------------------------------------------
