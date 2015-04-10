@@ -74,7 +74,7 @@ s取值范围是整个实数域,f(x)单调递增。而逻辑斯蒂回归用
 ├── ObtainPredict.py      #生成模型
 └── GetFeature31day.py    #进行预测
 #数据 
-├── feature.txt           #符合某个标准的记录(user_id,item_id,look,store,cart，buy）
+├── feature.txt           #符合某个标准的记录
 ├── data_features.txt     #feature.txt中记录的n维特征
 ├── data_features.npy     #转为矩阵格式(numpy库)，下同
 ├── data_labels.txt       #feature.txt中记录的label(1/0表示购买/未购买)
