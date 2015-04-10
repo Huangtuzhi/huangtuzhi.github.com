@@ -390,3 +390,5 @@ SealedClass2被申明为MakeSealed类的友元类，可以调用它的私有构�
 [3].http://my.oschina.net/lvyi/blog/346050
 
 [4].http://blog.csdn.net/dqjyong/article/details/8029527
+
+gcc -ansi -L../lib -lapue -pthread -lrt -lbsd -I../include -Wall -DLINUX -D_GNU_SOURCE  barrier.c -o barrier  
