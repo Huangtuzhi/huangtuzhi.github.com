@@ -31,6 +31,8 @@ Alibaba 2015 mobile recommending algorithm competition.
 ```
 因为31th的label数据是已知的，所以可以利用它对训练出来的模型进行评估。而32th的label就是输出结果了。
 
+-----------------------------------------------------
+
 ##建模
 模型建立主要采取对特征数据进行Logistic Regression。
 
@@ -49,6 +51,8 @@ s取值范围是整个实数域,f(x)单调递增。而逻辑斯蒂回归用
 	h(x) = 1 / (1 + exp(-wx))
 
 来逼近上面的目标函数。其中,x为要预测的样本,w为训练出的模型向量(w和x的维度相同)。h是算得的样本概率。
+
+-----------------------------------
 
 ##目录结构
 
@@ -87,6 +91,8 @@ s取值范围是整个实数域,f(x)单调递增。而逻辑斯蒂回归用
 └── filter_pairs.txt      #用train_item过滤的userid itemid对
 
 ```
+
+--------------------------------------------
 
 ##Reference##
 [1].http://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
