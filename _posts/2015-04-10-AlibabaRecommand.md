@@ -97,4 +97,4 @@ s取值范围是整个实数域,f(x)单调递增。而逻辑斯蒂回归用
 ##Reference##
 [1].http://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
 
-[2].http://oilbeater.com/%E9%98%BF%E9%87%8C%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%AF%94%E8%B5%9B/2014/03/16/the-setup-of-bigdata-race.html
+[2].http://oilbeater.com
