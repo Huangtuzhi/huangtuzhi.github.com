@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "天池大数据比赛算法设计"
+title: "阿里天池大数据比赛算法设计"
 description: ""
 category: Algorithm
 tags: []
