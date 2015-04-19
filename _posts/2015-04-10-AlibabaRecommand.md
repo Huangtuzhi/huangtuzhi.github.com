@@ -1,16 +1,13 @@
 ---
 layout: post
-title: "阿里天池大数据比赛算法设计"
+title: "移动推荐算法设计"
 description: ""
 category: Algorithm
 tags: []
 ---
 
-Alibaba 2015 mobile recommending algorithm competition.
-
------------------------------------------------------
  
-##[比赛介绍](http://tianchi.aliyun.com/competition/introduction.htm?spm=5176.100066.333.2.YI657c&raceId=1)
+##比赛介绍
 
 通过对用户在移动终端上一个月的行为数据进行分析，为后一天的用户购买行为作出预测，进行推荐。**项目存放在**[**Github**](https://github.com/Huangtuzhi/AlibabaRecommand)。
 
