@@ -10,7 +10,7 @@ comments: no
 
 ###关于我：        
 
-email  : tuzhi
+email  : ituzhi@163.com
 
 github : [小 逸](https://github.com/huangtuzhi)
 
