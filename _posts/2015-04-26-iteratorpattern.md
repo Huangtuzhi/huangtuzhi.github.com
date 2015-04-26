@@ -87,7 +87,7 @@ StrBlobPtr有两个构造函数，第一个默认构造函数生成空的StrBlob
 
 第二个构造函数接受一个StrBlob引用和一个可选的索引值(有默认参数，所以可以不写)，wptr被绑定到StrBlob的shared_ptr指针上，对元素具有访问权了。
 
-我们观察StrBlob的成员函数StrBlob::begin()，发现它返回StrBlobPtr类。StrBlobPtr(*this)调用构造函数，因为有默认参数，所以调用的是第二个构造函数，相当于StrBlobPtr(*this， 0)[1]。同理StrBlob::end()也调用这个构造函数，只不过它的curr指向vector的末尾。
+我们观察StrBlob的成员函数StrBlob::begin()，发现它返回StrBlobPtr类。StrBlobPtr(\*this)调用构造函数，因为有默认参数，所以调用的是第二个构造函数，相当于StrBlobPtr(\*this， 0)[1]。同理StrBlob::end()也调用这个构造函数，只不过它的curr指向vector的末尾。
 
 现在打印出StrBlob的所有元素
 
