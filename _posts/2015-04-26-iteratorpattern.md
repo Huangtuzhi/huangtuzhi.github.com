@@ -139,11 +139,11 @@ cout << *iter << '\n';
 ![图片](/assets/images/iteratorpattern1.png)
 
 > 不要温和地走进那个良夜
-老年应当在日暮时燃烧咆哮
-怒斥，怒斥光明的消逝
-虽然智慧的人临终时懂得黑暗有理
-因为他们的话没有迸发出闪电，他们
-也并不温和地走进那个良夜
+> 老年应当在日暮时燃烧咆哮
+> 怒斥，怒斥光明的消逝
+> 虽然智慧的人临终时懂得黑暗有理
+> 因为他们的话没有迸发出闪电，他们
+> 也并不温和地走进那个良夜
 
 
 --------------------------------------
@@ -152,3 +152,5 @@ cout << *iter << '\n';
 [1].http://stackoverflow.com/questions/29867449/how-smart-pointer-weak-ptr-is-bound-to-shared-ptr-in-this-case
 
 [2].http://blog.csdn.net/ozwarld/article/details/8263868
+
+[3].http://blog.csdn.net/vipygd/article/details/18746867
