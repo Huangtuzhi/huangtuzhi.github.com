@@ -66,7 +66,7 @@ size()是已存储元素的大小，capacity()是可容纳元素的大小。
 ##alloc_n_copy成员
 
 ```
-pair<string*, string*> StrVec::alloc_n_copy(const string* b, const string* e)
+pair<string*,string*> StrVec::alloc_n_copy(const string* b,const string* e)
 {
     auto data = alloc.allocate(e - b); //分配内存
     return {data, uninitialized_copy(b, e, data)}; //进行拷贝
