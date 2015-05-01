@@ -92,6 +92,8 @@ StrVec& StrVec::operator=(const StrVec& rhs)
 ```
 它先给等式右边的元素分配新的内存，再析构左边的对象并释放分配的内存，最后进行赋值。
 
+完整的实现存放在(Github)[https://github.com/Huangtuzhi/CppPrimer/blob/master/ch13/ex13_39_40.cpp]。
+
 -----------------------------
 
 ##Reference
