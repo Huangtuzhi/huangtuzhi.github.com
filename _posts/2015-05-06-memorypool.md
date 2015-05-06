@@ -327,3 +327,7 @@ int main()
 
 ##Reference##
 [1].http://www.codeproject.com/Articles/27487/Why-to-use-memory-pool-and-how-to-implement-it
+
+[2].http://www.codeproject.com/Articles/15527/C-Memory-Pool
+
+[3].http://blog.csdn.net/shawngucas/article/details/6574863
