@@ -8,6 +8,8 @@ tags: []
 
 内存池是自己向OS请求的一大块内存，自己进行管理。
 
+--------------------------------
+
 ##系统调用##
 我们先测试系统调用new/delete的用时。
 
@@ -44,7 +46,7 @@ int main()
 }
 
 ```
-用时为604124400ns。系统的new是在堆上分配资源，每次执行都会分配然后销毁。
+用时为**604124400ns**。系统的new是在堆上分配资源，每次执行都会分配然后销毁。
 
 -------------------------------------------------
 ##简单的内存池##
@@ -79,7 +81,7 @@ int main()
 
 ```
 
-用时为39420791ns，后者比前者快20倍。
+用时为**39420791ns**，后者比前者快20倍。
 
 简单内存池在开始在全局/静态存储区分配资源，一直存在。每次重载的new调用只是返回了buf的地址，所以快。
 
@@ -119,7 +121,7 @@ m_pMemBlock指向分配的那块大小为m_ulBlockSize的大内存的地址。m_
 
 ![图片](/assets/images/memorypool-1.png)
 
-它被均分为lUnitNum个大小为m_ulUnitSize Byte的小内存块。每个块分为2部分：Unit链表管理头，真正进行存储的内存单元。
+它被均分为lUnitNum个大小为m_ulUnitSize Byte的小内存块。每个块分为2部分：**Unit链表管理头**，**真正进行存储的内存单元**。
 
 从图中可以看出m_ulBlockSize的计算方式为：
 
@@ -133,9 +135,9 @@ m_pMemBlock指向分配的那块大小为m_ulBlockSize的大内存的地址。m_
 
 ```
 CMemPool::CMemPool(unsigned long ulUnitNum, unsigned long ulUnitSize):
-	m_pMemBlock(NULL), m_pAllocatedMemBlock(NULL), m_pFreeMemBlock(NULL),
-	m_ulBlockSize(ulUnitNum * (ulUnitSize+sizeof(struct _Unit))),
-	m_ulUnitSize(ulUnitSize)
+m_pMemBlock(NULL), m_pAllocatedMemBlock(NULL), m_pFreeMemBlock(NULL),
+m_ulBlockSize(ulUnitNum * (ulUnitSize+sizeof(struct _Unit))),
+m_ulUnitSize(ulUnitSize)
 {
 	m_pMemBlock = malloc(m_ulBlockSize);
 
@@ -143,7 +145,8 @@ CMemPool::CMemPool(unsigned long ulUnitNum, unsigned long ulUnitSize):
 	{
 		for(unsigned long i = 0; i<ulUnitNum; i++)
 		{
-			struct  _Unit* pCurUnit = (struct _Unit*)((char*)m_pMemBlock + i*(ulUnitSize+sizeof(struct _Unit)) );
+			struct  _Unit* pCurUnit=(struct _Unit*)((char*)m_pMemBlock\
+			+ i*(ulUnitSize+sizeof(struct _Unit)) );
 
 			pCurUnit->pPrev = NULL;
 			pCurUnit->pNext = m_pFreeMemBlock;
@@ -191,8 +194,7 @@ void* CMemPool::Alloc(unsigned long ulSize, bool bUseMemPool)
 }
 
 ```
-Alloc的作用是分配内存，返回分配的内存地址，注意加上struct _Unit的大小是为了略过Unit管理头。实质是把m_pFreeMemBlock指向的free内存
-移动到m_pAllocatedMemBlock指向的已分配内存里。
+Alloc的作用是分配内存，返回分配的内存地址，注意加上Unit的大小是为了略过Unit管理头。实质是把m_pFreeMemBlock指向的free内存移动到m_pAllocatedMemBlock指向的已分配内存里。
 
 每次分配时，m_pFreeMemBlock指针后移。pCurUnit从前面插入到m_pAllocatedMemBlock里。
 
@@ -204,7 +206,8 @@ void CMemPool::Free(void* p)
 	{
 		//判断释放的内存是不是处于CMemPool
 		cout << "Memory Pool Free" << endl;
-		struct _Unit* pCurUnit = (struct _Unit*)((char*)p - sizeof(struct _Unit));
+		struct _Unit* pCurUnit = (struct _Unit*)((char*)p - \
+		sizeof(struct _Unit));
 
 		m_pAllocatedMemBlock = pCurUnit->pNext;
 		if(NULL != m_pAllocatedMemBlock)
@@ -290,7 +293,9 @@ int main()
 		}
 		clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time2);
 		
-		cout << "[ Repeat " << 100000*iTestCnt << " Times ]" << "Memory Pool Interval = " << diff(time1,time2).tv_nsec << "ns" << endl;
+		cout << "[ Repeat " << 100000*iTestCnt << " Times ]" 
+		<< "Memory Pool Interval = " << diff(time1,time2).tv_nsec 
+		<< "ns" << endl;
 		
 		//使用系统调用测试
 		clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time1);
@@ -300,7 +305,9 @@ int main()
 			delete p;
 		}
 		clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time2);
-		cout << "[ Repeat " << LOOP_TIMES << " Times ]" << "System Call Interval = " << diff(time1,time2).tv_nsec << "ns" << endl;
+		cout << "[ Repeat " << LOOP_TIMES << " Times ]" 
+		<< "System Call Interval = " << diff(time1,time2).tv_nsec 
+		<< "ns" << endl;
 	}
 	return 0;
 }
@@ -310,13 +317,13 @@ int main()
 
 ##结果##
 
+从下图可以看出，只有当程序频繁地用系统调用malloc/free或者new/delete分配内存时，内存池有价值。
+
 ![图片](/assets/images/memorypool-2.png)
 
-可以看出，只有当程序频繁地用系统调用malloc/free或者new/delete分配内存时，内存池有价值。
-
 完整的实现存放在[Github](https://github.com/Huangtuzhi/CppPrimer/blob/master/ch13/ex13_mempool.h)。
+
 --------------------------------------
 
 ##Reference##
 [1].http://www.codeproject.com/Articles/27487/Why-to-use-memory-pool-and-how-to-implement-it
-
