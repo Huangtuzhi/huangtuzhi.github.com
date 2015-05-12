@@ -26,7 +26,7 @@ void Request::run()
     {
         keep_alive = s_keep_alive_default;
         keep_alive_timeout = s_keep_alive_timeout * 1000;// the wait time
-        connect(keep_alive_timer, SIGNAL(timeout()), this, SLOT(onTimeout()));
+        connect(keep_alive_timer,SIGNAL(timeout()),this,SLOT(onTimeout()));
         keep_alive_timer->setSingleShot(true);
         keep_alive_timer->setInterval(keep_alive_timeout);
         keep_alive_timer->start();
@@ -34,8 +34,10 @@ void Request::run()
     socket = new QTcpSocket();
     if (!socket->setSocketDescriptor(socketDescriptor))
         return;
-    connect(socket, SIGNAL(readyRead()), this, SLOT(onReadyRead()), Qt::DirectConnection);
-    connect(socket, SIGNAL(disconnected()), this, SLOT(onDisconnected()), Qt::DirectConnection);
+    connect(socket, SIGNAL(readyRead()), this, SLOT(onReadyRead()), 
+    Qt::DirectConnection);
+    connect(socket, SIGNAL(disconnected()), this, SLOT(onDisconnected())，
+    Qt::DirectConnection);
     exec();
 }
 ```
@@ -45,7 +47,7 @@ void Request::run()
 
 在上面的run()之后有一个exec()函数，它会进入事件循环。
 
-Qt的事件循环是异步的,当调用QApplication::exec()时,就进入了事件循环. 该循环可以简化的描述为如下的代码:
+Qt的事件循环是异步的，当调用QApplication::exec()时，就进入了事件循环。该循环可以简化的描述为如下的代码：
  
 ```
 while ( !app_exit_loop )
@@ -124,7 +126,8 @@ void Request::run()
     //用socket描述符作为新socket的描述符
     if (!socket->setSocketDescriptor(socketDescriptor))
         return;
-    connect(socket, SIGNAL(readyRead()), this, SLOT(onReadyRead()), Qt::DirectConnection);
+    connect(socket, SIGNAL(readyRead()), this, SLOT(onReadyRead()),
+    Qt::DirectConnection);
     exec();
 }
 ```
@@ -166,7 +169,7 @@ onReadyRead函数里的执行顺序如下：
 
 ##总结
 
-+ Singleton Pattern用在日志系统和配置系统中，这个例子中不是线程安全的。
+Singleton Pattern用在日志系统和配置系统中，这个例子中不是线程安全的。
 
 
 ------------------------------------
