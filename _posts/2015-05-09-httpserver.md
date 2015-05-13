@@ -174,6 +174,7 @@ onReadyRead函数里的执行顺序如下：
 基于Redis的C官方客户端hiredis封装一个类Database，用来记录访问的数据。
 
 安装hiredis
+
 ```
 git clone https://github.com/antirez/hiredis.git && cd hiredis 
 make 
