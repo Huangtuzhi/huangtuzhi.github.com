@@ -169,6 +169,26 @@ onReadyRead函数里的执行顺序如下：
 
 -------------------------------------
 
+##状态记录
+
+基于Redis的C官方客户端hiredis封装一个类Database，用来记录访问的数据。
+
+安装hiredis
+```
+git clone https://github.com/antirez/hiredis.git && cd hiredis 
+make 
+sudo make install 
+sudo ldconfig
+```
+
+下面命令用来获取访问数据
+
+> redis-cli -p 6378
+
+> HMGET vistor:[n] time ip port agent
+
+-------------------------------------
+
 ##总结
 
 Singleton Pattern用在日志系统和配置系统中，这个例子中不是线程安全的。
