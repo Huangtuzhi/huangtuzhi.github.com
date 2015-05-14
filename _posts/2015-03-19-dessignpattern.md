@@ -18,52 +18,53 @@ Gang of Four在_Design Pattern_中写到设计模式分为三类：创建型模�
 class Singleton
 {
 public:
-	static Singleton* GetInstance()
-	{
-		if(NULL == instance)
-		{
-			instance = new Singleton;
-		}
-	return instance;
-	}
+    static Singleton* GetInstance()
+    {
+        if(NULL == instance)
+        {
+            instance = new Singleton();
+        }
+    return instance;
+    }
 
-	static void ReleaseInstance(Singleton* instance)
-	{
-		//Lock();//借用其它类来实现，如boost
-		if(NULL != instance)
-		{
-			delete instance;
-			instance = NULL;
-		}
-		//UnLock()
-	}
-
-private:
-	Singleton()
-	{
-		instance = NULL;
-		printf("Singleton begin constructing\n");
-		printf("Singleton end constructing\n");		
-	}
-
-	virtual ~Singleton()
-	{
-		printf("Singleton Destruct\n");		
-	}
+    static void ReleaseInstance(Singleton* instance)
+    {
+        //Lock();//借用其它类来实现，如boost
+        if(NULL != instance)
+        {
+            delete instance;
+            instance = NULL;
+        }
+        //UnLock()
+    }
 
 private:
-	Singleton(const Singleton&){};
-	Singleton& operator = (const Singleton &){};
+    Singleton()
+    {
+        std::cout << "Singleton begin constructing\n";
+        std::cout << "Singleton end constructing\n"; 
+    }
+
+    virtual ~Singleton()
+    {
+        std::cout << "Singleton Destruct\n" ;     
+    }
 
 private:
-	static Singleton* instance;	
+    Singleton(const Singleton&){};
+    Singleton& operator = (const Singleton &){};
+
+private:
+    static Singleton* instance; 
 };
+
+Singleton* Singleton::instance = NULL;
 
 int main(void)
 {
-	Singleton* A = Singleton::GetInstance();
-	Singleton::ReleaseInstance(A)//注意这里要手动释放申请的资源，防止内存泄漏
-	return 0;
+    Singleton* A = Singleton::GetInstance();
+    Singleton::ReleaseInstance(A);//注意这里要手动释放申请的资源，防止内存泄漏
+    return 0;
 }
 
 ```

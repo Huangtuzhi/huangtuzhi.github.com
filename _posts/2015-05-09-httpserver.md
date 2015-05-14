@@ -192,7 +192,7 @@ sudo ldconfig
 
 ##总结
 
-Singleton Pattern用在日志系统和配置系统中，这个例子中不是线程安全的。
+Singleton Pattern用在日志系统和配置系统中，这个例子中不是线程安全的。Singleton Pattern的实例具有和程序一样的生存期,因为instance是new出来的，它一直存在时。所以析构函数没有机会调用了。这里会产生memory leak。
 
 
 ------------------------------------
@@ -209,3 +209,9 @@ Singleton Pattern用在日志系统和配置系统中，这个例子中不是线
 [5].http://blog.sina.com.cn/s/blog_a6fb6cc90101hohu.html
 
 [6].http://qimo601.iteye.com/blog/1407911
+
+[7].http://tuzhii.com/2015/03/19/dessignpattern/
+
+[8].http://stackoverflow.com/questions/2496918/singleton-pattern-in-c
+
+
