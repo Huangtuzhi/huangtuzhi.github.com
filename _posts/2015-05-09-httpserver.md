@@ -190,10 +190,55 @@ sudo ldconfig
 
 -------------------------------------
 
+#UI namespace
+
+```
+namespace Ui {
+class MonitorUI;
+}
+
+class MonitorUI : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    explicit MonitorUI(QWidget *parent = 0);
+    ~MonitorUI();
+private:
+    Ui::MonitorUI *ui;
+};
+
+```
+前面**声明**了一个namespace Ui，它是一个匿名名称空间。该namespace 中的成员（变量或函数）具有独一无二的全局名称，避免名字碰撞 (name collisions)它的定义存在于自动生成的ui_monitorui.h文件中
+
+```
+namespace Ui {
+    class MonitorUI: public Ui_MonitorUI {};
+} 
+```
+
+因此Ui::MonitorUI和MonitorUI是不同的东西。
+
+```
+MonitorUI::MonitorUI(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MonitorUI)
+{
+    ui->setupUi(this);
+}
+
+```
+可以看到ui是Ui::MonitorUI的一个实例。调用setupUi(this)。
+
+> setupUi() creates the actual instances of widgets for you. A form that you create in QtDesigner is stored just as XML file. So to be able to build the actual "window" with all the elements that you put on it in QtDesiner and display it in your application, setupUi() is created for you automatically by UIC (UI compiler - a Qt tool) so you don't have to do that manually.
+
+两个一样的类名用namespace来区分开，实现逻辑与显示的分离(类似MVC)。
+
+-------------------------------------
+
 ##总结
 
 Singleton Pattern用在日志系统和配置系统中，这个例子中不是线程安全的。Singleton Pattern的实例具有和程序一样的生存期,因为instance是new出来的，它一直存在时。所以析构函数没有机会调用了。这里会产生memory leak。
-
 
 ------------------------------------
 
@@ -213,5 +258,7 @@ Singleton Pattern用在日志系统和配置系统中，这个例子中不是线
 [7].http://tuzhii.com/2015/03/19/dessignpattern/
 
 [8].http://stackoverflow.com/questions/2496918/singleton-pattern-in-c
+
+[9].http://blog.csdn.net/solstice/article/details/6186978
 
 
