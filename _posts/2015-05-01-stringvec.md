@@ -2,7 +2,7 @@
 layout: post
 title: "实现vector内存管理类"
 description: ""
-category: C++
+category: C&&C++
 tags: []
 ---
 

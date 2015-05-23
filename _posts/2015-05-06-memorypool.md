@@ -2,7 +2,7 @@
 layout: post
 title: "C++内存池实现"
 description: ""
-category: C++
+category: C&&C++
 tags: []
 ---
 
