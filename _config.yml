@@ -1,11 +1,11 @@
-markdown: redcarpet
+markdown: rdiscount
 permalink: /:year/:month/:day/:title/
 url: http://huangtuzhi.github.com
 author: tuzhi
-# pygments: true
+pygments: true
 safe: true
 paginate: 16
 auto: true
-highlighter: rouge
-
+github: Huangtuzhi
+truncate: 100
 

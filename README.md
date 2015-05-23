@@ -1,4 +1,3 @@
-Tuzhi的技术博客
+技术博客
 
-
-改自 [https://github.com/Yonsm/NET](https://github.com/Yonsm/NET)。
+Thanks to [Yonsm](https://github.com/Yonsm/NET)。
