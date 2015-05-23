@@ -4,8 +4,7 @@ url: http://huangtuzhi.github.com
 author: tuzhi
 pygments: true
 safe: true
-paginate: 16
+paginate: 10
 auto: true
 github: Huangtuzhi
-truncate: 100
 
