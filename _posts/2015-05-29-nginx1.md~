@@ -37,6 +37,7 @@ struct sdshdr {
     char buf[];
 };
 ```
+
 再看看它的API，API以宏的方式定义。
 
 ```
@@ -48,8 +49,10 @@ struct sdshdr {
 (str)->len = sizeof(text) - 1; (str)->data = (u_char *) text
 
 #define ngx_str_null(str)   (str)->len = 0; (str)->data = NULL
+
 ```
 第一个宏定义一个nginx的字符串，用法是
+
 ```
 int main()
 {
@@ -63,15 +66,18 @@ int main()
     return 0; 
 }
 ```
+
 这里直接是宏展开，对结构体进行赋值。先生成了一个临时变量`"stop"`,然后把临时变量的长度和地址赋值给结构体。`ngx_string`与`ngx_null_string`是`{，}`格式的，而结构体只能在初始化时进行整体赋值，因而API只能用于赋值时初始化。还需要注意`str`必须是常量字符串，因为`sizeof`是以`\0`为结束标志的。
 
 打印结果
+
 ```
 len: 4 
 address: 0x8048530 
 address: 0x804854d 
 string HELLO WORLD
 ```
+
 
 ##参考
 [http://tengine.taobao.org/book/chapter_02.html](http://tengine.taobao.org/book/chapter_02.html)
