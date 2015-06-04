@@ -54,6 +54,7 @@ $ sudo apt-get install nginx gunicorn python-gevent supervisor
 Nginx配置文件位于`/usr/local/nginx/conf/nginx.conf`，为了便于管理，新建一个`site`文件夹存放我们对配置的添加更改。在`site`中新建`app.conf`配置文件。
 
 在`nginx.conf`中添加
+
 ```
 http {
     include       sites/*.conf;
@@ -99,7 +100,8 @@ $ sudo .nginx -s reload
 
 ```
 [program:golink]
-command     = /usr/bin/gunicorn --bind 127.0.0.1:8000 --workers 3 --worker-class gevent index:app
+command     = /usr/bin/gunicorn --bind 127.0.0.1:8000 
+--workers 3 --worker-class gevent index:app
 directory   = /srv/www/GoLink/www
 user        = www-data
 startsecs   = 3
