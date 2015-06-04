@@ -110,6 +110,7 @@ redirect_stderr         = true
 stdout_logfile_maxbytes = 50MB
 stdout_logfile_backups  = 10
 ```
+参数解释
 
 > --workers: The number of worker processes for handling requests. A positive integer generally in the 2-4 x $(NUM_CORES) range. 
 
