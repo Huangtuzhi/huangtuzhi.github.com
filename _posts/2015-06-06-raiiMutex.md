@@ -84,7 +84,7 @@ void *f(void *arg){
         MutexLockGuard lock(mutex);
         if(cnt>0){
             usleep(1);
-            cout << "args: " << t_num << " " << "cnt: " << cnt-- << endl; 
+            cout << "args: " << t_num << " "<< "cnt: "<< cnt--<< endl; 
         } 
         else{break;}       
     }
@@ -176,7 +176,7 @@ deconstruct of MutexLock
 
 `args: 33`获取锁，释放锁，`cnt--`
 
-某个进程进入break。
+某个进程执行break结束循环。
 
 具体可以参见[OS](http://stackoverflow.com/questions/30678529/constructor-and-destructor-in-multi-threading)讨论。
 
