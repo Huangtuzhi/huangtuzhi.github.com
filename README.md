@@ -1,3 +1,3 @@
 技术博客
 
-Thanks to [Yonsm](https://github.com/Yonsm/NET)。
+Thanks to [webfrogs](https://github.com/webfrogs)。
