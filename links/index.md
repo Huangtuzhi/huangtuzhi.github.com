@@ -11,9 +11,9 @@ comments: yes
 
 阿飞：少年飞呀飞驰     [Gray Times](http://kangkona.github.io)
 
-闫航：永远的闫老师     [涯余](http://urbem.org/)
+闫航：永远的闫老师     [涯余](http://yayua.github.io)
 
-小司：北方夜晚的琴声   [Amnesia](http://sinb.github.io/)
+小司：北方夜晚的琴声   [Amnesia](http://sinb.github.io)
 
 小逸：也曾是绿衣吹笛人 [青碧](http://blog.tuzhii.com)
 
