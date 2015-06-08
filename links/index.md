@@ -5,7 +5,7 @@ comments: yes
 ---
 
 
-乐天：一个神奇的男人   [乐天笔记](http://letiantian.me)
+乐天：得了一种不能写代码的病   [乐天笔记](http://letiantian.me)
 
 师兄：坐在右边的大神   [点点滴滴](http://www.darlingfive.com)
 
@@ -17,4 +17,4 @@ comments: yes
 
 小逸：也曾是绿衣吹笛人 [青碧](http://blog.tuzhii.com)
 
-魏威： 说出你的梦想     [LastWW](http://blog.lastww.com)
+魏威：说出你的梦想     [LastWW](http://blog.lastww.com)
