@@ -1,7 +1,7 @@
 ---
 title: links
 layout: page
-comments: yes
+comments: no
 ---
 
 

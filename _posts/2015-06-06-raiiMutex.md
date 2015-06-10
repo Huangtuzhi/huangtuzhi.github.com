@@ -84,7 +84,7 @@ void *f(void *arg){
         MutexLockGuard lock(mutex);
         if(cnt>0){
             usleep(1);
-            cout << "args: " << t_num << " "<< "cnt: "<< cnt--<< endl; 
+            cout << "args: " << t_num << " "< "cnt: "<< cnt--<< endl; 
         } 
         else{break;}       
     }
