@@ -6,7 +6,7 @@ category: server
 tags: []
 ---
 
-服务端后台开发主要涉及到四个层面:网络，业务逻辑，数据，运维。不同类型的业务对以上四点的要求不同。
+服务端后台开发主要涉及到四个层面：网络，业务逻辑，数据，运维。不同类型的业务对以上四点的要求不同。
 
 -----------------------------
 
@@ -15,28 +15,49 @@ tags: []
 
 Server|网络       | 业务逻辑       | 数据 | 运维        
 :----- |:-------|:--------|:-----
-WeChat  |大部分长连接+短连接|消息存储+转发| 用户关系链的长久保存 中间消息缓存 | 基础服务 7×24
-QZone |高性能HTTP服务器|用户日志照片存储|SNS业务，cache很重要|非基础服务
+微信  |大部分长连接+短连接|消息存储+转发| 用户关系链的长久保存 中间消息缓存 | 基础服务 7×24
+空间 |高性能HTTP服务器|用户日志照片存储|SNS业务，cache很重要|非基础服务
 
 ----------------------------
+
 
 ## 加强的地方
 
 * 网络
 
-《大规模分布式系统架构与设计实现》，《UNP》，《HTTP权威指南》
+《大规模分布式系统架构与设计实现》，了解ZooKeeper;《UNP》，熟悉通信过程;《HTTP权威指南》，熟悉HTTP。
 
 * 业务逻辑
 
-Nodejs了解，搜索技术了解，可以跟一下公开课 [Text Retrieval and Search Engines](https://zh.coursera.org/course/textretrieval)
+了解Nodejs，搜索技术了解，可以跟一下公开课 [Text Retrieval and Search Engines](https://zh.coursera.org/course/textretrieval)
+
+微信里的H5页面基本都是[SPA(Single-Page application)](http://ued.taobao.org/blog/2014/04/full-stack-development-with-nodejs/)，集中体现在商户侧和用户侧页面。这些页面基本是前后端分离。数据由后台服务CGI吐出，前端调AJAX/JSONP展现数据。
+
+前后端分离定义如下：
+
+前端：写模板或者前端模板，完成AJAX请求，用户交互。
+
+后端：与前端开发协商接口及数据格式并吐出数据。
+
+可以对比一下MVC的Django
+
+> Getting data from the database according to a parameter passed in the URL, loading a template and returning the rendered template.
+
+M负责定义DB字段，V定义function并返回URL对应的模板，而C由URLconf来实现，即urls.py，其机制是使用正则表达式匹配URL，然后调用views.py中合适的函数。
 
 * 数据
 
-《高性能MySQL》纸质版重读，Redis，Memcached多实践应用
+《高性能MySQL》纸质版重读，Redis，Memcached多实践应用。同时了解常用分析数据的方法，机器学习的算法，库。
 
 * 运维
 
-《Linux Shell脚本攻略》
+《Linux Shell脚本攻略》，Python手册，
+
+sed，awk，grep
+
+Nginx
+
+[Linux Performance Tools](http://www.brendangregg.com/linuxperf.html)
 
 ------------------------------
 
@@ -47,6 +68,8 @@ Nodejs了解，搜索技术了解，可以跟一下公开课 [Text Retrieval and
 ------------------------------
 
 ## 参考
+
+[http://ued.taobao.org/blog/2014/04/full-stack-development-with-nodejs/](http://ued.taobao.org/blog/2014/04/full-stack-development-with-nodejs/)
 
 KM
 
