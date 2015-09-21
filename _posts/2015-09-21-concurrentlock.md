@@ -1,3 +1,11 @@
+---
+layout: post
+title: "KV系统实现并发锁"
+description: ""
+category: server
+tags: []
+---
+
 在key-value系统中保存了一个重要的ticket，在一定的时间周期7200s里更新。现需要实现一个CGI提供给前端获取这个ticket，CGI访问量为每天百万pv左右。
 
 假设某一时刻ticket要过期时有A，B两个请求。A请求过来发现ticket过期，开始从网络服务器上获取最新的ticket并写入KV，同时服务器更新自己存储的ticket。而B恰好在A写入前读出了ticket，此时服务器上的ticket和A同步了。但B的ticket是过期的，这会导致用B获取的ticket去请求资源时失败。
