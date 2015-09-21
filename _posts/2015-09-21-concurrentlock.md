@@ -17,6 +17,8 @@ tags: []
 * CGI只进行读KV操作
 * 实现一个daemon程序，只负责每隔固定周期往KV更新ticket。用一个并发锁去控制写入时的资源竞争。
 
+-------------------------------------
+
 ## KV实现并发锁
 
 往KV里添加一个字段`daemon_mutex`，对应的value为`pid + timestamp`。
@@ -32,6 +34,8 @@ daemon可能会挂掉。挂掉会导致两方面问题
 
 1. 3个进程争写锁，争到的进程为主进程，每隔1s刷新KV中`daemon_mutex`的timestamp字段，相当于**心跳数据**。每隔15分钟更新KV中的ticket。(ticket更新不用太频繁)
 2. 2个从进程每隔1s读KV中`daemon_mutex`的timestamp字段，若`time(NULL) - kv.update_time() > 15`说明主进程挂掉了，2个从进程开始争锁，抢到的进程升级为主进程。重复以上。
+
+------------------------------------------
 
 ## Memcache实现并发锁
 
@@ -55,6 +59,7 @@ if (memcache.get(key) == null) {
 }
 ```
 
+---------------------------------------
 
 ## 参考
 [http://www.cnblogs.com/dluf/p/3849075.html](http://www.cnblogs.com/dluf/p/3849075.html)
