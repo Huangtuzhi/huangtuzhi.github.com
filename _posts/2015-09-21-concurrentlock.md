@@ -39,7 +39,7 @@ daemon可能会挂掉。挂掉会导致两方面问题
 
 ## Memcache实现并发锁
 
-memcache也可以利用`add`去实现并发锁。
+memcache也可以利用`add`去实现并发锁，主要是通过add的原子性来判断是否要执行关键代码。
 
 ```
 if (memcache.get(key) == null) {
