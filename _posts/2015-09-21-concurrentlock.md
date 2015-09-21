@@ -51,6 +51,4 @@ if (memcache.get(key) == null) {
 ## 参考
 [http://www.cnblogs.com/dluf/p/3849075.html](http://www.cnblogs.com/dluf/p/3849075.html)
 
-[http://blog.webfuns.net/archives/1722.html](http://blog.webfuns.net/archives/1722.html)
-
 [http://timyang.net/programming/memcache-mutex/](http://timyang.net/programming/memcache-mutex/)
