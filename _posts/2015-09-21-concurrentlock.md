@@ -35,6 +35,8 @@ daemon可能会挂掉。挂掉会导致两方面问题
 1. 3个进程争写锁，争到的进程为主进程，每隔1s刷新KV中`daemon_mutex`的timestamp字段，相当于**心跳数据**。每隔15分钟更新KV中的ticket。(ticket更新不用太频繁)
 2. 2个从进程每隔1s读KV中`daemon_mutex`的timestamp字段，若`time(NULL) - kv.update_time() > 15`说明主进程挂掉了，2个从进程开始争锁，抢到的进程升级为主进程。重复以上。
 
+分布式系统中心心跳协议的设计可以参见[Linux多线程服务端编程](http://www.amazon.cn/Linux%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%BC%96%E7%A8%8B-%E4%BD%BF%E7%94%A8muduo-C-%E7%BD%91%E7%BB%9C%E5%BA%93-%E9%99%88%E7%A1%95/dp/B00FF1XYJI/ref=dp_kinw_strp_1)。
+
 ------------------------------------------
 
 ## Memcache实现并发锁
@@ -65,3 +67,5 @@ if (memcache.get(key) == null) {
 [http://www.cnblogs.com/dluf/p/3849075.html](http://www.cnblogs.com/dluf/p/3849075.html)
 
 [http://timyang.net/programming/memcache-mutex/](http://timyang.net/programming/memcache-mutex/)
+
+Linux多线程服务端编程. Page 356~360.
