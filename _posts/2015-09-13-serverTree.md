@@ -56,13 +56,15 @@ M负责定义DB字段，V定义function并返回URL对应的模板页面，而C�
 
 《Linux Shell脚本攻略》，Python手册
 
+《七周七并发模型》
+
 sed，awk，grep
 
 Nginx，Django框架
 
 [Linux Performance Tools](http://www.brendangregg.com/linuxperf.html)
 
-《七周七并发模型》
+
 
 ------------------------------
 
