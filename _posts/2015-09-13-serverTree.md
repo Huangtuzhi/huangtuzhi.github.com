@@ -62,6 +62,8 @@ Nginx，Django框架
 
 [Linux Performance Tools](http://www.brendangregg.com/linuxperf.html)
 
+《七周七并发模型》
+
 ------------------------------
 
 ## 技能树
@@ -74,7 +76,6 @@ Nginx，Django框架
 
 [http://ued.taobao.org/blog/2014/04/full-stack-development-with-nodejs/](http://ued.taobao.org/blog/2014/04/full-stack-development-with-nodejs/)
 
-KM
 
 
 
