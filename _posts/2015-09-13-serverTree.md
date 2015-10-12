@@ -28,7 +28,8 @@ Server|网络       | 业务逻辑       | 数据 | 运维
 
 * 网络
 
-《大规模分布式系统架构与设计实现》，了解ZooKeeper;《UNP》，熟悉通信过程;《HTTP权威指南》，熟悉HTTP。
+《大规模分布式系统架构与设计实现》;
+学习《Java编程思想》，《从Paxos到ZooKeeper》，了解ZooKeeper;《UNP》，熟悉通信过程;《HTTP权威指南》，熟悉HTTP。
 
 * 业务逻辑
 
