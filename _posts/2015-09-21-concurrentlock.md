@@ -37,6 +37,13 @@ daemon可能会挂掉。挂掉会导致两方面问题
 
 分布式系统中心心跳协议的设计可以参见[Linux多线程服务端编程](http://www.amazon.cn/Linux%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%BC%96%E7%A8%8B-%E4%BD%BF%E7%94%A8muduo-C-%E7%BD%91%E7%BB%9C%E5%BA%93-%E9%99%88%E7%A1%95/dp/B00FF1XYJI/ref=dp_kinw_strp_1)。
 
+------------------------
+
+## Chubby技术架构
+如果大家熟悉 ZooKeepr 就会发现上面的并发锁设计和 Chubby 一样。
+
+一个典型的 Chubby 集群 通常由5台服务器组成。这些副本服务器采用 Paxos 协议，通过投票的方法来选举产生一个获得过半投票的服务器作为 Master。只有 Master 服务器才能对数据库进行写操作，而其他的服务器都是使用 Paxos 协议从 Master 服务器上同步数据库数据的更新。
+
 ------------------------------------------
 
 ## Memcache实现并发锁
@@ -69,3 +76,5 @@ if (memcache.get(key) == null) {
 [http://timyang.net/programming/memcache-mutex/](http://timyang.net/programming/memcache-mutex/)
 
 Linux多线程服务端编程. Page 356~360.
+
+从Paxos到ZooKeeper——分布式一致性原理与实践
