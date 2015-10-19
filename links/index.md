@@ -13,6 +13,6 @@ comments: no
 
 小司    [Amnesia](http://sinb.github.io)
 
-夫子    [青碧](http://blog.tuzhii.com)
+夫子    [青碧](http://blog.fuzhii.com)
  
 魏威    [LastWW](http://blog.lastww.com)
