@@ -11,15 +11,6 @@ comments: no
 
 ###关于我： 
 
-
-写代码，也写点文章。
-
-外号夫子，外冷内热。
-
-曾是红楼梦中人，如今忆似水年华，先以修身为本。
-
-<br>
-
 email  : ituzhi@163.com
 
 github : [titus](https://github.com/huangtuzhi)
