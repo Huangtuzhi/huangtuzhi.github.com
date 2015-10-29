@@ -40,7 +40,8 @@ class DistributedLock {
     
     public static void main(String[] args) throws Exception {
         client.start();
-        final InterProcessMutex lock = new InterProcessMutex(client, lock_path);
+        final InterProcessMutex lock = new 
+        InterProcessMutex(client, lock_path);
         final CountDownLatch down = new CountDownLatch(1);
         
         for(int i = 0; i < 10; i++){
@@ -51,7 +52,8 @@ class DistributedLock {
                         lock.acquire();
                     } catch ( Exception e ) {}
                     
-                    SimpleDateFormat sdf  = new SimpleDateFormat("HH:mm:ss|SSS");
+                    SimpleDateFormat sdf  = new SimpleDateFormat("HH:
+                    mm:ss|SSS");
                     String orderNo = sdf.format(new Date());
                     
                     System.out.println("生成的订单号是： " + orderNo);
@@ -109,7 +111,7 @@ import org.apache.curator.retry.RetryNTimes;
 
 class Recipes_DisAtomicInt {
     
-    static String distatomicint_path = "/curator_recipes_distatomicint_path";
+    static String distatomicint_path="/curator_recipes_distatomicint_path";
     static CuratorFramework client = CuratorFrameworkFactory.builder()
             .connectString("202.201.13.*:2100")
             .retryPolicy(new ExponentialBackoffRetry(1000, 3)).build();
@@ -117,7 +119,8 @@ class Recipes_DisAtomicInt {
     public static void main(String[] args) throws Exception {
         client.start();
         DistributedAtomicInteger atomicInterger = 
-        new DistributedAtomicInteger( client, distatomicint_path, new RetryNTimes(3, 1000));
+        new DistributedAtomicInteger( client, distatomicint_path,
+         new RetryNTimes(3, 1000));
         
         AtomicValue<Integer> rc = atomicInterger.add(1);
         System.out.println("Result: " + rc.succeeded());
