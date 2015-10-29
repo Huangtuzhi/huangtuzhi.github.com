@@ -2,7 +2,7 @@
 layout: post
 title: "ZooKeeper使用场景"
 description: ""
-category: server
+category: 分布式
 tags: []
 ---
 
@@ -13,6 +13,7 @@ tags: []
 * [curator-recipes](http://maven.outofmemory.cn/org.apache.curator/curator-recipes/2.4.2/)
 
 * [Guava-14.0.1](http://maven.outofmemory.cn/com.google.guava/guava/14.0.1/)
+
 
 ----------------------
 
