@@ -135,4 +135,4 @@ class Recipes_DisAtomicInt {
 
 ![图片](/assets/images/zookeeper-scene.png)
 
-可以看到节点数据从 1A 增到 1B。
+可以看到节点的数据从 1A 增到 1B。
