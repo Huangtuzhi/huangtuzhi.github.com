@@ -16,6 +16,8 @@ github : [titus](https://github.com/huangtuzhi)
 
 liter blog: [逸](http://blog.fuzhii.com/)
 
+----
+
 ###搜索
 
 [使用 Google 搜索本博客](https://www.google.com.hk/search?q=site%3Afuzhii.com)
