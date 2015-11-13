@@ -10,13 +10,17 @@ comments: no
 
 ###关于我： 
 
-email  : 
+email
 
 > echo  vghmuv@163.pbz | tr 'a-zA-Z' 'n-za-mN-ZA-M'
 
-github : [titus](https://github.com/huangtuzhi)
+github 
 
-liter blog: [逸](http://blog.fuzhii.com/)
+> [titus](https://github.com/huangtuzhi)
+
+liter blog
+
+> 如花美眷，似水流年 [逸](http://blog.fuzhii.com/)
 
 ----
 
