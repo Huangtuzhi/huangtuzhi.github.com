@@ -16,7 +16,7 @@ email
 
 github 
 
-> [titus](https://github.com/huangtuzhi)
+> 身修本立，然后远行   [titus](https://github.com/huangtuzhi)
 
 liter blog
 
