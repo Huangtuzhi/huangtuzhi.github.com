@@ -10,7 +10,7 @@ comments: no
 
 ###关于我： 
 
-email  : ituzhi@163.com
+email  : `echo  vghmuv@163.pbz | tr 'a-zA-Z' 'n-za-mN-ZA-M'`
 
 github : [titus](https://github.com/huangtuzhi)
 
