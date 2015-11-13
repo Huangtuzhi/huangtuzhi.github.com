@@ -10,7 +10,9 @@ comments: no
 
 ###关于我： 
 
-email  : `echo  vghmuv@163.pbz | tr 'a-zA-Z' 'n-za-mN-ZA-M'`
+email  : 
+
+> echo  vghmuv@163.pbz | tr 'a-zA-Z' 'n-za-mN-ZA-M'
 
 github : [titus](https://github.com/huangtuzhi)
 
