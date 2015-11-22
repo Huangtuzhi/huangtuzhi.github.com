@@ -4,9 +4,6 @@ layout: page
 comments: no
 ---
 
-“吾尝终日而思矣，不如须臾之所学也”
-
-----
 
 ###关于我： 
 
@@ -16,11 +13,11 @@ email
 
 github 
 
-> 身修本立，然后远行   [titus](https://github.com/huangtuzhi)
+> [titus](https://github.com/huangtuzhi)
 
 liter blog
 
-> 如花美眷，似水流年 [逸](http://blog.fuzhii.com/)
+> [逸](http://blog.fuzhii.com/)
 
 ----
 
