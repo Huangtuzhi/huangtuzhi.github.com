@@ -7,6 +7,12 @@ comments: no
 
 ###关于我： 
 
+公众号
+
+timeisnull
+
+![图片](/assets/images/wechat.png)
+
 email
 
 > echo  vghmuv@163.pbz | tr 'a-zA-Z' 'n-za-mN-ZA-M'
