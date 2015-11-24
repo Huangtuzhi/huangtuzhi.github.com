@@ -13,17 +13,11 @@ timeisnull
 
 ![图片](/assets/images/wechat.png)
 
-email
+liter blog: [逸](http://blog.fuzhii.com/)
 
-> echo  vghmuv@163.pbz | tr 'a-zA-Z' 'n-za-mN-ZA-M'
+email： ituzhi@163.com
 
-github 
-
-> [titus](https://github.com/huangtuzhi)
-
-liter blog
-
-> [逸](http://blog.fuzhii.com/)
+github: [titus](https://github.com/huangtuzhi)
 
 ----
 
