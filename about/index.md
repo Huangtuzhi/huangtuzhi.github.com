@@ -7,12 +7,6 @@ comments: no
 
 ###关于我： 
 
-公众号
-
-timeisnull
-
-![图片](/assets/images/wechat.png)
-
 liter blog: [逸](http://blog.fuzhii.com/)
 
 email： ituzhi@163.com
