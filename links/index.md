@@ -3,7 +3,7 @@ title: links
 layout: page
 comments: no
 ---
-山色横侵遮不住 明月千里好读书
+山色横侵遮不住(qupashan) 明月千里好读书(xiedaima)
 
 + 樂天    [得了不能写代码的病](http://letiantian.me)
 
