@@ -5,14 +5,16 @@ comments: no
 ---
 
 
-樂天    [樂天笔记](http://letiantian.me)
+樂天    [得了不能写代码的病](http://letiantian.me)
 
-阿飞    [Grey Times](http://kangkona.github.io)
+阿飞    [少年灰呀灰驰](http://kangkona.github.io)
 
-闫老师  [涯余](http://hyan.in)
+闫老师  [六楼的闫老师](http://hyan.in)
 
-小司    [Amnesia](http://sinb.github.io)
+小司    [北方夜晚的琴声](http://sinb.github.io)
 
-夫子    [青碧](http://blog.fuzhii.com)
+夫子    [也曾是绿衣吹笛人](http://blog.fuzhii.com)
  
-魏威    [LastWW](http://blog.lastww.com)
+魏威    [你的梦想是什么](http://blog.lastww.com)
+
+建华    [我有一言](http://liticer.github.io/)
