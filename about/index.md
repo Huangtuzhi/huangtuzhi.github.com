@@ -7,8 +7,6 @@ comments: no
 
 ###关于我： 
 
-liter blog: [逸](http://blog.fuzhii.com/)
-
 email： ituzhi@163.com
 
 github: [titus](https://github.com/huangtuzhi)
