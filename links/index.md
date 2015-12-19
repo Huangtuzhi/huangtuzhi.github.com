@@ -12,8 +12,6 @@ comments: no
 闫航    [永远的闫老师](http://hyan.in)
 
 小司    [北方夜晚的琴声](http://sinb.github.io)
-
-夫子    [也曾是绿衣吹笛人](http://blog.fuzhii.com)
  
 魏威    [你的梦想是什么](http://blog.lastww.com)
 
