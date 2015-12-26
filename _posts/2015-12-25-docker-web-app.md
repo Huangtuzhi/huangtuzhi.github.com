@@ -6,7 +6,7 @@ category: web
 tags:
 ---
 
-一个 Web 应用包含前端页面，数据库，后台服务器和逻辑部分，按照一般流程去构建需要配置 Nginx，配置 MySQL，配置后台服务器，运维涉及到的部分十分复杂。而 Docker 可以将这些东西(数据，服务)封装到一起，虽然有些场合不建议数据和服务放在一起。本文就在一个 Docker 容器中完整部署整个 Web 应用的需求作详细的介绍。
+一个完整的 Web 应用包含前端页面、数据库、后台逻辑等，按照一般流程去构建需要配置 Nginx、MySQL，以及后台服务器，运维涉及到的部分十分复杂。而 Docker 可以将这些东西（数据+服务）封装起来，虽然有些场合不建议数据和服务放在一起。本文就在一个 Docker 容器中完整部署整个 Web 应用的需求作详细的介绍。
 
 本文举例的 Web 应用为 「top-topic-Zhihu」(换个 timeline 看知乎)，整个项目可以在 [Github](https://github.com/Huangtuzhi/top-topic-Zhihu) 中找到。
 
@@ -125,19 +125,21 @@ mysql> SHOW VARIABLES LIKE 'character_set_%';
 8 rows in set (0.00 sec)
 ```
 
+若字符集如上所示，则说明已经修改成功。
+
 #### MySQL的坑
 
-在上面 Dockerfile 中看到分别给 'root'@'127.0.0.1' 和 'root'@'localhost' 都加了权限， 'root'@'localhost' 的权限在 SQL 语句最后才加上。这是因为
+在上面的 Dockerfile 中看到分别给 'root'@'127.0.0.1' 和 'root'@'localhost' 都加了权限， 'root'@'localhost' 的权限在 SQL 语句最后才加上。这是因为
 
 + 用 `'root'@'localhost'` 没权限建数据库和表，报错 
 
 > Access denied for user 'root'@'localhost' (using password: No)
 
-+ 用 `'root'@'127.0.0.1'` 进入 Docker 后没权限进入 Mysql，报错 
++ 用 `'root'@'127.0.0.1'` 进入 Docker 后没权限连接 Mysql，报错 
 
 > Access denied for user 'root'@'localhost' (using password: YES)
 
-于是就只能用 `'root'@'127.0.0.1'` 来建数据库和表，然后再用 `'root'@'localhost'` 来连接数据库。
+于是这里用 `'root'@'127.0.0.1'` 来建数据库和表，最后再用 `'root'@'localhost'` 来连接数据库。
 
 ------------------------
 
@@ -152,9 +154,9 @@ COPY nginx/global.conf /etc/nginx/conf.d/
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 ```
 
-在 Docker 中，我们将网站文件放到 `/home/toptopic/web/www` 目录。
+在 Docker 中，我们将网站文件放到新建的 `/home/toptopic/web/www` 目录。
 
-在 global.conf 中我们指明服务器根目录为 `/usr/share/nginx/html/www`，
+在 global.conf 中我们指明服务器根目录为 `/usr/share/nginx/html/www`
 
 ```
 server {
@@ -166,7 +168,7 @@ server {
         }
 ```
 
-所以还需要建一个软链接将它们关联起来。
+这里建立一个软链接将它们关联起来，便于修改和维护。
 
 ```
 RUN ln -s /home/toptopic/web/www /usr/share/nginx/html
@@ -176,7 +178,7 @@ RUN ln -s /home/toptopic/web/www /usr/share/nginx/html
 
 ## EXPOSE 两个端口
 
-EXPOSE 在 Docker 中用来限制开放的端口。我们使用 Nginx 来提供静态页面访问，使用 Flask 来提供动态页面数据的获取，所以需要开放两个端口。
+EXPOSE 在 Docker 中用来限制开放的端口。我们使用 Nginx 来提供静态页面访问，使用 Flask 框架来提供动态页面数据的获取，所以需要开放两个端口。
 
 ```
 EXPOSE 2223 5000
@@ -187,28 +189,27 @@ EXPOSE 2223 5000
 ```
 hy@HP /tmp $ sudo docker ps
 [sudo] password for huangyi: 
-CONTAINER ID        IMAGE               COMMAND         
- CREATED           STATUS                PORTS         NAMES
+CONTAINER ID      IMAGE                COMMAND         
+CREATED           STATUS               PORTS         NAMES
 2d1d03d08a95        titus/mysql:latest   /bin/bash   
-9 seconds ago      Up 9 seconds        0.0.0.0:2223->2223/tcp,
-  0.0.0.0:5000->5000/tcp   clever_hoover
+9 seconds ago      Up 9 seconds   0.0.0.0:2223->2223/tcp,0.0.0.0:5000->5000/tcp   clever_hoover
 ```
 
-2223 端口与上节中的 Nginx 必须保持一致，因为 Nginx 使用 2223 端口提供服务，Docker 刚好必须把这个端口暴露出去。
+2223 端口与上节中的 Nginx 中设定的端口必须保持一致，因为 Nginx 使用 2223 端口提供服务，Docker 刚好必须把这个端口开放出去。
 
-在基于 Flask 框架写的后台服务 dataCGI.py 中，CGI 服务器对应的监听地址为
+在基于 Flask 框架写的后台服务 dataCGI.py 中，服务器对应的监听地址为
 
 ```
-app.run(host='0.0.0.0', port=5000, debug=True, threaded=True)，
+app.run(host='0.0.0.0', port=5000, debug=True, threaded=True)
 ```
 
-这里必须设置为 0.0.0.0，表示监听所有的 IP地址。如果使用 127.0.0.1 在容器外无法访问服务。同时，这里的端口 5000 和 Dockerfile 中暴露的端口一致。
+host 必须设置为 0.0.0.0，表示监听所有的 IP 地址。如果使用 127.0.0.1，在容器外将无法访问服务。同时，这里的端口 5000 和 Dockerfile 中开放的另一个端口一致。
 
 --------------------------
 
 ## 启动脚本
 
-在 Dockerfile 中的 CMD 中可以指定 Docker 运行时执行一些命令。相当于开机时运行。
+在 Dockerfile 中的 CMD 中可以指定 Docker 运行时执行一些命令。
 
 ```
 /etc/init.d/mysql start
@@ -253,13 +254,13 @@ sudo docker run -t -i -p 2223:2223 -p 5000:5000 titus/toptopic /bin/bash
 
 ![图片](/assets/images/docker-alauda-2.png)
 
-构建好仓库之后，点击「创建服务」。相当于 docker run。
+构建好仓库之后，点击「创建服务」。
 
 ![图片](/assets/images/docker-alauda-3.png)
 
-进行服务的设置，高级设置中服务地址类型选为 tcp-endpoint即可(外部用户可以直接通过TCP方式访问这个服务地址，服务地址的端口是随机分配的，一般会大于10000小于65535)
+进行服务的设置，高级设置中服务地址类型选为 tcp-endpoint 即可(外部用户可以直接通过 TCP 方式访问这个服务地址，服务地址的端口是随机分配的，一般会大于 10000 小于 65535)
 
-最后点击「创建服务」即完成部署。服务如下所示：
+最后点击最下方的「创建服务」完成部署。新建的服务如下所示：
 
 ![图片](/assets/images/docker-alauda-4.png)
 
