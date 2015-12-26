@@ -243,6 +243,30 @@ sudo docker run -t -i -p 2223:2223 -p 5000:5000 titus/toptopic /bin/bash
 
 -----------------------------------
 
+## 在云平台上部署
+
+在「灵雀云」上部署一个 Docker 应用需要两步：构建——创建服务。
+
+![图片](/assets/images/docker-alauda-1.png)
+
+点击「构建」——「创建镜像构建仓库」，然后选择 Github 仓库源。需要把预先写好的 Dockerfile 放在 Github中。
+
+![图片](/assets/images/docker-alauda-2.png)
+
+构建好仓库之后，点击「创建服务」。相当于 docker run。
+
+![图片](/assets/images/docker-alauda-3.png)
+
+进行服务的设置，高级设置中服务地址类型选为 tcp-endpoint即可(外部用户可以直接通过TCP方式访问这个服务地址，服务地址的端口是随机分配的，一般会大于10000小于65535)
+
+最后点击「创建服务」即完成部署。服务如下所示：
+
+![图片](/assets/images/docker-alauda-4.png)
+
+在浏览器中输入[http://toptopic-huangtuzhi.myalauda.cn:19991/](http://toptopic-huangtuzhi.myalauda.cn:19991/) 即可访问网站。
+
+------------------------------------
+
 ## 参考
 
 [https://github.com/Huangtuzhi/DockerTutorial](https://github.com/Huangtuzhi/DockerTutorial)
