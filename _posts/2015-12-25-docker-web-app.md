@@ -127,15 +127,15 @@ mysql> SHOW VARIABLES LIKE 'character_set_%';
 
 若字符集如上所示，则说明已经修改成功。
 
-#### MySQL的坑
+### MySQL的坑
 
 在上面的 Dockerfile 中看到分别给 'root'@'127.0.0.1' 和 'root'@'localhost' 都加了权限， 'root'@'localhost' 的权限在 SQL 语句最后才加上。这是因为
 
-+ 用 `'root'@'localhost'` 没权限建数据库和表，报错 
++ 使用 `'root'@'localhost'` 没权限建数据库和表，报错 
 
 > Access denied for user 'root'@'localhost' (using password: No)
 
-+ 用 `'root'@'127.0.0.1'` 进入 Docker 后没权限连接 Mysql，报错 
++ 使用 `'root'@'127.0.0.1'` 进入 Docker 后没权限连接 Mysql，报错 
 
 > Access denied for user 'root'@'localhost' (using password: YES)
 
@@ -147,14 +147,12 @@ mysql> SHOW VARIABLES LIKE 'character_set_%';
 
 Nginx 在这里作为静态页面的服务器，安装只需要用 apt 管理器安装即可。
 
-Nginx 需要配置 root 目录来提供服务，把本地的 global.conf 和 nginx.conf 文件覆盖到 Docker 中。
+Nginx 需要配置 root 目录来指定网站的文件位置，把本地的 global.conf 和 nginx.conf 文件覆盖到 Docker 中。
 
 ```
 COPY nginx/global.conf /etc/nginx/conf.d/
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 ```
-
-在 Docker 中，我们将网站文件放到新建的 `/home/toptopic/web/www` 目录。
 
 在 global.conf 中我们指明服务器根目录为 `/usr/share/nginx/html/www`
 
@@ -168,7 +166,7 @@ server {
         }
 ```
 
-这里建立一个软链接将它们关联起来，便于修改和维护。
+在 Docker 中，我们将网站文件放到新建的 `/home/toptopic/web/www`目录。这里建立一个软链接将它们关联起来，便于修改和维护。
 
 ```
 RUN ln -s /home/toptopic/web/www /usr/share/nginx/html
@@ -203,7 +201,7 @@ CREATED           STATUS               PORTS         NAMES
 app.run(host='0.0.0.0', port=5000, debug=True, threaded=True)
 ```
 
-host 必须设置为 0.0.0.0，表示监听所有的 IP 地址。如果使用 127.0.0.1，在容器外将无法访问服务。同时，这里的端口 5000 和 Dockerfile 中开放的另一个端口一致。
+host 必须设置为 0.0.0.0，表示监听所有的 IP 地址。如果 host 使用 127.0.0.1，在容器外将无法访问服务。同时，这里的端口 5000 和 Dockerfile 中开放的另一个端口一致。
 
 --------------------------
 
