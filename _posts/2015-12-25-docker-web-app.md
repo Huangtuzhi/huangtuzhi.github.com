@@ -98,7 +98,7 @@ CMD ["/home/toptopic/init.sh"]
 
 ## MySQL 安装和配置
 
-MySQL 服务器只需要用包管理器安装 mysql-server-5.6，因为后台使用 Python 作为服务器语言，还需要安装 MySQL 对 Python 语言的支持。需要使用 apt 安装 python ，libmysqlclient-dev 和 python-dev(必须装，不然会报找不到 Python.h 的错误) 两个包，然后使用 pip 管理器安装 MySQL-python。
+MySQL 服务器只需要用包管理器安装 mysql-server-5.6，因为后台使用 Python 作为服务器语言，还需要安装 MySQL 对 Python 语言的支持。需要使用 apt 安装 python ，libmysqlclient-dev 和 python-dev，然后使用 pip 管理器安装 MySQL-python。
 
 MySQL 的默认字符集为 latin1，而网页显示一般是 utf8 字符集，需要将 MySQL 的配置文件的字符集置为 utf8。
 
@@ -137,7 +137,7 @@ mysql> SHOW VARIABLES LIKE 'character_set_%';
 
 > Access denied for user 'root'@'localhost' (using password: YES)
 
-于是就只能用 `'root'@'127.0.0.1'` 来建数据库和表，然后再用 `'root'@'localhost'` 来连接数据库。这里原因复杂，暂时用这种方法绕过。
+于是就只能用 `'root'@'127.0.0.1'` 来建数据库和表，然后再用 `'root'@'localhost'` 来连接数据库。
 
 ------------------------
 
@@ -208,7 +208,7 @@ app.run(host='0.0.0.0', port=5000, debug=True, threaded=True)，
 
 ## 启动脚本
 
-在 Dockerfile 中的 CMD 中可以指定 Docker 运行时执行一些命令。相当与于开机运行。
+在 Dockerfile 中的 CMD 中可以指定 Docker 运行时执行一些命令。相当于开机时运行。
 
 ```
 /etc/init.d/mysql start
