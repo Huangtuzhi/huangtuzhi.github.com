@@ -32,7 +32,7 @@ github: [titus](https://github.com/huangtuzhi)
 
 wechat: timeisnull
 
-![wechat](/assets/images/qrcode_for_mp)
+![wechat](/assets/images/qrcode_for_mp.jpg)
 
 
 ----
