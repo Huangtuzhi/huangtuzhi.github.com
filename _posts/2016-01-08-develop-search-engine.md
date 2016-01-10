@@ -132,6 +132,7 @@ def retrive_word(self, word):
 * Okapi BM25
 
 看一下 TF-IDF 的计算
+
 ```
 def caculate_TFIDF(self, word):
     score_dictionary = {}
@@ -144,7 +145,8 @@ def caculate_TFIDF(self, word):
         tfidf_score = tf * idf
         score_dictionary[DocID] = tfidf_score
             
-    score = sorted(score_dictionary.iteritems(), key=lambda d:d[1], reverse = True)
+    score = sorted(score_dictionary.iteritems(), key=lambda d:d[1], \
+    reverse = True)
     print score
 ```
 
