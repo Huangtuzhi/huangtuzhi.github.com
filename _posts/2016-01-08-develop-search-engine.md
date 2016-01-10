@@ -26,7 +26,7 @@ tags:
 
 搜索引擎由下列 4 个组件构成。
 
-![图片](/assets/images/dsearch-engine-1.png)
+![图片](/assets/images/search-engine-1.png)
 
 * 文档管理器(Document Manager)
 * 索引构建器(Indexer)
