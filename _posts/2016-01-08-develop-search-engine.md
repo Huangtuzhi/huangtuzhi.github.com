@@ -66,7 +66,8 @@ MongoDB 中有这些字段。
 posting = {
     "DocID": 22223,
     "url": "https://en.wikipedia.org/wiki/Trout",
-    "content": "Trout is the common name for a number of species of freshwater fish",
+    "content": "Trout is the common name for a number
+     of species of freshwater fish",
     "keyword": "Trout"
 }
 ```
@@ -107,6 +108,7 @@ content 存储网页的文字内容。DocID 自增，用来唯一标记文档，
 则包含两个词的文档为 300，可以将这个文档返回给用户。
 
 这是在索引中检索一个词元的实现，它返回包含这个词元的 DocID 列表。
+
 ```
 def retrive_word(self, word):
     # 找出 DocID 对应的 url
