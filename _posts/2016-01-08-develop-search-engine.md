@@ -155,6 +155,25 @@ idf 是文档总数和该词元出现过文档总数的商。TF-IDF 作为衡量
 将算得的 TF-IDF 分数存储在字典中，最后按值进行排序。
 
 ----------------------------------
+
+## 文档排名——计算 Okapi BM25
+
+TF-IDF 指标得到的是单个查询词的得分，若查询为一句话，可以使用 Okapi BM25 作为评分标准。
+
+BM25 计算公式如下
+
+![图片](/assets/images/search-engine-２.png)
+
+ｃ(w,q) 代表在 Query 中出现某个词元的计数。一般当作　１　处理。
+
+ｃ(w,d) 代表在一个　Document　中出现某个词元的计数。
+
+k(1-b+b|d|/avdl) 是对文档长度进行归一化的处理。
+
+当查询词为　`popular literature`，它会分别计算文档中　`popular`　和　`literature`　的得分，然后求和，作为这个文档对于查询词的相关性得分。
+
+-----------------------------------
+
 ## 参考
 
 [https://www.coursera.org/course/textretrieval](https://www.coursera.org/course/textretrieval)
