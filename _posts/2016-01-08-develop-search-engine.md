@@ -15,10 +15,10 @@ tags:
 * 爬虫模块 Crawler 在网页上抓取感兴趣的网页数据存储为 Cached pages
 * 索引构造器 Indexer 对 Cached pages 处理生成倒排索引(Inverted Index)
 * 对查询词 Query 在倒排索引中查找对应的文档 Document
-* 计算 Query 和 Document 的关联度，返回给用户 TopN 个结果
+* 计算 Query 和 Document 的关联度，返回给用户 TopK 个结果
 * 根据用户点击 TopK 的行为去修正用户查询的 Query，形成反馈闭环。
 
-整个项目存放在 [Github](https://github.com/Huangtuzhi/just-search-engine)。
+整个项目存放在 [https://github.com/Huangtuzhi/just-search-engine](https://github.com/Huangtuzhi/just-search-engine)。
 
 ----------------------------------------
 
