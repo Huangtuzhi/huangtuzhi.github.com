@@ -12,7 +12,7 @@ comments: no
 
 偶尔听民谣，会一点吉他。弹「平凡之路」，「安河桥」都能把自己感动。
 
-> 你是青岛春天的海 | 你是南京路边的梧桐 | 你是苏州水滩上的姑娘 | 你是武汉长江上的船
+> 你是青岛春天的海  你是南京路边的梧桐  你是苏州水滩上的姑娘  你是武汉长江上的船
 
 喜欢古典文学，学生时代最常读「红楼梦」，曾手抄过脂本批注和「诗经」，现在读的多是非虚构的心理和社会学，开始关注文本逻辑和思考。
 
@@ -30,6 +30,7 @@ comments: no
 * HTTP 服务器　{[Tinyhttpd](https://github.com/Huangtuzhi/Tinyhttpd)}
 * PCNN 量化器 {[PCNNQuantizer](https://github.com/Huangtuzhi/PCNNQuantizer)}
 
+-----------------------------
 
 » 联系方式
 
@@ -41,6 +42,4 @@ wechat: timeisnull
 
 ![wechat](/assets/images/qrcode_for_mp.jpg)
 
-
-----
 
