@@ -12,7 +12,7 @@ tags:
 
 Dockerfile 和依赖文件托管在 [docker-toptopic](https://github.com/Huangtuzhi/docker-toptopic)，云服务商选择「[灵雀云](https://hub.alauda.cn/repos/huangtuzhi/docker-toptopic)」提供容器服务。
 
-在「灵雀云」服务提供的域名 [http://toptopic-huangtuzhi.myalauda.cn:19991/](http://toptopic-huangtuzhi.myalauda.cn:19991/) 可以看到本网站。
+在「灵雀云」服务提供的域名 [http://toptopic-huangtuzhi.myalauda.cn:19991/](http://toptopic-huangtuzhi.myalauda.cn:19991/) 可以看到本网站（如果显示不正常，是因为没余额了。可以在本地进行搭建测试）。
 
 ---------------------------
 
