@@ -25,7 +25,8 @@ comments: no
 » 开源项目
 
 * WebApp: 换个 timeline 看知乎　{[top-topic-Zhihu](https://github.com/Huangtuzhi/top-topic-Zhihu)}
-* 一个简单搜索引擎　{[just-search-engine](https://github.com/Huangtuzhi/just-search-engine)}
+* 一个简单的搜索引擎　{[just-search-engine](https://github.com/Huangtuzhi/just-search-engine)}
+* 红楼梦作者鉴别 {[reality-of-Dream-of-Red-Mansions](https://github.com/Huangtuzhi/reality-of-Dream-of-Red-Mansions)}
 * 商品推荐算法框架　{[AlibabaRecommand](https://github.com/Huangtuzhi/AlibabaRecommand)}
 * HTTP 服务器　{[Tinyhttpd](https://github.com/Huangtuzhi/Tinyhttpd)}
 * PCNN 量化器 {[PCNNQuantizer](https://github.com/Huangtuzhi/PCNNQuantizer)}
