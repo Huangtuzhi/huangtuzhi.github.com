@@ -136,6 +136,8 @@ SVM 相关原理参见 NG 的公开课 [Machine Learning](https://www.coursera.o
 
 1~80 回有一些被分成了 2 类，可能是后 40 回作者在续写过程中对部分章节进行了修改。
 
+---------------------------------------
+
 ## 参考
 
 [http://scikit-learn.org/stable/modules/svm.html#svm](http://scikit-learn.org/stable/modules/svm.html#svm)
