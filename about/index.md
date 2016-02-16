@@ -8,7 +8,7 @@ comments: no
 
 长于长江之上「梨花岛」，总喜欢一个江湖的传说，如果你偶然记起关于「桃花岛」黄药师的传说，记得划船来找我。
 
-平时写[技术博客](http://fuzhii.com)，也用心记录生活和飘渺的[灵感](http://blog.fuzhii.com)。二零一五年十一月开始维护一个微信公众号（timeisnull），主要推送原创博文。 
+平时写[技术博客](http://fuzhii.com)，也用心记录生活和飘渺的灵感。二零一五年十一月开始维护一个微信公众号（timeisnull），主要推送原创博文。 
 
 偶尔听民谣，会一点吉他。弹「平凡之路」，「安河桥」都能把自己感动。
 
@@ -21,15 +21,6 @@ comments: no
 性格偏内向（the introvert advantage），外表冷淡，内心热血，还有不切实际的英雄梦，这些年差点迷失自己。
 
 喜欢做实事，开始找到自己的方向。希望以后的时间能跟随自己的内心，有能力实现自己所思所想，从容和亲人朋友分享所得所失，等到三十岁左右能真正做到「而立」。
-
-» 开源项目
-
-* WebApp: 换个 timeline 看知乎　{[top-topic-Zhihu](https://github.com/Huangtuzhi/top-topic-Zhihu)}
-* 一个简单的搜索引擎　{[just-search-engine](https://github.com/Huangtuzhi/just-search-engine)}
-* 红楼梦作者鉴别 {[reality-of-Dream-of-Red-Mansions](https://github.com/Huangtuzhi/reality-of-Dream-of-Red-Mansions)}
-* 商品推荐算法框架　{[AlibabaRecommand](https://github.com/Huangtuzhi/AlibabaRecommand)}
-* HTTP 服务器　{[Tinyhttpd](https://github.com/Huangtuzhi/Tinyhttpd)}
-* PCNN 量化器 {[PCNNQuantizer](https://github.com/Huangtuzhi/PCNNQuantizer)}
 
 -----------------------------
 
