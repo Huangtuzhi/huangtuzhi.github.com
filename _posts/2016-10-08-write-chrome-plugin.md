@@ -55,7 +55,7 @@ tags:
 
 ![image](/assets/images/chrome-plunge-1.jpg)
 
-完成这个需求只需要在 `background.js` 里监听页面中的剩余时间，当剩余时间小于 5 分钟时，提交按钮事件就可以达到目的了。但这个按钮一天只能点 6 次，超过之后必须输入验证码。这时就无能为力了。
+完成这个需求只需要打开一个 OA 网站的 tab 放在一边，在 `content.js` 里监听页面中的剩余时间，当剩余时间小于 N 分钟时，提交按钮事件就可以达到目的了。但这个按钮一天只能点 6 次，超过之后必须输入验证码。这时就无能为力了。
 
 -----------------
 
@@ -74,52 +74,38 @@ tags:
 ## 主要逻辑
 
 ``` javascript
-function success(text) {
-    var textpos = $("#time_left");
-    var startPos = text.indexOf("访问外网时间剩余");
-    var endPos = text.indexOf("分钟");
-    var timeStr = text.substring(startPos + 31, endPos + 2);
-
-    var hourStartPos = timeStr.indexOf("小时");
-    var miniteStartPos = timeStr.indexOf("分钟");
-    if (hourStartPos == -1 && parseInt(timeStr.substring(miniteStartPos - 2, miniteStartPos)) < 5) {
-        //请求下授权
-        accessInternet(text);
-    }
+function $(id) {
+    return document.querySelector(id);
 }
 
-function accessInternet(text) {
-     text.querySelector("#btnDevTempVisit").click();
-     var myDate = new Date();
-     console.log(myDate.toLocaleString() + ": A click been excuted");
-}
-
-function executeAjax() {
-    var request = new XMLHttpRequest();
-    request.withCredentials = true; 
-
-    request.onreadystatechange = function() {
-        if (request.readyState === 4) {
-            if (request.status === 200) {
-                return success(request.responseText)
-            } else {
-                return fail(request.status)
-            }
-        } else {
-        }
-    }
-
-    request.open('GET', 'http://xxxx/NetVisit');
-    request.send();
+function accessInternet() {
+    $("#btnDevTempVisit").click();
+    var myDate = new Date();
+    console.log(myDate.toLocaleString() + ": A click been excuted");
 }
 
 function getLeftTime() {
-  //定期获取 OA 网站内容
-  setInterval(executeAjax, 3600000);
+	window.location.reload();
+	var text = document.getElementsByClassName("blue_color")[1].innerHTML;
+    var hourStartPos = text.indexOf("小时");
+    var miniteStartPos = text.indexOf("分钟");
+    console.log(parseInt(text.substring(miniteStartPos - 2, miniteStartPos)));
+    if (hourStartPos == -1 && parseInt(text.substring(miniteStartPos - 2, 
+    miniteStartPos)) < 15) {
+        //请求下授权
+        accessInternet();
+        console.log(parseInt(text.substring(miniteStartPos - 2, miniteStartPos)));
+    }
 }
+
+function init() {
+	setInterval(getLeftTime ,600000);
+}
+
+init();
 ```
 
-主要逻辑在后台代码 `background.js` 中，使用 `setInterval` 定时功能固定时间去检测访问情况。
+主要逻辑在后台代码 `content.js` 中，使用 `setInterval` 定时功能固定时间去检测访问情况。
 
 比较奇怪的是单独直接打开 `popup.html`，它会调用 `popup.js`，里面也会执行 Ajax 请求 OA 网站，但会出现跨域错误。显然站点服务端是不支持跨域的。
 
