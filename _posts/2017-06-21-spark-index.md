@@ -13,7 +13,7 @@ tags:
 
 进行调优需要先大致了解 Spark 的基本运行原理：
 
-![image](/assets/images/spark-index-1.jpg)
+![image](/assets/images/spark-index-1.png)
 
 num_executors 是执行器的个数，executor_cores 是执行器中 CPU 的个数。经过实践，设置为下列参数比较合适。
 
