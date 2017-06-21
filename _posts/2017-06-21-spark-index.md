@@ -34,7 +34,7 @@ driver-memory：1G 左右
 
 1、对多次使用的 RDD 进行持久化
 
-`var rdd = sc.textFile("file:///d:/one_day_index.txt").cache()`
+var rdd = sc.textFile("file:///d:/one_day_index.txt").cache()
 
 cache() 方法使用非序列化的的方式将 RDD 中的数据全部持久化到内存中
 
@@ -73,23 +73,34 @@ import org.apache.commons.codec.binary.Base64
 Base64.decodeBase64(encode_uin)
 ```
 
+------------------------
+
 ## Option 的使用
 
 Option 可以包在返回值外面，相当于多了一个异常码。返回为 none 则异常，返回为 Some 则正常。一般和 flapMap 结合使用。
+
+------------------------
 
 ## SimpleModPartitioner 对结果进行分区
 
 对数据进行 reduce 的时候可以指定保存结果的分区数，可以节省一步的 Shuffle。
 
-`rdd_hash_index.reduceByKey(new SimpleModPartitioner(2000), (v1, v2) => reduceMergeWord(v1, v2))`
+```
+rdd_hash_index.reduceByKey(new SimpleModPartitioner(2000), (v1, v2) 
+=> reduceMergeWord(v1, v2))
+```
 
 注意 rdd_hash_index 的 KEY 必须是数字才可以正确地 HASH
+
+------------------------
 
 ## 任务重跑时删除文件夹
 
 1、设置为直接覆盖文件路径，spark.hadoop.validateOutputSpecs 这种可能会导致以前的文件删除不完全。
 
 2、通过 spark 自带的 hadoopconf 方式删除
+
+------------------------
 
 ## 参考
 
