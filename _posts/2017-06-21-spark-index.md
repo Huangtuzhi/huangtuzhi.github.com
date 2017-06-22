@@ -108,14 +108,14 @@ SparkSQL 是在 DataFrame 的接口基础上使用的。
 
 RDD 是分布式的 Java 对象的集合，DataFrame 是分布式的 Row 对象的集合。
 
-DataFrame  转化为 DataSet      df.as[ElementType]
+DataFrame 转化为 DataSet  `df.as[ElementType]`
 
-DataSet    转化为 DataFrame    ds.toDF()
+DataSet 转化为 DataFrame  `ds.toDF()`
 
+
+------------------------------
 
 ## 参考
-
-[https://spark.apache.org/docs/latest/sql-programming-guide.html](https://spark.apache.org/docs/latest/sql-programming-guide.html)
 
 [https://spark.apache.org/docs/latest/sql-programming-guide.html](https://spark.apache.org/docs/latest/sql-programming-guide.html)
 
