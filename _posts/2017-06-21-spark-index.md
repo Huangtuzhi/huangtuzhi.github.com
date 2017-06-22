@@ -114,7 +114,7 @@ DataSet 转化为 DataFrame  `ds.toDF()`
 
 简单的 SParkSQL 使用示例如下：
 
-```
+```Scala
 val spark = SparkSession
 	.builder()
 	.appName("Spark SQL basic example")
