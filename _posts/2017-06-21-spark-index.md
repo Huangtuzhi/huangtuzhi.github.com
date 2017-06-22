@@ -110,8 +110,27 @@ RDD 是分布式的 Java 对象的集合，DataFrame 是分布式的 Row 对象�
 
 DataFrame 转化为 DataSet  `df.as[ElementType]`
 
-DataSet 转化为 DataFrame  `ds.toDF()`
+DataSet 转化为 DataFrame  `ds.toDF()`
 
+简单的 SParkSQL 使用示例如下：
+
+```
+val spark = SparkSession
+	.builder()
+	.appName("Spark SQL basic example")
+	.config("spark.some.config.option", "some-value")
+	.getOrCreate()
+
+val df = spark.read.json("file:///d:/test_data/test.json")
+
+import spark.implicits._
+df.printSchema()
+ 
+// SparkSQL
+df.createOrReplaceTempView("people")
+val sqlDF = spark.sql("SELECT * FROM people")
+sqlDF.show()
+```
 
 ------------------------------
 
