@@ -132,6 +132,13 @@ val sqlDF = spark.sql("SELECT * FROM people")
 sqlDF.show()
 ```
 
+## 数组比较
+
+遇到一个奇怪的 bug，统计数据时发现某一天数据正常，重跑任务数据异常。像是随机化的结果，排查发现是 reduce 时，总是取第一个 object 的值。问题的原因是数组比较时总是 false。
+
+Scala 中的数组比较有点奇怪，Array(1, 2) == Array(1, 2) 的结果是 false。需要使用 sameElements 方法来进行比较。
+
+
 ------------------------------
 
 ## 参考
