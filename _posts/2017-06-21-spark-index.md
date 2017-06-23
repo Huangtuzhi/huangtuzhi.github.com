@@ -131,6 +131,7 @@ df.createOrReplaceTempView("people")
 val sqlDF = spark.sql("SELECT * FROM people")
 sqlDF.show()
 ```
+-----------------------------
 
 ## 数组比较
 
