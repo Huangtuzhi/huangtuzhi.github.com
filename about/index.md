@@ -12,7 +12,7 @@ comments: no
 
 » 最近
 
-<script type="text/javascript" src="http://www.douban.com/service/badge/timenull/?selection=latest&amp;picsize=small&amp;hideself=on&amp;show=collection&amp;n=10&amp;hidelogo=on&amp;cat=movie%7Cbook&amp;columns=5"></script>
+<script type="text/javascript" src="http://www.douban.com/service/badge/timenull/?selection=latest&amp;picsize=small&amp;hideself=on&amp;show=collection&amp;n=12&amp;hidelogo=on&amp;cat=movie%7Cbook&amp;columns=6"></script>
 
 -----------------------------
 
