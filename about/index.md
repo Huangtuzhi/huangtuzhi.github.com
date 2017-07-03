@@ -10,6 +10,10 @@ comments: no
 
 喜欢做实事，开始找到自己的方向。希望以后的时间能跟随自己的内心，有能力实现自己所思所想，从容和亲人朋友分享所得所失，等到三十岁左右能真正做到「而立」。
 
+» 最近
+
+<script type="text/javascript" src="http://www.douban.com/service/badge/timenull/?selection=latest&amp;picsize=small&amp;hideself=on&amp;show=collection&amp;n=10&amp;hidelogo=on&amp;cat=movie%7Cbook&amp;columns=5"></script>
+
 -----------------------------
 
 » 联系方式
