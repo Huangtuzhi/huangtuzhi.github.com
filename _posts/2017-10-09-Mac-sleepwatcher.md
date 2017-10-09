@@ -18,7 +18,7 @@ sleepwatcher 是一个能监听系统状态的工具，在进行授权后它会�
 
 `brew install sleepwatcher`
 
-设置软件自启动
+设置软件服务自启动
 
 `brew services start sleepwatcher`
 
@@ -27,8 +27,7 @@ sleepwatcher 是一个能监听系统状态的工具，在进行授权后它会�
 ```
 ps aux | grep sleepwatcher
 titus 29048 0.0 0.0 2469824 0:10.21 
-/usr/local/sbin/sleepwatcher -V -s ~/.sleep 
--w ~/.wakeup
+/usr/local/sbin/sleepwatcher -V -s ~/.sleep -w ~/.wakeup
 ```
 
 sleepwatcher 执行的是 ~/.sleep 和 ~/.wakeup 文件，前者是睡眠时执行，后者是唤醒时执行。
@@ -39,21 +38,22 @@ sleepwatcher 执行的是 ~/.sleep 和 ~/.wakeup 文件，前者是睡眠时执�
 
 在 home 目录下创建文件 .wakeup 并赋予权限 777
 
-```
+```shell
 touch ~/.wakeup
 chmod 777 ~/.wakeup
 ```
 
 脚本如下
 
-```
+```shell
 #!/bin/bash
 #.wakeup
 
 open /Users/titus/Library/PowerSyncKMLinkFull/PowerSyncKMLink.app
 echo "`date` -- Open SyncKMLink" >> /tmp/wakeup.log
 
-net=`system_profiler SPAirPortDataType | awk -F':' '/Current Network Information:/{
+net=`system_profiler SPAirPortDataType | awk -F':' '/Current 
+Network Information:/{
  getline
  sub(/^ */,"")
  sub(/:$/,"")
