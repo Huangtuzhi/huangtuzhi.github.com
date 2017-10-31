@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: page
 title: "使用 sleepwatcher 自启程序"
 description: ""
 category: 
