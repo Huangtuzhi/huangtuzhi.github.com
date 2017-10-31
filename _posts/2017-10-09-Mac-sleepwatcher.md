@@ -4,6 +4,7 @@ title: "使用 sleepwatcher 自启程序"
 description: ""
 category: 
 tags:
+comments: yes
 ---
 
 在 Mac 中可以设置开机自启应用程序，但无法在 Mac 屏幕锁定后唤醒时自启应用程序。Mac 睡眠后，Samba 远程服务器连接、SyncKM Link 多屏幕控制器等应用程序的连接会断掉。而唤醒后并不会重新自动连接，使用 sleepwater 可以完美解决这个问题。
