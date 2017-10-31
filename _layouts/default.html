@@ -20,32 +20,8 @@
     })();
     </script>
 </head>
-<script type="text/javascript">
-function setTimeSpan() {
-    var date = new Date();
-    timeSpan.innerText = date.format('yyyy-MM-dd hh:mm:ss');
-}
 
-Date.prototype.format = function(format) {
-    var o = {
-        "M+": this.getMonth() + 1, //month
-        "d+": this.getDate(), //day
-        "h+": this.getHours(), //hour
-        "m+": this.getMinutes(), //minute
-        "s+": this.getSeconds(), //second
-        "q+": Math.floor((this.getMonth() + 3) / 3), //quarter
-        "S": this.getMilliseconds() //millisecond
-    }
-    if (/(y+)/.test(format))
-        format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-    for (var k in o)
-        if (new RegExp("(" + k + ")").test(format))
-            format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
-    return format;
-}
-</script>
-
-<body onLoad="setInterval(setTimeSpan,1000);">
+<body>
     <div id="container">
         <div id="main" role="main">
             <header>
@@ -64,9 +40,11 @@ Date.prototype.format = function(format) {
             </article>
         </div>
         <footer>
-            <p><small>Powered by <a href="https://github.com/mojombo/jekyll">Jekyll</a> | Copyright 2014 - 2015 by Huangyi | <span class="label label-info" id="timeSpan"></span>| </small></p>
+            <p><small>Powered by <a href="https://github.com/mojombo/jekyll">Jekyll</a> | Copyright 2014 - 2017 by titus</small></p>
         </footer>
     </div>
     <script type="text/javascript">
     var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-    document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F384a5f7f9a07cb1be1fdafb76bace770' type='text/javascript'%3E%3C/script%3E")); < /body> < /html>
+    document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F384a5f7f9a07cb1be1fdafb76bace770' type='text/javascript'%3E%3C/script%3E")); 
+</body> 
+</html>
