@@ -92,11 +92,27 @@ g_object_creator_register_name_BusinessModuleA("BusinessModuleA",
 ObjectCreator_register_name_BusinessModuleA);
 ```
 
-这样改造以后，新增业务时只需要新建一个子类继承 BaseModule，在 GetData() 类中实现业务，在最后加上 REGISTER_MODULE 宏即可。
+这样改造以后，新增业务时只需要新建一个子类继承 BaseModule，在 GetData() 类中实现业务，在最后加上 REGISTER_MODULE 宏。
 
 -------------
 
 ## 动态配置
+
+在代码的 main 函数中可以看到依然要指定 GET_MODULE 中的类名
+
+```
+// 使用反射获取 ModuleA 实例
+BaseModule* business_a = GET_MODULE("BusinessModuleA");
+cout << business_a->GetData() << endl;
+
+// 使用反射获取 ModuleB 实例
+BaseModule* business_b = GET_MODULE("BusinessModuleB");
+cout << business_b->GetData() << endl;
+```
+
+怎样才能完全不修改系统框架呢？
+
+可以再加入一个配置类，配置类去读取服务器指定路径下的配置文件。这样可以在配置文件中动态修改类名了，新增一个业务，修改一下配置项即可。
 
 -------------
 
