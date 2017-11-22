@@ -13,7 +13,7 @@ comments: yes
 
 ## 基本操作
 
-```	
+```C++
 class BaseModule
 {
 public:
@@ -81,7 +81,7 @@ C++ 本身不支持反射，只能去模拟这种机制，即用类名去获取�
 
 宏展开后的结果，就是实现了 2 和 3 两部分。
 
-```
+```C++
 BaseModule* ObjectCreator_register_name_BusinessModuleA()
 { 
 	return new BusinessModuleA; 
@@ -100,7 +100,7 @@ ObjectCreator_register_name_BusinessModuleA);
 
 在代码的 main 函数中可以看到依然要指定 GET_MODULE 中的类名
 
-```
+```C++
 // 使用反射获取 ModuleA 实例
 BaseModule* business_a = GET_MODULE("BusinessModuleA");
 cout << business_a->GetData() << endl;
