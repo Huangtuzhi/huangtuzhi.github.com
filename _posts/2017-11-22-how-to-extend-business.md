@@ -67,6 +67,27 @@ int main
 
 因而需要引入反射机制来改善上面的缺点，整个 repo 位于 [how-to-extend-business](https://github.com/Huangtuzhi/code-gist/tree/master/Cpp/how-to-extend-business)。还是基本操作，都坐下。
 
+代码目录如下，所有的业务逻辑代码都放在 business_logic 目录下，entrance.cpp 和 base_module.cpp 分别是系统框架的 main 函数入口和基类，这部分在业务变更时是不能修改的。
+
+```
+.
+└──ROOT
+	├── entrance.cpp    # 相当于系统框架的 main 函数入口
+    ├── base_module.cpp # 相当于系统框架的基类
+    ├── base_module.h
+    ├── business_logic  # 扩展的业务逻辑目录
+    │   ├── business_a.cpp
+    │   ├── business_a.h
+    │   ├── business_b.cpp
+    │   └── business_b.h
+    ├── make.sh         # 编译脚本
+    └── reflection      # 反射宏
+        ├── class_register.h
+        ├── class_register_test.cc
+        ├── class_register_test_helper.cc
+        └── class_register_test_helper.h
+```
+
 C++ 本身不支持反射，只能去模拟这种机制，即用类名去获取类的实例。需要做到下面两方面：
 
 1、有一个单例类，其成员变量 map<string, Creator> m_creator_registry 存放（类名，创建对应类实例的函数指针）
@@ -75,7 +96,7 @@ C++ 本身不支持反射，只能去模拟这种机制，即用类名去获取�
 
 3、每一个独立业务的子类中，向 m_creator_registry 注册 
 
-如使用 gcc -E -C business_a.cpp > out.txt 查看
+这部分功能在 reflection 目录中由宏定义来实现，使用 gcc -E -C business_a.cpp > out.txt 查看
 
 REGISTER_MODULE(BusinessModuleA, "BusinessModuleA") 这一行
 
