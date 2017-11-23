@@ -96,7 +96,8 @@ C++ 本身不支持反射，只能去模拟这种机制，即用类名去获取�
 
 3、每一个独立业务的子类中，向 m_creator_registry 注册 
 
-这部分功能在 reflection 目录中由宏定义来实现，使用 gcc -E -C business_a.cpp > out.txt 查看
+这部分功能在 reflection 目录中由宏定义来实现，使用 
+gcc -E -C business_a.cpp > out.txt 查看
 
 REGISTER_MODULE(BusinessModuleA, "BusinessModuleA") 这一行
 
