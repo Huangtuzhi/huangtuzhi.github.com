@@ -71,8 +71,8 @@ int main
 
 ```
 .
-└──ROOT
-	├── entrance.cpp    # 相当于系统框架的 main 函数入口
+└──how-to-extend-business
+    ├── entrance.cpp    # 相当于系统框架的 main 函数入口
     ├── base_module.cpp # 相当于系统框架的基类
     ├── base_module.h
     ├── business_logic  # 扩展的业务逻辑目录
