@@ -113,7 +113,7 @@ g_object_creator_register_name_BusinessModuleA("BusinessModuleA",
 ObjectCreator_register_name_BusinessModuleA);
 ```
 
-这样改造以后，新增业务时只需要新建一个子类继承 BaseModule，在 GetData() 类中实现业务，在最后加上 REGISTER_MODULE 宏。
+这样改造以后，新增业务时只需要在 business_logic 目录下新建一个子类继承 BaseModule，在 GetData() 中实现业务，在最后加上 REGISTER_MODULE 宏。
 
 -------------
 
