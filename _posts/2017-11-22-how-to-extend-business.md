@@ -88,7 +88,7 @@ int main
         └── class_register_test_helper.h
 ```
 
-C++ 本身不支持反射，只能去模拟这种机制，即用类名去获取类的实例。需要做到下面两方面：
+C++ 本身不支持反射，只能去模拟这种机制，即用类名去获取类的实例。需要做到下面三方面：
 
 1、有一个单例类，其成员变量 map<string, Creator> m_creator_registry 存放（类名，创建对应类实例的函数指针）
 
