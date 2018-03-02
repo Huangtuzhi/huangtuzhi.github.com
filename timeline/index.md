@@ -11,4 +11,4 @@ comments: no
 » 2018-03-01
 
 > 扫一扫 :)
-![image](/assets/images/timeline-20180302.jpeg)
+<p align="left">![image](/assets/images/timeline-20180302.jpeg)</p>
