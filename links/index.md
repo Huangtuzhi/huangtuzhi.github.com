@@ -6,7 +6,6 @@ comments: no
 
 山色横侵遮不住 明月千里好读书
 
-## 同学少年
 
 樂天    [得了不能写代码的病](http://letiantian.me)
 
