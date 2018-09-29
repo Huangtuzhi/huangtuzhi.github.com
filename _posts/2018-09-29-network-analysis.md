@@ -22,11 +22,11 @@ host：指定要监听的包的来源 IP。131.87.110.XX 为对端的商户 IP�
 一个正常的握手过程如下：
 
 ```
-local_IP > remote_mch_IP: Flags [S], seq 3477165558, win 14600, options [mss 1460,
-           sackOK,TS val 2745901398 ecr 0,nop,wscale 7], length 0
+local_IP > remote_mch_IP: Flags [S], seq 3477165558, win 14600, options [mss 1460
+           ,sackOK,TS val 2745901398 ecr 0,nop,wscale 7], length 0
 remote_mch_IP > local_IP: Flags [S.], seq 4207730004, ack 3477165559, win 4344, 
-           options [mss 1448,nop,wscale 0,nop,nop,TS val 615225318 ecr 2745901398,
-           sackOK,eol], length 0
+           options [mss 1448,nop,wscale 0,nop,nop,TS val 615225318 ecr 
+           2745901398, sackOK,eol], length 0
 local_IP > remote_mch_IP: Flags [.], ack 1, win 115, length 0
 local_IP > remote_mch_IP: Flags [P.], seq 1:217, ack 1, win 115, length 216
 remote_mch_IP > local_IP: Flags [.], ack 217, win 4560, options 
