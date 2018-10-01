@@ -49,13 +49,15 @@ int AES_ECBEncrypt(const char * sSource, const int iSize,
 	memset(tmp + iSize, padding, padding);
 	poResult->reserve( iSize + padding);
 	unsigned char key[COMM_AES_BLOCK_SIZE] = {0};
-	memcpy(key, sKey, iKeySize > COMM_AES_BLOCK_SIZE ? COMM_AES_BLOCK_SIZE : iKeySize );
+	memcpy(key, sKey, iKeySize > COMM_AES_BLOCK_SIZE 
+	? COMM_AES_BLOCK_SIZE : iKeySize );
 
 	AES_KEY aesKey;
 	AES_set_encrypt_key(key, 8 * COMM_AES_BLOCK_SIZE, &aesKey);
 	unsigned char out[ COMM_AES_BLOCK_SIZE ] = { 0 };
 	for (int i = 0; i < iSize + padding; i += COMM_AES_BLOCK_SIZE) {
-		AES_ecb_encrypt((unsigned char*)tmp + i, out, &aesKey, AES_ENCRYPT);
+		AES_ecb_encrypt((unsigned char*)tmp + i, out, &aesKey,
+		AES_ENCRYPT);
 		poResult->append((char*)out, COMM_AES_BLOCK_SIZE);
 	}
 	free(tmp);
@@ -72,6 +74,8 @@ CBC 指密码分组链接模式 Cipher-block chaining。
 CBC 相比 ECB 会复杂一些，它将上一次加密得到的结果与本次的数据块异或之后再进行加密。这样还需要一个初始的异或数据，叫做初始化向量 IV。
 
 ![](/assets/images/encrpt-algorithm-2.png)
+
+使用 OpenSSL 库的 API 如下：
 
 ```
 static const int COMM_AES_BLOCK_SIZE = 16;
@@ -95,11 +99,13 @@ int AES_CBCEncrypt( const char * sSource, const int iSize,
 	unsigned char key[ COMM_AES_KEY_SIZE ] = { 0 };
 	unsigned char iv[ COMM_AES_IV_SIZE ] = { 0 };
 	memcpy(key, sKey, COMM_AES_KEY_SIZE);
-	memcpy(iv,"\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30", 16); // 这里按照约定设置 
+	memcpy(iv,"\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30\x30 /
+		\x30\x30\x30\x30\x30", 16); // 这里按照约定设置 
 
 	AES_KEY aesKey;
 	AES_set_encrypt_key( key, 8 * COMM_AES_BLOCK_SIZE, &aesKey );
-	AES_cbc_encrypt((unsigned char *)tmp, out, iSize + padding, &aesKey, iv, AES_ENCRYPT);
+	AES_cbc_encrypt((unsigned char *)tmp, out, iSize + padding, 
+		&aesKey, iv, AES_ENCRYPT);
 
 	poResult->append((char*)out, iSize + padding);
 	free( tmp );
