@@ -145,4 +145,3 @@ int AES_CBCEncrypt( const char * sSource, const int iSize,
 [AES 的工作模式](https://blog.poxiao.me/p/advanced-encryption-standard-and-block-cipher-mode/)
 
 [SJL05金融数据加密机程序员手册](https://wenku.baidu.com/view/5260ad7602768e9951e73876.html)
-
