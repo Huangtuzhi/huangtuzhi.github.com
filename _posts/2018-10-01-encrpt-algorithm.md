@@ -114,6 +114,8 @@ int AES_CBCEncrypt( const char * sSource, const int iSize,
 }
 ```
 
+Java 的示例代码见 [aes-encoder](https://github.com/Huangtuzhi/code-gist/tree/master/Java/aes-encoder)。
+
 -----
 
 ## 银行通用 MAC 加密算法
