@@ -18,4 +18,4 @@ github: [titus](https://github.com/huangtuzhi)
 
 wechat: timeisnull
 
-![wechat](/assets/images/timeisnull.jpg)
+![wechat](/assets/images/timeisnull.png)
