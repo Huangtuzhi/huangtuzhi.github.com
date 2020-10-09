@@ -1,7 +1,7 @@
 markdown: rdiscount
 permalink: /:year/:month/:day/:title/
 url: http://huangtuzhi.github.com
-author: tuzhi
+author: 
 highlighter: pygments
 safe: true
 paginate: 16
