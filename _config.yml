@@ -1,8 +1,86 @@
-markdown: rdiscount
-permalink: /:year/:month/:day/:title/
-url: http://huangtuzhi.github.com
-highlighter: pygments
-safe: true
-paginate: 16
-auto: true
-github: Huangtuzhi
+title: 编程和酒
+url: https://blog.biezhi.me
+baseurl: ''
+cdnurl: 'https://blog-biezhi-me-1251171175.cos.ap-shanghai.myqcloud.com'
+description: >
+  关于编程、人生、认知和我的思想。
+
+permalink: /:year/:month/:title.html
+
+image: /public/images/mountains.jpg
+color: '#dc322f'
+google_analytics: 
+baidu_analytics: 2209f3e596f3e0c61a293f49a2f65ba3
+disqus: blog-biezhi-me
+
+markdown: kramdown
+highlighter: rouge
+paginate: 12
+paginate_path: "/page/:num"
+
+# 作者信息
+author:
+  name: biezhi
+  email: biezhi.me@gmail.com
+  photo: /public/images/avatar.jpeg
+
+# 社交信息
+socials:
+  - title: Github
+    icon: github-logo
+    url: https://github.com/biezhi
+  - title: Twitter
+    icon: twitter
+    url: https://twitter.com/biezhii
+  - title: Youtube
+    icon: youtube
+    url: https://www.youtube.com/channel/UCmlhPmTdqYhRWwWZWSIBwGw
+  - title: 知乎主页
+    icon: zhihu
+    url: https://www.zhihu.com/people/biezhi
+
+# 友链
+links:
+  - title: seoui
+    url: http://blog.seoui.com/
+  - title: Data羊
+    url: http://www.datayang.com/
+  - title: HongQuan'Blog
+    url: https://www.devtool.top/
+  - title: 二三克
+    url: https://same.blog/
+  - title: vzardlloo
+    url: https://vzardlloo.github.io/
+  - title: Bakumon
+    url: https://bakumon.me/blog
+  - title: sunzhenyu
+    url: https://sunzhenyu.net/
+  - title: 代码和段子手
+    url: http://codefun007.xyz/
+  - title: hweining's garden
+    url: https://hweining.online/
+  - title: Bakumon
+    url: https://bakumon.me/blog/
+  - title: 练涛
+    url: https://blog.liantao.me/
+  - title: Printf520
+    url: https://printf520.com/
+
+# html 压缩
+compress_html:
+  clippings: all
+  comments: ["<!--", "-->"]
+  endings: all
+  startings: [html, head, body]
+
+# sass 解析
+sass:
+  sass_dir: public/css
+  style: compressed
+
+# 插件
+plugins:
+  - jekyll-paginate
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
