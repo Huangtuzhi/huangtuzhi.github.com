@@ -1,50 +1,82 @@
 ---
 layout: default
+comments: true
 ---
 
-<article class="post">
-  <h1 class="post-title">{{page.title}}</h1>
-  <div class="post-date">
-    <span><span class="icon icon-calendar"></span> 发表于 <time datetime="{{page.date | date_to_xmlschema}}">{{page.date |
-        date: '%Y年%m月%d日'}}</time> &middot;</span>
-    {% if page.categories.size != 0 %}
-    归类于 {% for cat in page.categories %}
-    <a href="{{ site.baseurl }}/categories.html#{{ cat }}" title="{{ cat }}">{{ cat }}</a>&nbsp;
-    &middot;
-    {% endfor %}
-    {% endif %}
-    阅读量 <span id="busuanzi_value_page_pv">加载中...</span>
-  </div>
-  <hr class="post-divide">
-  {{content}}
-</article>
+<section class="post">
+{{ content }}                          
+</section>
 
-{% if page.tags.size != 0 %}
+<div id="disqus_thread"></div>
+<script>
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://fuzhii.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<section class="meta">
+
+<br/>
+<br/>
+<span>
+	<a {% if page.previous %} href="{{ site.url }}{{ page.previous.url }}" class="pageNav"{% endif %} {% unless page.previous %} class="pageNavInvalid" {% endunless %} >Previous</a>
+	&nbsp;&nbsp;&nbsp;
+	<a {% if page.next %} href="{{ site.url }}{{ page.next.url }}" class="pageNav"{% endif %} {% unless page.next %} class="pageNavInvalid" {% endunless %} >Next</a>
+</span>
+<hr>
+<span class="author">
+  <a href="http://huangtuzhi.github.com">{{ site.author }}</a>
+</span>
+<span class="time">
+  /
+  <time datetime="{{ page.date | date:"%Y-%m-%d" }}">{{ page.date | date:"%Y-%m-%d" }}</time>
+</span>
+<br />
+<span class="license">
+  Published under <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">(CC) BY-NC-SA</a>
+</span>
+{% if page.categories %}
+<span class="categories">
+  in categories
+  {% for cat in page.categories %}
+  <a href="/categories/#{{ cat }}" title="{{ cat }}">{{ cat }}</a>&nbsp;
+  {% endfor %}
+</span>
+{% endif %}
+{% if page.tags %}
 <span class="tags">
-  <span class="icon icon-price-tags" style="color: #8c8b8b;font-size: .9rem;">&nbsp;</span>
+  tagged with 
   {% for tag in page.tags %}
-  <a href="{{ site.baseurl }}/tags.html#{{ tag }}" title="{{ tag }}">#{{ tag }}</a>&nbsp;
+  <a href="/tags/#{{ tag }}" title="{{ tag }}">{{ tag }}</a>&nbsp;
   {% endfor %}
 </span>
 {% endif %}
 
-<div style="margin-top: 1rem;padding-left: 0;">
-  <hr class="post-divide" />
-</div>
-<div class="post-pagination">
-  {% if page.previous %}
-  <a class="float-left" href="{{ BASE_PATH }}{{ page.previous.url }}" title="{{ page.previous.title }}">« {{
-    page.previous.title }}</a>
-  {% endif %}
+<!--
+<script type="text/javascript">
+$(function(){
+  $(document).keydown(function(e) {
+    var url = false;
+        if (e.which == 37 || e.which == 74) {  // Left arrow and J
+            {% if page.previous %}
+        url = '{{ site.url }}{{ page.previous.url }}';
+        {% endif %}
+        }
+        else if (e.which == 39 || e.which == 75) {  // Right arrow and K
+            {% if page.next %}
+        url = '{{ site.url }}{{ page.next.url }}';
+        {% endif %}
+        }
+        if (url) {
+            window.location = url;
+        }
+  });
+})
+</script>
+-->
+</section>
 
-  {% if page.next %}
-  <a class="float-right" href="{{ BASE_PATH }}{{ page.next.url }}" title="{{ page.next.title }}">{{ page.next.title }}
-    »</a>
-  {% endif %}
-</div>
-<div class="clearfix"></div>
-
-<!-- Add Disqus Comments -->
-{% if site.disqus %}
-{% include disqus.html %}
-{% endif %}
