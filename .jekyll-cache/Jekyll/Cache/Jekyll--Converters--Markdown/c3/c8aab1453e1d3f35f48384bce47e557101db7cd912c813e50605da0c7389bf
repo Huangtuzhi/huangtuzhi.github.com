@@ -1,0 +1,115 @@
+I"�<p>SNULL指Simple Network Utility for Loading Localities，是区域装载的简单网络工具，可以用来实现串口上网。</p>
+
+<p>SNULL的优点在于不和任何硬件相关，而只是操作从内核分配的一些内存。所以在任何操作系统上都能实现而不用在驱动里进行硬件配置
+，具有很好的移植性。易于理解，可以对照网卡DM9000驱动程序和LDD十七章学习。</p>
+
+<hr />
+
+<h2 id="net_device结构体">net_device结构体</h2>
+<p>net_devic结构体描述了网络设备数据和操作。部分定义如下：</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="k">struct</span> <span class="n">net_device</span> <span class="p">{</span>
+ <span class="kt">char</span>            <span class="n">name</span><span class="p">[</span><span class="nf">IFNAMSIZ</span><span class="p">];</span>    <span class="c1">//网络设备的具体名字</span>
+ <span class="k">struct</span> <span class="n">net_device_stats</span><span class="o">*</span> <span class="p">(</span><span class="o">*</span><span class="n">get_stats</span><span class="p">)(</span><span class="k">struct</span> <span class="n">net_device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+ <span class="k">struct</span> <span class="n">net_device_stats</span> <span class="n">stats</span><span class="p">;</span> 
+ <span class="c1">//网卡发送包的个数等等，ifconfig eth0看到的东西</span>
+ <span class="p">...</span>
+ <span class="kt">void</span>   <span class="o">*</span><span class="n">priv</span><span class="p">;</span> 
+ <span class="kt">int</span>   <span class="p">(</span><span class="o">*</span><span class="n">hard_start_xmit</span><span class="p">)</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sk_buff</span> <span class="o">*</span><span class="n">skb</span><span class="p">,</span>
+          <span class="k">struct</span> <span class="n">net_device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+ <span class="p">...</span>
+ <span class="kt">int</span>   <span class="p">(</span><span class="o">*</span><span class="n">open</span><span class="p">)(</span><span class="k">struct</span> <span class="n">net_device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+ <span class="kt">int</span>   <span class="p">(</span><span class="o">*</span><span class="n">stop</span><span class="p">)(</span><span class="k">struct</span> <span class="n">net_device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+ <span class="p">...</span>
+ <span class="p">}</span></code></pre></figure>
+
+<p>其中的open、stop就对结构体成员进行操作。priv是一个私有的数据指针，具有举足轻重的作用。它的获取是使用函数</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>net_device *dev;
+dev-&gt;priv = netdev_priv(dev)
+</code></pre></div></div>
+
+<p>获取。或者类似DM9000写为：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>static struct ednet_priv *GetPrivate(struct net_device *dev)
+{
+return netdev_priv(dev);
+}
+</code></pre></div></div>
+
+<p>其中ednet_priv是自己定义的来封装所需私有数据的结构体:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>struct ednet_priv {
+   struct net_device_stats stats;
+   struct sk_buff *skb;
+   spinlock_t lock;
+};
+</code></pre></div></div>
+
+<p>相当于强制类型转换返回ednet_priv类型的指针（因为priv指针是void*类型，等着用户重定义），它指向net_device的私有数据priv区。</p>
+
+<p>不能直使用dev.priv。具体原因，LDD上说法是:</p>
+
+<blockquote>
+  <p>priv成员的作用和字符驱动程序中的private_data指针作用类似。priv指针是于net_device结构一起分配的，出于性能和灵活性方面的考虑，不鼓励直接访问priv成员。</p>
+</blockquote>
+
+<p>查看netdev_priv源代码：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>static inline void *netdev_priv(const struct net_device *dev)  
+{  
+return (char *)dev + ALIGN(sizeof(struct net_device), NETDEV_ALIGN);  
+}  
+</code></pre></div></div>
+
+<p>priv虽然是net_device的成员，但内存分配的时候其实是紧挨着net_device结构体的，因而上面这个函数返回net_device的末地址并且要满足字节对齐，也就是priv的首地址。</p>
+
+<hr />
+
+<h2 id="snull">SNULL</h2>
+<p>SNULL参见LDD书及其源代码[7]。NULL驱动编译后ftp传送到MINI2440上，加载后<code class="language-plaintext highlighter-rouge">ifconfig</code>结果如下：</p>
+
+<p><img src="/assets/images/SNULL.png" alt="图片" /></p>
+
+<p>sn0和sn1是两个虚拟网络设备，它们获得了局域网IP地址和其他配置信息。</p>
+
+<hr />
+
+<h2 id="netrouter">NetRouter</h2>
+<p>把SNULL（相当于一个没有硬件实现的虚拟网卡）中再加入两个字符设备（相当于buffer），用来存储网卡的收发数据，实现串口上网的功能。至于为什么要加入字符设备来作buffer而不是直接在SNULL中读写串口数据，这是因为在驱动层无法类似调用<code class="language-plaintext highlighter-rouge">read(fd,buffer,len)</code>，只能想一个中转数据的方法。把数据在应用层再用一个应用程序<code class="language-plaintext highlighter-rouge">fd=open("/dev/ttySAC1",O_REWR | O_NOCTTY</code>读写到串口驱动里。</p>
+
+<p>加载驱动ed0如下：</p>
+
+<p><img src="/assets/images/SNULL1.png" alt="图片" /></p>
+
+<hr />
+
+<p>当上层应用需要传输数据包时，内核会自动执行下面的流程调用来从串口发出数据。画图采用可以在线协作的ProcessOn。</p>
+
+<p><img src="/assets/images/SNULL2.png" alt="图片" /></p>
+
+<p>.ndo_start_xmit定义在net_device_ops操作函数集合结构体中，绑定到内核。</p>
+
+<p>ed[ED_TX_DEVICE]是定义的作为接受缓冲区的字符设备，kernel_write相当于它的一个方法。</p>
+
+<p>memcpy把驱动读到的来自上层的数据拷贝到字符设备私有buffer中。</p>
+
+<p>TBD</p>
+
+<hr />
+
+<h2 id="reference">Reference</h2>
+<p>[1].http://my.oschina.net/lvyi/blog/325785</p>
+
+<p>[2].http://blog.sina.com.cn/s/blog_478ef86301007vq7.html</p>
+
+<p>[3].LDD.Page491~509</p>
+
+<p>[4].http://blog.csdn.net/npy_lp/article/details/7090541</p>
+
+<p>[5].http://blog.csdn.net/fareast8612/article/details/7480246</p>
+
+<p>[6].http://www.ibm.com/developerworks/cn/linux/l-serialnet/</p>
+
+<p>[7].https://github.com/yql612679/linux-drive</p>
+:ET

@@ -1,0 +1,143 @@
+I"@<p>今天发现拉勾网有硬件职位需求的列表了，上次看的时候都全是互联网职位。于是申请了一个账号。主要看看对应的职位需要哪些能力。</p>
+
+<p><img src="/assets/images/Job1.png" alt="图片" /></p>
+
+<p>现在我倾向于<code class="language-plaintext highlighter-rouge">嵌入式软硬件开发</code>，<code class="language-plaintext highlighter-rouge">后端开发</code>。</p>
+
+<p>嵌入式软硬件开发：嵌入式/ARM开发+linux内核,这一块优势是熟悉ARM芯片（Cortex-M3系列，S3C2440系列）和linux内核机制。</p>
+
+<p>后端开发：现在熟悉C/C++，python。可能会用在后台写业务逻辑。算法有待加强。</p>
+
+<hr />
+
+<h2 id="硬件职位">硬件职位</h2>
+
+<p>先在硬件岗位下搜索:</p>
+
+<p><strong>职位1：康源互动</strong></p>
+
+<p>职位要求：</p>
+
+<ol>
+  <li>熟练编写和调试C语言程序；</li>
+  <li>具备<em>RTOS</em>（FreeRTOS、uC/OS或VxWorks等）开发经验；</li>
+  <li>熟悉<em>图像/信号处理算法</em>的实现并具备相关经验者优先；</li>
+  <li>有单片机Cortex-Mx开发经验者优先；</li>
+  <li>有<em>医电产品</em>开发经验者优先；</li>
+  <li>良好的沟通能力和工作态度，独立并积极主动，责任感强；</li>
+  <li>强烈的质量意识</li>
+</ol>
+
+<p>公司网站http://www.720health.com/，这个和自己做过的东西比较切合。目前<em>物联网</em>+<em>医疗设备</em>+云管理是硬件产业的热点。</p>
+
+<hr />
+
+<p><strong>职位2：VINCI</strong></p>
+
+<p>职位要求</p>
+
+<ol>
+  <li>系统构架设计，开发及优化</li>
+  <li>方案选型，原理图，线路图，PCB步线设计，系统调试与分析，熟悉数电、模电。</li>
+  <li>熟悉智能手机或者其他智能可穿戴设备的系统设计</li>
+</ol>
+
+<p>这种是招聘系统架构师的，一般不是从业数年的人很难掌握这些技能，不可能有这些经验。</p>
+
+<p>网站还有招聘 声学工程师</p>
+
+<ol>
+  <li>熟悉嵌入式开发，音频算法设计</li>
+  <li>编写DSP驱动，应用程序，代码设计，调试和优化</li>
+  <li>熟悉智能设备上主流音频芯片方案，设计与适配</li>
+</ol>
+
+<p>Android系统工程师</p>
+
+<ol>
+  <li>Android系统工程师，有过智能设备开发的经验</li>
+  <li>有过开发 Android/Linux kernel和设备驱动开发，适配的经验
+功耗，性能以及系统测试 - 触摸屏, 显示器, 音频, 音控，WI-FI蓝牙，3G/4G以及输入／输出</li>
+</ol>
+
+<p>Android底层开发和linux设备驱动程序开发有很大的重合。</p>
+
+<hr />
+
+<p><strong>职位3:索瓦</strong></p>
+
+<ol>
+  <li>电子工程等相关专业本科及以上学历，3年以上独立硬件开发经验；</li>
+  <li>熟悉ARM Cortex-A8/ ARM cortex-M3/M4、BLE4.0、Sensor、Memory、LCD、USB、Power management等电路设计；</li>
+  <li>熟用ORCAD、PowerPCB/PowerLogic等电路设计工具, 熟用各种测试设备，如示波器，逻辑分析仪；</li>
+  <li>有良好的沟通能力和团队精神,良好的技术开发学习和攻关能力, 良好的英语阅读及沟通能力，能够承受工作压力</li>
+</ol>
+
+<p>这家也是创业公司，业务是智能项链等智能硬件。</p>
+
+<hr />
+
+<p><strong>职位4:美团</strong></p>
+
+<p>硬件 BSP 软件工程师 ( Wi-Fi 方向)
+工作职责:
+开发 Bootloader 和 Firmware；
+为新的硬件设计、开发和测试设备驱动，并撰写文档；
+优化 Linux 内核和驱动；</p>
+
+<p>职位要求:</p>
+
+<ol>
+  <li>熟悉 IEEE 802.11 a/b/g/n 的规范、测试标准；</li>
+  <li>精通 C 语言，有扎实的编程功底，具备 Makefile 编码能力；</li>
+  <li>对从事底层驱动软件开发有浓厚的兴趣及技术钻研能力；</li>
+  <li>从事过一个产品的完整开发过程；</li>
+  <li>有 Linux 驱动（网口芯片 / Flash / WiFi / BT 等）开发经验；</li>
+  <li>熟悉 MIPS 系列的 CPU 的架构及原理；</li>
+  <li>有路由器开发经验，熟悉 OpenWRT 的优先；</li>
+</ol>
+
+<p>美团这种互联网公司招硬件职位倒挺意外，问刘魏威美团硬件产品主要是美团wifi[1]，对比Aruba无线AP。这个要求就很高了，要求偏底层和大型驱动设备的编写。</p>
+
+<hr />
+
+<p><strong>职位5：一猫汽车网</strong></p>
+
+<p>任职资格：</p>
+
+<ol>
+  <li>大学本科及以上学历，计算机、通信、电子、自动化及相关专业毕业；</li>
+  <li>有OPENWRT系统的开发、调试经验；</li>
+  <li>3年以上linux开发工作经验；熟悉linux内核,嵌入式驱动开发；</li>
+  <li>沟通能力强，较好的团队合作能力，能承受一定工作压力。</li>
+</ol>
+
+<p>岗位职责：</p>
+
+<ol>
+  <li>负责无线路由或是交换机产品开源OPENWRT系统开发,调试以及升级工作；</li>
+  <li>修改定制OPENWRT固件</li>
+  <li>熟悉编译OPENWRT开源系统及其上的软件开发，编写相应C源代码和SHELL编程；</li>
+  <li>熟悉lua, luci深度定制。</li>
+</ol>
+
+<p>这个职位主要是交换机产品（基于OPENWRT系统）开发，提到了新兴嵌入式脚本语言lua。</p>
+
+<hr />
+
+<h2 id="智能硬件">智能硬件</h2>
+<p>最近智能硬件的概念也很火，其实就是一些做好的硬件产品把数据分发给APP进行处理，同时APP兼具控制、分析、备份、存储等“云”功能。目前市场的这些产品同质化很严重，难以形成统一的标准和体系。众筹网站上多是这种可能带点新意的半成品。</p>
+
+<p>甚至连TX微信公众平台也开始在打开这个物联网数据的入口，允许服务公众号接入智能硬件[3][4].</p>
+
+<hr />
+<h2 id="reference">Reference</h2>
+
+<p>[1].http://tech.meituan.com/mt-wifi-locate-practice-part1.html</p>
+
+<p>[2].http://my.oschina.net/lvyi/blog/324311</p>
+
+<p>[3].http://www.36kr.com/p/213326.html</p>
+
+<p>[4].http://www.ihealthlabs.com.cn/index.html</p>
+:ET

@@ -1,0 +1,134 @@
+I"�<p>Nginx实际上只能处理静态资源请求，那么对于动态请求怎么做呢。这就需要用到Nginx的<code class="language-plaintext highlighter-rouge">upstream</code>模块对这些请求进行转发，即<strong>反向代理</strong>。这些接收转发的服务器可以是Apache、Tomcat、IIS等。示意图如下：</p>
+
+<p><img src="/assets/images/proxy-1.png" alt="" /></p>
+
+<p>现在对一个Python Flask的站点进行反向代理设置，站点的源码存放在<a href="https://github.com/Huangtuzhi/GoLink">Github</a>。在本机Min17中目录如下：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/
++- srv/
+  +- www/
+    +- GoLink/       &lt;-- Web App根目录
+      +- www/        
+      |  +- static/  &lt;-- 存放静态资源文件
+      |  +- index.py &lt;-- Python源码
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="部署方式">部署方式</h2>
+
+<p>由于flask是单进程处理请求的，不像Tornado的异步，同时访问的人数稍微过多，就会出现阻塞的情况，导致Nginx出现502的问题。而Gunicorn可以指定多个工作进程，这样就可以实现并发功能。</p>
+
+<p><img src="/assets/images/proxy-2.png" alt="" /></p>
+
+<p>Nginx可以作为服务进程直接启动，但Gunicorn还不行。可以使用Supervisor管理Gunicorn进行自启动。</p>
+
+<p>总结一下我们需要用到的服务有：</p>
+
+<p>Nginx：高性能Web服务器+负责反向代理；</p>
+
+<p>gunicorn：高性能WSGI服务器；</p>
+
+<p>gevent：把Python同步代码变成异步协程的库；</p>
+
+<p>Supervisor：监控服务进程的工具；</p>
+
+<p>在Linux服务器上可以直接安装上述服务：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo apt-get install nginx gunicorn python-gevent supervisor
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="配置nginx">配置Nginx</h2>
+<p>Nginx配置文件位于<code class="language-plaintext highlighter-rouge">/usr/local/nginx/conf/nginx.conf</code>，为了便于管理，新建一个<code class="language-plaintext highlighter-rouge">site</code>文件夹存放我们对配置的添加更改。在<code class="language-plaintext highlighter-rouge">site</code>中新建<code class="language-plaintext highlighter-rouge">app.conf</code>配置文件。</p>
+
+<p>在<code class="language-plaintext highlighter-rouge">nginx.conf</code>中添加</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http {
+    include       sites/*.conf;
+    # ...
+}
+</code></pre></div></div>
+
+<p>在<code class="language-plaintext highlighter-rouge">app.conf</code>中添加</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>server {
+    listen      80; # 监听80端口
+
+    root        /srv/www/GoLink/www; 
+    server_name localhost; # 配置域名
+
+    # 处理静态资源:
+    location ~ ^\/static\/.*$ {
+        root /srv/www/GoLink/www;
+    }
+
+    # 动态请求转发到8000端口(gunicorn):
+    location / {
+        proxy_pass       http://127.0.0.1:8000;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+</code></pre></div></div>
+
+<p>重新加载Nginx配置文件：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo .nginx -s reload
+</code></pre></div></div>
+
+<hr />
+
+<p>##配置Supervisor</p>
+
+<p>编写一个Supervisor的配置文件<code class="language-plaintext highlighter-rouge">golink.conf</code>，存放到<code class="language-plaintext highlighter-rouge">/etc/supervisor/conf.d/目录下</code>：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[program:golink]
+command     = /usr/bin/gunicorn --bind 127.0.0.1:8000 
+--workers 3 --worker-class gevent index:app
+directory   = /srv/www/GoLink/www
+user        = www-data
+startsecs   = 3
+
+redirect_stderr         = true
+stdout_logfile_maxbytes = 50MB
+stdout_logfile_backups  = 10
+</code></pre></div></div>
+<p>参数解释</p>
+
+<blockquote>
+  <p>–workers: The number of worker processes for handling requests. A positive integer generally in the 2-4 x $(NUM_CORES) range.</p>
+</blockquote>
+
+<blockquote>
+  <p>–worker-class: The type of workers to use.</p>
+</blockquote>
+
+<p>启动后台服务</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo supervisorctl reload
+$ sudo supervisorctl start golink
+$ sudo supervisorctl status
+golink    RUNNING    pid 13636, uptime 0:00:27
+</code></pre></div></div>
+
+<p>这时在浏览器中输入 <code class="language-plaintext highlighter-rouge">http://127.0.0.1：80</code>即可访问网站。</p>
+
+<p>还有，又一年过去了。纪念。</p>
+
+<blockquote>
+  <p>毕竟西湖六月中，风光不与四时同。</p>
+</blockquote>
+
+<hr />
+
+<h2 id="参考">参考</h2>
+
+<p><a href="http://rfyiamcool.blog.51cto.com/1030776/1276364">http://rfyiamcool.blog.51cto.com/1030776/1276364</a></p>
+
+<p><a href="http://spacewander.github.io/explore-flask-zh/14-deployment.html">http://spacewander.github.io/explore-flask-zh/14-deployment.html</a></p>
+
+<p><a href="http://docs.gunicorn.org/en/latest/settings.html#settings">http://docs.gunicorn.org/en/latest/settings.html#settings</a></p>
+:ET

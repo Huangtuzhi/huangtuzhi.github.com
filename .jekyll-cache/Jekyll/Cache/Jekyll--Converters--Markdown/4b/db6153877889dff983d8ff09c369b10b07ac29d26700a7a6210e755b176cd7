@@ -1,0 +1,156 @@
+I"�7<p>在linux系统中，单处理器也是多线程处理信号、事件等。这就需要一个核心算法来进行进程调度。这个算法就是CFS（Completely Fair Scheduler）。在 <strong>LInux Kernel Development</strong> 一书中用一句话总结CFS进程调度：</p>
+
+<blockquote>
+  <p>运行rbtree树中最左边叶子节点所代表的那个进程。</p>
+</blockquote>
+
+<p>在一个自平衡二叉搜索树红黑树rbtree的树节点中，存储了下一个应该运行进程的数据。在这里我们看到了二叉搜索树的完美运用。具体可参见<strong>Introduction to Algorithms</strong> Page 174~182。</p>
+
+<p>而进程调度的主要入口函数就是schedule()。它定义在文件kernel/sched.c中。</p>
+
+<p>我们先看一个在等待队列中进行进程调度的例子：</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc">    <span class="n">DEFINE_WAIT</span><span class="p">(</span><span class="n">wait</span><span class="p">);</span> <span class="c1">//申明等待队列</span>
+
+    <span class="n">add_wait_queue</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="o">&amp;</span><span class="n">wait</span><span class="p">);</span> <span class="c1">//把我们用的q队列加入到wait等待队列中</span>
+    <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">condition</span><span class="p">){</span> <span class="c1">//当等待事件没有来临时</span>
+         <span class="n">prepare_to_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">q</span><span class="p">,</span><span class="o">&amp;</span><span class="n">wait</span><span class="p">,</span><span class="n">TASK_INTERRUPTIBLE</span><span class="p">);</span>
+         <span class="c1">//将q从TASK_RUNNING或者其他状态置为TASK_INTERRUPTIBLE不可运行的休眠状态。</span>
+         <span class="c1">//同时接受信号&amp;&amp;事件来唤醒它</span>
+         <span class="k">if</span><span class="p">(</span><span class="n">signal_pending</span><span class="p">(</span><span class="n">current</span><span class="p">))</span>  <span class="c1">//如果有来自从处理器的信号</span>
+         <span class="p">{</span> <span class="n">processingsignal</span><span class="p">();}</span><span class="c1">//处理信号</span>
+         <span class="n">schedule</span><span class="p">();</span> <span class="c1">//调用红黑树中的下一个进程</span>
+    <span class="p">}</span>
+    <span class="n">finish_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">q</span><span class="p">,</span><span class="o">&amp;</span><span class="n">wait</span><span class="p">);</span> <span class="c1">//将进程设置为TASK_RUNNING并移出等待队列.</span></code></pre></figure>
+
+<p>其实我们可以这么理解这段代码。现在有一个任务要等待事件到来才能运行，怎么实现呢？就是阻塞加查询。但是这样会使得这段代码独占整个操作系统。为了解决这个问题，就在阻塞查询之中加入了队列和进程调度schedule()，从而不耽误其它线程的执行。</p>
+
+<p>再来看一看schedule()函数的结构：</p>
+
+<hr />
+<h2 id="schedule函数结构">schedule()函数结构</h2>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"> 
+    <span class="n">asmlinkage</span> <span class="kt">void</span> <span class="n">__sched</span> <span class="nf">schedule</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>  <span class="c1">///定义通过堆栈传值</span>
+    <span class="p">{</span>
+    <span class="k">struct</span> <span class="n">task_struct</span> <span class="o">*</span><span class="n">prev</span><span class="p">,</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">*</span><span class="n">switch_count</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">rq</span> <span class="o">*</span><span class="n">rq</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">cpu</span><span class="p">;</span>
+
+    <span class="cm">/*At the end of this function, it will check if need_resched() return
+    true, if that indeed happen, then goto here.*/</span>
+    <span class="nl">need_resched:</span>
+
+    <span class="cm">/*current process won't be preempted after call preemept_disable()*/</span>
+    <span class="n">preempt_disable</span><span class="p">();</span> <span class="c1">//不让优先占有当前进程</span>
+    <span class="n">cpu</span> <span class="o">=</span> <span class="n">smp_processor_id</span><span class="p">();</span>
+    <span class="n">rq</span> <span class="o">=</span> <span class="n">cpu_rq</span><span class="p">(</span><span class="n">cpu</span><span class="p">);</span>
+    <span class="cm">/* rcu_sched_qs ? */</span>
+    <span class="n">rcu_sched_qs</span><span class="p">(</span><span class="n">cpu</span><span class="p">);</span>
+
+    <span class="cm">/* prev point to current task_struct */</span>
+    <span class="n">prev</span> <span class="o">=</span> <span class="n">rq</span><span class="o">-&gt;</span><span class="n">curr</span><span class="p">;</span>
+
+    <span class="cm">/* get current task_struct's context switch count */</span>
+    <span class="n">switch_count</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">prev</span><span class="o">-&gt;</span><span class="n">nivcsw</span><span class="p">;</span>
+
+    <span class="cm">/* kernel_flag is "the big kernel lock". 
+     * This spinlock is taken and released recursively by lock_kernel()
+     * and unlock_kernel(). It is transparently dropped and reacquired
+     * over schedule(). It is used to protect legacy code that hasn't
+     * been migrated to a proper locking design yet.
+     * In task_struct, there is a member lock_depth, which is inited -1,
+     * indicates that the current task have no kernel lock.
+     * When lock_depth &gt;=0 indicate that it own kernel lock.
+     * During context switching, it is not permitted that the task  
+     * switched away remain own kernel lock , so in scedule(),it
+     * call release_kernel_lock(), release kernel lock.
+     */</span>
+    <span class="n">release_kernel_lock</span><span class="p">(</span><span class="n">prev</span><span class="p">);</span>
+
+    <span class="nl">need_resched_nonpreemptible:</span>
+
+    <span class="n">schedule_debug</span><span class="p">(</span><span class="n">prev</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">sched_feat</span><span class="p">(</span><span class="n">HRTICK</span><span class="p">))</span>
+        <span class="n">hrtick_clear</span><span class="p">(</span><span class="n">rq</span><span class="p">);</span>
+
+    <span class="cm">/* occupy current rq's lock */</span>
+    <span class="n">raw_spin_lock_irq</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rq</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span> <span class="c1">//占有rq自旋锁</span>
+
+    <span class="cm">/* update rq's clock,this function will call sched_clock_cpu() */</span>
+    <span class="n">update_rq_clock</span><span class="p">(</span><span class="n">rq</span><span class="p">);</span>
+
+    <span class="cm">/* clear bit in task_struct's thread_struct's flag TIF_NEED_RESCHED.
+     * In case that it will be rescheduled, because it prepare to give
+     * up cpu.
+     */</span>
+    <span class="n">clear_tsk_need_resched</span><span class="p">(</span><span class="n">prev</span><span class="p">);</span>
+
+
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">prev</span><span class="o">-&gt;</span><span class="n">state</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="p">(</span><span class="n">preempt_count</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">PREEMPT_ACTIVE</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">signal_pending_state</span><span class="p">(</span><span class="n">prev</span><span class="o">-&gt;</span><span class="n">state</span><span class="p">,</span> <span class="n">prev</span><span class="p">)))</span>
+            <span class="n">prev</span><span class="o">-&gt;</span><span class="n">state</span> <span class="o">=</span> <span class="n">TASK_RUNNING</span><span class="p">;</span>
+        <span class="k">else</span>
+            <span class="n">deactivate_task</span><span class="p">(</span><span class="n">rq</span><span class="p">,</span> <span class="n">prev</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">switch_count</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">prev</span><span class="o">-&gt;</span><span class="n">nvcsw</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* For none-SMP, pre_schedule is NULL */</span>
+    <span class="n">pre_schedule</span><span class="p">(</span><span class="n">rq</span><span class="p">,</span> <span class="n">prev</span><span class="p">);</span>
+
+  
+    <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="o">!</span><span class="n">rq</span><span class="o">-&gt;</span><span class="n">nr_running</span><span class="p">))</span>
+        <span class="n">idle_balance</span><span class="p">(</span><span class="n">cpu</span><span class="p">,</span> <span class="n">rq</span><span class="p">);</span>
+
+    <span class="n">put_prev_task</span><span class="p">(</span><span class="n">rq</span><span class="p">,</span> <span class="n">prev</span><span class="p">);</span>
+
+
+    <span class="n">next</span> <span class="o">=</span> <span class="n">pick_next_task</span><span class="p">(</span><span class="n">rq</span><span class="p">);</span>
+
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">likely</span><span class="p">(</span><span class="n">prev</span> <span class="o">!=</span> <span class="n">next</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">sched_info_switch</span><span class="p">(</span><span class="n">prev</span><span class="p">,</span> <span class="n">next</span><span class="p">);</span>
+        <span class="n">perf_event_task_sched_out</span><span class="p">(</span><span class="n">prev</span><span class="p">,</span> <span class="n">next</span><span class="p">);</span>
+
+        <span class="n">rq</span><span class="o">-&gt;</span><span class="n">nr_switches</span><span class="o">++</span><span class="p">;</span>
+        <span class="n">rq</span><span class="o">-&gt;</span><span class="n">curr</span> <span class="o">=</span> <span class="n">next</span><span class="p">;</span>
+        <span class="o">++*</span><span class="n">switch_count</span><span class="p">;</span>
+
+        <span class="n">context_switch</span><span class="p">(</span><span class="n">rq</span><span class="p">,</span> <span class="n">prev</span><span class="p">,</span> <span class="n">next</span><span class="p">);</span> <span class="cm">/* unlocks the rq */</span>
+        <span class="cm">/*
+         * the context switch might have flipped the stack from under
+         * us, hence refresh the local variables.
+         */</span>
+        <span class="n">cpu</span> <span class="o">=</span> <span class="n">smp_processor_id</span><span class="p">();</span>
+        <span class="n">rq</span> <span class="o">=</span> <span class="n">cpu_rq</span><span class="p">(</span><span class="n">cpu</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span>
+      <span class="n">raw_spin_unlock_irq</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rq</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span><span class="c1">//current task still occupy cpu</span>
+
+    <span class="n">post_schedule</span><span class="p">(</span><span class="n">rq</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">reacquire_kernel_lock</span><span class="p">(</span><span class="n">current</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">prev</span> <span class="o">=</span> <span class="n">rq</span><span class="o">-&gt;</span><span class="n">curr</span><span class="p">;</span>
+        <span class="n">switch_count</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">prev</span><span class="o">-&gt;</span><span class="n">nivcsw</span><span class="p">;</span>
+        <span class="k">goto</span> <span class="n">need_resched_nonpreemptible</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">preempt_enable_no_resched</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">need_resched</span><span class="p">())</span>
+        <span class="k">goto</span> <span class="n">need_resched</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">EXPORT_SYMBOL</span><span class="p">(</span><span class="n">schedule</span><span class="p">);</span></code></pre></figure>
+
+<p>schedule()函数的目的在于用另一个进程替换当前正在运行的进程。因此，这个函数的主要结果就是设置一个名为next的变量，以便它指向所选中的 代替current的进程的描述符。如果在系统中没有可运行进程的优先级大于current的优先级，那么，结果是next与current一致，没有进程切换发生。</p>
+
+<hr />
+<h2 id="references">References</h2>
+
+<p>[1].UNDERSTANDING THE LINUX KERNEL. Page 276</p>
+
+<p>[2].Linux Kernel Development. Page 52</p>
+
+<p>[3].http://hi.baidu.com/zengzhaonong/item/20d9e8207b04cb8f6e2cc323</p>
+:ET

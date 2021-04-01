@@ -1,0 +1,85 @@
+I"�
+<p>现在需要在PC(Linux环境)或ARM平台对语音信号进行实时录入，方法有两种：</p>
+
+<ul>
+  <li>linux下的设备驱动编程</li>
+  <li>基于OpenFramework调用API</li>
+</ul>
+
+<hr />
+<h2 id="audio-driver">audio driver</h2>
+<p>目前Linux下常用的声卡驱动程序主要有两种：OSS和ALSA。现在主流的是ALSA(Advanced  Linux Sound Architecture)。笔者实测Ubuntu12.10，/dev下的音频驱动是/dev/snd目录下的设备文件。包括以下文件：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>by-path</td>
+      <td>controlC0</td>
+      <td>controlC0D0</td>
+      <td>controlC1D0</td>
+      <td>pwmC0D0c</td>
+      <td>pwmC0D0p</td>
+      <td>pwmC1D3p</td>
+      <td>seq timer。</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>按照文档对设备文件进行读写即可以录入语音了。</p>
+
+<hr />
+<h2 id="openframeworks">openFrameworks</h2>
+
+<p>官网上说openFrameworks is an open source C++ toolkit for creative coding.</p>
+
+<p>它是一个集成了OpenGL，OpenCV ，rtAudio，OpenAL等视频音频库的框架。</p>
+
+<p>看一个creative coding的例子，<a href="http://v.youku.com/v_show/id_XMzUxMTI4NjE2.html">可以互动的梵高 星空</a>。里面触碰互动采用Kinect和OpenCV实现[2][3]。</p>
+
+<hr />
+<h2 id="audioinputexample">audioInputExample</h2>
+<p>这个程序用来语音录入。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   int main( ){
+
+   ofSetupOpenGL(1024,768, OF_WINDOW);          
+   // &lt;-------- setup the GL context
+   // this kicks off the running of my app
+   ofRunApp( new ofApp());
+   }
+</code></pre></div></div>
+
+<p>这是整个程序的入口函数。</p>
+
+<p>ofSetupOpenGL(int w, int h, int screenMode)是ofSetupOpenGL的一个重载函数，这个实现用来设置屏幕的大小。</p>
+
+<p>ofRunApp( new ofApp())是运行自己编写的App程序，ofApp是一个包含很多函数具体实现的类。它重载的是ofRunApp(ofPtr<ofBaseApp> OFSA)，其中ofPtr<ofBaseApp> OFSA是一个模板类。</ofBaseApp></ofBaseApp></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> template &lt;typename T&gt;
+ class ofPtr: public std::shared_ptr&lt;T&gt;
+ {
+ public:
+
+  ofPtr()
+  : std::shared_ptr&lt;T&gt;() { }
+
+  template&lt;typename Tp1&gt;
+    explicit
+    ofPtr(Tp1* __p)
+  : std::shared_ptr&lt;T&gt;(__p) { }
+  ......
+}
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="references">References</h2>
+<p>[1].http://www.ibm.com/developerworks/cn/linux/l-audio/</p>
+
+<p>[2].http://www.36kr.com/p/82473.html</p>
+
+<p>[3].http://baike.baidu.com/view/3766855.htm?fr=aladdin</p>
+
+<p>[4].http://cddxhy.blog.163.com/blog/static/3399928320120179363102/</p>
+
+:ET

@@ -1,0 +1,160 @@
+I"|<p>开始练习LeetCode上的基础算法题。LeeCode支持3种语言：python，C++，Java，C++建议使用STL。</p>
+
+<hr />
+
+<h2 id="pascals-triangle">Pascal’s Triangle</h2>
+
+<p>Given numRows, generate the first numRows of Pascal’s triangle.For example, given numRows = 5,Return</p>
+
+<p>1</p>
+
+<p>1 1</p>
+
+<p>1 2 1</p>
+
+<p>1 3 3 1</p>
+
+<p>1 4 6 4 1</p>
+
+<p>思路：顺序加入每一个vector。显然每个vector的大小不一样。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Solution {
+public:
+vector&lt;vector&lt;int&gt; &gt; generate(int numRows)
+{
+    vector&lt;vector&lt;int&gt; &gt; answer;
+    for(int i=0;i&lt; numRows;i++)
+    {
+        vector&lt;int&gt; col;
+        if(i==0)
+        col.push_back(1);
+        else
+        {
+            for(int j=0;j&lt;=i;j++)
+            {
+                if(j==0 || j==i)
+                col.push_back(1);
+                else
+                col.push_back(answer[i-1][j]+answer[i-1][j-1]);
+             }
+            }
+        answer.push_back(col);
+        }
+    return answer;
+    }
+};
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="same-tree">Same Tree</h2>
+
+<p>Given two binary trees, write a function to check if they are equal or not.
+Two binary trees are considered equal if they are structurally identical and the nodes have the same value.</p>
+
+<p>思路：采用递归，分别判别左节点和右节点，两边节点都满足时才返回true。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/**
+* Definition for binary tree
+* struct TreeNode {
+*     int val;
+*     TreeNode *left;
+*     TreeNode *right;
+*     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+* };
+*/
+class Solution {
+public:
+    bool isSameTree(TreeNode *p, TreeNode *q) {
+    if( (!p)&amp;&amp;(!q) )
+    return true;
+    if( (!p&amp;&amp;q) || (p&amp;&amp;!q) || (p-&gt;val != q-&gt;val) )
+    return false;
+    return( isSameTree(p-&gt;left, q-&gt;left) &amp;&amp; isSameTree(p-&gt;right, q-&gt;right) );
+    }
+};
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="min-stack">Min Stack</h2>
+
+<p>Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.</p>
+
+<p>push(x) – Push element x onto stack.</p>
+
+<p>pop() – Removes the element on top of the stack.</p>
+
+<p>top() – Get the top element.</p>
+
+<p>getMin() – Retrieve the minimum element in the stack.</p>
+
+<p>思路：因为题目要求retrieving the minimum element in constant time，所以不能对堆栈整个进行搜索。必须另用一个堆栈来记录最小的元素。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class MinStack {
+public:
+void push(int x) {
+    elements.push(x);
+    if ( mins.empty() || x&lt;=mins.top() )
+    mins.push(x);
+}
+
+void pop() {
+    if ( elements.empty() )
+    return;
+    if(elements.top()==mins.top())
+    mins.pop();
+    elements.pop();
+    
+}
+
+int top() {
+    return elements.top();
+}
+
+int getMin() {
+    return mins.top();
+}
+
+
+private:
+stack &lt;int&gt; elements;
+stack &lt;int&gt; mins;
+};
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="sqrtx">Sqrt(x)</h2>
+
+<p>Implement int sqrt(int x).Compute and return the square root of x.</p>
+
+<p>思路：二分法，注意二分的时候不能溢出，为了加快运算速度采用移位操作符。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Solution {
+public:
+    int sqrt(int x) {
+    int low=1,high=x,mid;
+    if(x&lt;=1) return x;
+    while(low&lt;=high)
+        {
+        mid=low+((high-low)&gt;&gt;1);
+        if(mid==x/mid) return mid;
+        if(mid&gt;x/mid)
+        {
+            high=mid-1;
+        }
+        else low=mid+1;
+        }
+     return high;
+    }
+};
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="reference">Reference</h2>
+
+<p>[1].https://oj.leetcode.com/</p>
+
+:ET

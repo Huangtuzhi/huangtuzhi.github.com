@@ -1,0 +1,67 @@
+I"�<p>在 Mac 中可以设置开机自启应用程序，但无法在 Mac 屏幕锁定后唤醒时自启应用程序。Mac 睡眠后，Samba 远程服务器连接、SyncKM Link 多屏幕控制器等应用程序的连接会断掉。而唤醒后并不会重新自动连接，使用 sleepwater 可以完美解决这个问题。</p>
+
+<hr />
+
+<h2 id="sleepwatcher">sleepwatcher</h2>
+
+<p>sleepwatcher 是一个能监听系统状态的工具，在进行授权后它会运行在系统后台，相当于系统级的应用。</p>
+
+<p>安装使用 Mac 自带的软件管理</p>
+
+<p><code class="language-plaintext highlighter-rouge">brew install sleepwatcher</code></p>
+
+<p>设置软件服务自启动</p>
+
+<p><code class="language-plaintext highlighter-rouge">brew services start sleepwatcher</code></p>
+
+<p>查看进程是否启动</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ps aux | grep sleepwatcher
+titus 29048 0.0 0.0 2469824 0:10.21 
+/usr/local/sbin/sleepwatcher -V -s ~/.sleep -w ~/.wakeup
+</code></pre></div></div>
+
+<p>sleepwatcher 执行的是 ~/.sleep 和 ~/.wakeup 文件，前者是睡眠时执行，后者是唤醒时执行。</p>
+
+<hr />
+
+<h2 id="编写配置脚本">编写配置脚本</h2>
+
+<p>在 home 目录下创建文件 .wakeup 并赋予权限 777</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">touch</span> ~/.wakeup
+<span class="nb">chmod </span>777 ~/.wakeup
+</code></pre></div></div>
+
+<p>脚本如下</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<span class="c">#.wakeup</span>
+
+open /Users/titus/Library/PowerSyncKMLinkFull/PowerSyncKMLink.app
+<span class="nb">echo</span> <span class="s2">"</span><span class="sb">`</span><span class="nb">date</span><span class="sb">`</span><span class="s2"> -- Open SyncKMLink"</span> <span class="o">&gt;&gt;</span> /tmp/wakeup.log
+
+<span class="nv">net</span><span class="o">=</span><span class="sb">`</span>system_profiler SPAirPortDataType | <span class="nb">awk</span> <span class="nt">-F</span><span class="s1">':'</span> <span class="s1">'/Current 
+Network Information:/{
+ getline
+ sub(/^ */,"")
+ sub(/:$/,"")
+ print
+}'</span><span class="sb">`</span>
+
+<span class="c"># If located in designated Wifi</span>
+<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$net</span><span class="s2">"</span>x <span class="o">=</span> <span class="s2">"DevWiFi"</span>x <span class="o">]</span><span class="p">;</span><span class="k">then</span>
+    <span class="c"># Do Something</span>
+<span class="k">fi
+
+if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$net</span><span class="s2">"</span>x <span class="o">=</span> <span class="s2">"HomeWiFi"</span>x <span class="o">]</span><span class="p">;</span><span class="k">then</span>
+    <span class="c"># Do Something</span>
+<span class="k">fi</span>
+
+</code></pre></div></div>
+
+<p>使用 open 命令可以在机器唤醒时打开特定应用程序</p>
+
+<p>另外判断当前连接的 Wifi 可以实现工作环境配置和生活环境配置的自动切换。</p>
+
+:ET

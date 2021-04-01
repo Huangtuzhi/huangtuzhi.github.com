@@ -3,7 +3,7 @@ permalink: /:year/:month/:day/:title/
 url: http://huangtuzhi.github.com
 highlighter: rouge
 safe: false
-paginate: 15
+paginate: 16
 auto: true
 github: Huangtuzhi
 

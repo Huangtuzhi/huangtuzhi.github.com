@@ -1,0 +1,82 @@
+I"w<p>所用M3型号为LM3S9B92，Ti出品。现在需要画一个最小系统。把细节记录一下。</p>
+
+<hr />
+<h2 id="pcb元件库的制作">PCB元件库的制作</h2>
+<p>像这种100引脚的扁平封装，可以使用向导来生成。需要注意的是给芯片引脚的长留出0.5mm的空间便于焊接。</p>
+
+<hr />
+<h2 id="电源供给">电源供给</h2>
+<p>电源供给用稳压芯片LM1117把DC输入的5V变为3.3V。板子打样回来测试时发现芯片发热十分厉害。分析可能是IO口烧坏导致芯片内部短路。后来在师兄的帮助下才发现是LDO上的Core supply voltage必须在1.08~1.32 V。自己在画的时候参照一些产品设计的原理图，但忽略了降压芯片输出的真正电压值，以为都是3.3V供电。引以为戒。</p>
+
+<p><img src="http://static.oschina.net/uploads/space/2014/0520/145840_8z65_1420197.jpg" alt="在此输入图片描述" /></p>
+
+<hr />
+<h2 id="jlink接口">JLINK接口</h2>
+<p>参见20针JTAG接口连接方法[01][04]进行连接。数字IO口可以串一个小的电阻，因为电流是微安级别，分压不会太多。TDI、TMS、TCK、TDO都可以上拉到3.3V</p>
+
+<p><img src="http://static.oschina.net/uploads/space/2014/0520/150541_QRxm_1420197.jpg" alt="在此输入图片描述" /></p>
+
+<p>下面是做出来的PCB板。
+<img src="http://static.oschina.net/uploads/space/2014/0520/151304_A9O0_1420197.jpg" alt="在此输入图片描述" /></p>
+
+<hr />
+<h2 id="需要改进的地方">需要改进的地方</h2>
+
+<ul>
+  <li>晶振离芯片太远，可能无法起振</li>
+  <li>改晶振封装，库里自带的封装两脚之间距离小。</li>
+  <li>用LM1117-1.2V给LDO供电</li>
+  <li>加上JLINK 20针牛脚座，便于调试</li>
+  <li>JLINK都上拉到3.3V，为了便于焊接，不串电阻。</li>
+</ul>
+
+<p>改进后的PCB图。
+<img src="http://static.oschina.net/uploads/space/2014/0521/140838_TbAv_1420197.jpg" alt="在此输入图片描述" /></p>
+
+<hr />
+<h2 id="遇到的问题">遇到的问题</h2>
+<p>PCB V2打样回来后焊接了3个版本，芯片实在是不好焊接。</p>
+
+<ul>
+  <li>NO ALGORITHM FOUND FOR ADDRESS</li>
+</ul>
+
+<p>这个问题的出现是没有选定芯片的Flash大小。</p>
+
+<p>IAR下的解决方法是：
+Opitions——Utilities——settings——Add  [02]</p>
+
+<p>根据芯片选择LM3Sxxx  256K Flash。设定完成，选择下载。成功下载了两次。
+<img src="http://static.oschina.net/uploads/space/2014/0526/102841_clZ1_1420197.jpg" alt="在此输入图片描述" /></p>
+
+<p>但第三次出现了下列问题。</p>
+
+<ul>
+  <li>no cortex-m device found in the jtag chain <a href="http://e2e.ti.com/support/microcontrollers/stellaris_arm/f/471/t/45407.aspx">[03]</a></li>
+</ul>
+
+<p>继续下载，出现了下面提示。</p>
+
+<ul>
+  <li>JLink Info: TotalIRLen = 4, IRPrint = 0x01</li>
+  <li>JLink Info: Found Cortex-M3 r2p0, Little endian.</li>
+  <li>JLink Info: TPIU fitted.</li>
+  <li>JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots</li>
+</ul>
+
+<p>ROMTableAddr = 0xE00FF003</p>
+
+<p>正在查找问题。</p>
+
+<hr />
+<h2 id="references">References</h2>
+
+<p>[01].http://blog.csdn.net/zhulizhen/article/details/4677691</p>
+
+<p>[02].http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.faqs/ka10850.html</p>
+
+<p>[03].http://e2e.ti.com/support/microcontrollers/stellaris_arm/f/471/t/45407.aspx</p>
+
+<p>[04].http://blog.sina.com.cn/s/blog_6b94d56801010gmp.html</p>
+
+:ET

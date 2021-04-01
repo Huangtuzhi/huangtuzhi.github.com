@@ -1,0 +1,145 @@
+I",<p>QT可以多线程处理任务。这一节是多线程的基础。</p>
+
+<hr />
+
+<h2 id="进程和线程">进程和线程</h2>
+<p>关于进程和线程之间关系最经典的说法是：进程是资源分配的最小单位，线程是系统调度的最小单位。</p>
+
+<blockquote>
+  <p>Since threads use the same address space, it is easier and faster for threads to exchange data than it is for processes. Data does not have to be serialized and copied. While IPC is used in communication of processes.</p>
+</blockquote>
+
+<p>用python实现一下多线程例子如下：</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="cp">#!/usr/bin/python
+# python thread.py
+# python -m gevent.monkey thread.py
+</span><span class="n">import</span> <span class="n">threading</span>
+<span class="n">class</span> <span class="n">Thread</span><span class="p">(</span><span class="n">threading</span><span class="p">.</span><span class="n">Thread</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">threading</span><span class="p">.</span><span class="n">Thread</span><span class="p">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+   
+    <span class="n">def</span> <span class="n">run</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="n">xrange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">:</span>
+            <span class="n">print</span> <span class="n">self</span><span class="p">.</span><span class="n">name</span>
+<span class="n">threadA</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="s">"A"</span><span class="p">)</span>
+<span class="n">threadB</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="s">"B"</span><span class="p">)</span>
+<span class="n">threadA</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">threadB</span><span class="p">.</span><span class="n">start</span><span class="p">()</span></code></pre></figure>
+
+<p>在windows下会打印 ABBABBBBBABABABAAAAA，可见两个线程不是均匀切换，这和操作系统策略有关。</p>
+
+<p>那么QT在什么情况下用到多线程？</p>
+
+<p>1.Make processing faster by making use of multicore processors.</p>
+
+<p>2.Keep the GUI thread or other time critical threads responsive by offloading long lasting processing or blocking calls to other threads.</p>
+
+<p>第一个是因地制宜使用多核，第二个是任务分流达到负载均衡。</p>
+
+<hr />
+
+<h2 id="简单的时钟">简单的时钟</h2>
+<p>现在用一个线程在QWidget文本控件中显示时间。</p>
+
+<p>工作线程每10毫秒获取一下时间，使用QDateTime类的静态方法currentDateTime()。如果时间改变，则新的时间被获取进行显示。</p>
+
+<p>这个例子主要是展示工作进程发送信号到GUI进程。我们只需要添加一个信号到QThread，然后用signal/slot机制连接到主线程中。</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="c1">//.h</span>
+<span class="cp">#ifndef CLOCKTHREAD_H
+#define CLOCKTHREAD_H
+</span>
+<span class="cp">#include &lt;QWidget&gt;
+#include &lt;QThread&gt;
+</span>
+<span class="n">class</span> <span class="n">ClockThread</span> <span class="o">:</span> <span class="n">public</span> <span class="n">QThread</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+<span class="nl">signals:</span>
+    <span class="kt">void</span> <span class="n">sendTime</span><span class="p">(</span><span class="n">QString</span> <span class="n">time</span><span class="p">);</span>
+<span class="nl">private:</span>
+    <span class="kt">void</span> <span class="n">run</span><span class="p">();</span>
+    <span class="n">QString</span> <span class="n">m_lastTime</span><span class="p">;</span>
+<span class="n">private</span> <span class="n">slots</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">timerHit</span><span class="p">();</span>
+<span class="p">};</span>
+
+<span class="cp">#endif</span></code></pre></figure>
+
+<p>工作线程ClockThread继承自QThread线程，自己定义了一个信号（以前的程序只定义槽）和一个槽。</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="c1">//.cpp</span>
+<span class="cp">#include "clockthread.h"
+#include "ui_clockthread.h"
+#include &lt;QTimer&gt;
+#include &lt;QString&gt;
+#include &lt;QDateTime&gt;
+</span>
+<span class="kt">void</span> <span class="n">ClockThread</span><span class="o">::</span><span class="n">run</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">QTimer</span> <span class="n">timer</span><span class="p">;</span>
+    <span class="n">connect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timer</span><span class="p">,</span><span class="n">SIGNAL</span><span class="p">(</span><span class="n">timeout</span><span class="p">()),</span><span class="n">this</span><span class="p">,</span><span class="n">SLOT</span><span class="p">(</span><span class="n">timerHit</span><span class="p">()),</span> \
+    <span class="n">Qt</span><span class="o">::</span><span class="n">DirectConnection</span><span class="p">);</span>
+    <span class="n">timer</span><span class="p">.</span><span class="n">setInterval</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+    <span class="n">timer</span><span class="p">.</span><span class="n">start</span><span class="p">();</span>
+    <span class="n">exec</span><span class="p">();</span>
+    <span class="n">timer</span><span class="p">.</span><span class="n">stop</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">ClockThread</span><span class="o">::</span><span class="n">timerHit</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">QString</span> <span class="n">newTime</span><span class="o">=</span> <span class="n">QDateTime</span><span class="o">::</span><span class="n">currentDateTime</span><span class="p">().</span><span class="n">toString</span>  \
+    <span class="p">(</span><span class="s">"ddd MMMM d yy, hh:mm:ss"</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">m_lastTime</span><span class="o">!=</span><span class="n">newTime</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_lastTime</span><span class="o">=</span><span class="n">newTime</span><span class="p">;</span>
+        <span class="n">emit</span> <span class="n">sendTime</span><span class="p">(</span><span class="n">newTime</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>实现工作线程的成员函数</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="c1">//main</span>
+<span class="cp">#include "clockthread.h"
+#include &lt;QApplication&gt;
+#include &lt;QLabel&gt;
+#include &lt;QHBoxLayout&gt;
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">QApplication</span> <span class="n">app</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+    <span class="n">QWidget</span> <span class="n">widget</span><span class="p">;</span>
+    <span class="n">QLabel</span> <span class="o">*</span><span class="n">label</span><span class="o">=</span><span class="n">new</span> <span class="n">QLabel</span><span class="p">;</span>
+    <span class="n">ClockThread</span> <span class="n">w</span><span class="p">;</span>
+    <span class="n">QHBoxLayout</span> <span class="o">*</span><span class="n">layout</span><span class="o">=</span><span class="n">new</span> <span class="n">QHBoxLayout</span><span class="p">(</span><span class="o">&amp;</span><span class="n">widget</span><span class="p">);</span>
+    <span class="n">layout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">label</span><span class="p">);</span>
+    <span class="n">widget</span><span class="p">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s">"Clock"</span><span class="p">);</span>
+
+    <span class="n">ClockThread</span> <span class="n">clockThread</span><span class="p">;</span>
+    <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">clockThread</span><span class="p">,</span><span class="n">SIGNAL</span><span class="p">(</span><span class="n">sendTime</span><span class="p">(</span><span class="n">QString</span><span class="p">)),</span><span class="n">label</span><span class="p">,</span>   \
+    <span class="n">SLOT</span><span class="p">(</span><span class="n">setText</span><span class="p">(</span><span class="n">QString</span><span class="p">)),</span><span class="n">Qt</span><span class="o">::</span><span class="n">QueuedConnection</span><span class="p">);</span>
+    <span class="n">clockThread</span><span class="p">.</span><span class="n">start</span><span class="p">();</span>
+    <span class="n">widget</span><span class="p">.</span><span class="n">show</span><span class="p">();</span>
+    <span class="n">app</span><span class="p">.</span><span class="n">exec</span><span class="p">();</span>
+    <span class="n">clockThread</span><span class="p">.</span><span class="n">quit</span><span class="p">();</span>
+    <span class="n">clockThread</span><span class="p">.</span><span class="n">wait</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>整个的工作逻辑是：</p>
+
+<p>在ClockThread::run()中new一个timer，设定计时值10ms。当timer溢出时产生一个信号给timerHit。</p>
+
+<p>在ClockThread::timerHit()中判断是否是新的时间，然后发送信号sendTime。这个sendTime方法不需要实现，它携带newTime变量作为信号连接到主线程的槽setText上显示时间。</p>
+
+<p>运行结果如下：</p>
+
+<p><img src="/assets/images/QT5-1.png" alt="图片" /></p>
+
+<hr />
+<h2 id="reference">Reference</h2>
+<p>[1].http://qt-project.org/doc/qt-4.8/thread-basics.html</p>
+:ET

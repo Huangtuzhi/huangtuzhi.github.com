@@ -1,0 +1,109 @@
+I"�<p>Mac 上有个工具 Alfred，可以使用它的 workflow 功能编写自定义工作流，支持多种编程语言。<a href="https://github.com/zenorocha/alfred-workflows">Github</a> 上也有很多玩法。</p>
+
+<p>插件完成后可以使用快捷键唤出 Alfred 对话框时，输入关键词 tq，即可在下面展示这周的天气。</p>
+
+<p><img src="/assets/images/workflow-1.png" alt="image" /></p>
+
+<hr />
+
+<h2 id="步骤">步骤</h2>
+
+<p>按照下列步骤即可快速完成工作流</p>
+
+<p>1、首先需要安装 Alfred，或者购买 workflow 功能，或者破解获得这个高级功能。然后新建一个空白的 workflow。</p>
+
+<p><img src="/assets/images/workflow-2.jpeg" alt="image" /></p>
+
+<p>2、点击空白的 workflow，在右边右键-Inputs-Script Filter 新建一个编写脚本的模块。</p>
+
+<p><img src="/assets/images/workflow-3.png" alt="image" /></p>
+
+<p>Keyword 设置的是触发天气 workflow 的关键词</p>
+
+<p>Script 中填写的是需要执行的流程逻辑，这里选择系统原生的 Shell，在里面执行 Python</p>
+
+<p>3、点击右下的四宫格文件图标进入到 workflow 的文件夹目录。有人写好了 <a href="http://www.deanishe.net/alfred-workflow/index.html">alfred-workflows</a> 的 Python 库，这个库提供基本的框架，我们下载这个库放在目录下，在此基础上写流程即可。</p>
+
+<p><img src="/assets/images/workflow-4.png" alt="image" /></p>
+
+<p>4、编写主要功能。在 weather.py 中基于 workflow Python 库和天气 API 开发插件。</p>
+
+<hr />
+
+<h2 id="功能实现">功能实现</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># -*- coding:utf-8 -*-
+import json,sys
+from datetime import datetime
+from workflow import Workflow, web
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
+# 和风天气的API key
+API_KEY = 'Your-key'
+
+def the_day(num):
+    week = ['星期一','星期二','星期三','星期四','星期五','星期六','星期日']
+    return week[num]
+
+def main(wf):
+    url = 'https://free-api.heweather.com/s6/weather/'
+    + 'forecast?location=CN101280601&amp;key=' + API_KEY
+    # 这里用了deanishe 的框架里面的web模块来请求页面
+    r = web.get(url=url)
+    r.raise_for_status()
+    resp = r.text
+    data = json.loads(resp)
+
+    # 主体信息
+    d = data['HeWeather6'][0]
+    city = d['basic']['location']
+
+    #获取一周内的数据
+    for n in range(0, len(d['daily_forecast'])):
+        day = d['daily_forecast'][n]
+        # 把API获取的天气、温度、风力等信息拼接成 alfred条目的标题、副标题
+        title = city + '  ' + the_day(datetime.weekday(
+            datetime.strptime(day['date'],'%Y-%m-%d'))) 
+            + '  ' + day['cond_txt_d']
+        subtitle = '白天 {weather_day}|' \
+                   '夜间 {weather_night} |' \
+                   ' {tmp_low}~{tmp_high}摄氏度|' \
+                   ' {wind_dir} {wind_sc}'.format(
+            weather_day = day['cond_txt_d'],
+            weather_night = day['cond_txt_n'],
+            tmp_high = day['tmp_max'],
+            tmp_low = day['tmp_min'],
+            wind_sc = day['wind_sc'],
+            wind_dir = day['wind_dir']
+        )
+        # 向 alfred 添加条目,传标题、副标题、图片路径
+        wf.add_item(title=title,subtitle=subtitle,
+        icon='images/{code}.png'.format(code = day['cond_code_d']))
+
+    wf.send_feedback()
+
+if __name__ == '__main__':
+    wf = Workflow()
+    sys.exit(wf.run(main))
+</code></pre></div></div>
+
+<p>实现主要分以下几步：</p>
+
+<p>1、使用 <code class="language-plaintext highlighter-rouge">wf = Workflow()</code> 新建一个 workflow 实例</p>
+
+<p>2、在实例中请求天气数据。插件最终显示的天气列表每一行由主标题、副标题、图标组成，将获取到的数据格式化为这几部分</p>
+
+<p>3、使用 <code class="language-plaintext highlighter-rouge">wf.add_item</code> 逐行添加到实例中</p>
+
+<p>4、使用 <code class="language-plaintext highlighter-rouge">wf.send_feedback</code> 将数据返回给 workflow 进行渲染展示</p>
+
+<p>这样就完成了天气插件。</p>
+
+<hr />
+
+<h2 id="参考">参考</h2>
+
+<p><a href="http://www.deanishe.net/alfred-workflow/index.html">alfred-workflow</a></p>
+:ET

@@ -1,0 +1,191 @@
+I"p <p>当需要为服务器增加一个自定义的扩展功能时，需要用到<strong>模块</strong>，相当于Nginx给开发者提供的一个模板范式。</p>
+
+<p>比如现在实现一个<a href="https://github.com/Huangtuzhi/GoLink">书签收藏</a>网站的<strong>signin</strong>功能，用Flask框架可以这样实现：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@app.route('/signin', methods=['GET', 'POST'])
+def web_signin():
+	if request.method == 'GET':
+		return redirect(url_for('web'))
+	if request.method == 'POST':
+		name = request.form.get('username', None)
+		session['username'] = name
+		password = request.form.get('password', None)
+		db = LinkDB()
+		if name.strip()=='' or password.strip()=='':
+			return redirect(url_for('web'))
+		if db.has_user(name, password):
+			return render_template('page.html') 
+		else:
+			return '用户名或密码错误'
+</code></pre></div></div>
+
+<p>它实现的功能就是解析用户<code class="language-plaintext highlighter-rouge">GET</code>和<code class="language-plaintext highlighter-rouge">POST</code>过来的数据，然后构造相应的响应。这和Nginx的<code class="language-plaintext highlighter-rouge">handler模块</code>所做的工作相似。</p>
+
+<p>Nginx本身做的工作实际很少，当它接到一个HTTP请求时，它仅仅是通过查找配置文件将此次请求映射到一个location block，而此location中所配置的各个指令则会启动不同的模块去完成工作，因此模块可以看做Nginx真正的劳动工作者。下图表示一次请求和相应的完整过程。</p>
+
+<p><img src="/assets/images/nginx-5-2.png" alt="" /></p>
+
+<p>现在在浏览器中输入<code class="language-plaintext highlighter-rouge">http://127.0.0.1/hello_world</code>,让浏览器显示
+<code class="language-plaintext highlighter-rouge">hello_world, testing!!!</code>怎么实现呢？这需要我们编写一个hello handler模块。</p>
+
+<hr />
+
+<h2 id="模块定义ngx_module_t">模块定义ngx_module_t</h2>
+<p>开发一个模块，需要定义一个<code class="language-plaintext highlighter-rouge">ngx_module_t</code>类型的变量来说明这个模块的信息。它定义在<code class="language-plaintext highlighter-rouge">/nginx/src/core/ngx_config_file</code>中。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>struct ngx_module_s {
+    ngx_uint_t            ctx_index;
+    ngx_uint_t            index;
+    ngx_uint_t            spare0;
+    ngx_uint_t            spare1;
+    ngx_uint_t            spare2;
+    ngx_uint_t            spare3;
+    ngx_uint_t            version;
+    void                 *ctx;
+    ngx_command_t        *commands;
+    ngx_uint_t            type;
+
+    ngx_int_t           (*init_master)(ngx_log_t *log);
+    ngx_int_t           (*init_module)(ngx_cycle_t *cycle);
+    ngx_int_t           (*init_process)(ngx_cycle_t *cycle);
+    ngx_int_t           (*init_thread)(ngx_cycle_t *cycle);
+    void                (*exit_thread)(ngx_cycle_t *cycle);
+    void                (*exit_process)(ngx_cycle_t *cycle);
+    void                (*exit_master)(ngx_cycle_t *cycle);
+    //...
+};
+</code></pre></div></div>
+
+<p>hello模块定义如下：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ngx_module_t ngx_http_hello_world_module = {
+    NGX_MODULE_V1,
+    &amp;ngx_http_hello_world_module_ctx,
+    ngx_http_hello_world_commands,
+    NGX_HTTP_MODULE,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NGX_MODULE_V1_PADDING
+};
+</code></pre></div></div>
+
+<p>模块的编写步骤是：</p>
+
+<ul>
+  <li>编写模块基本结构。包括模块的定义，模块上下文结构，模块的配置结构等。</li>
+  <li>实现handler的挂载函数。根据模块的需求选择正确的挂载方式。</li>
+  <li>编写handler处理函数。模块的功能主要通过这个函数来完成。这是最关键的，hello模块的功能是简单返回一个字符串。在<code class="language-plaintext highlighter-rouge">ngx_http_hello_world_handler</code>中实现。</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>static ngx_int_t ngx_http_hello_world_handler(ngx_http_request_t* r) {
+    ngx_int_t rc;
+    ngx_buf_t* b;
+    ngx_chain_t out[2];
+    ngx_http_hello_world_loc_conf_t* hlcf;
+    hlcf = ngx_http_get_module_loc_conf(r, ngx_http_hello_world_module);
+
+    // 设置 request 的 header
+    r-&gt;headers_out.content_type.len = sizeof("text/plain") - 1;
+    r-&gt;headers_out.content_type.data = (u_char*)"text/plain";
+
+    // 分配缓冲区的内存空间   
+    b = ngx_pcalloc(r-&gt;pool, sizeof(ngx_buf_t));
+
+    // 第 1 块缓冲区
+    out[0].buf = b;
+    out[0].next = &amp;out[1];
+
+    // 本模块中，缓冲区只需要写入数据，所以只设置 pos 和 last
+    b-&gt;pos = (u_char*)"hello_world, ";
+    b-&gt;last = b-&gt;pos + sizeof("hello_world, ") - 1;
+    b-&gt;memory = 1; // 标示缓冲区是内存缓冲
+
+    // 分配缓冲区的内存空间
+    b = ngx_pcalloc(r-&gt;pool, sizeof(ngx_buf_t));
+
+    // 第 2 块缓冲区
+    out[1].buf = b;
+    out[1].next = NULL;
+
+    // 本模块中，缓冲区只需要写入数据，所以只设置 pos 和 last
+    b-&gt;pos = hlcf-&gt;output_words.data;
+    b-&gt;last = hlcf-&gt;output_words.data + (hlcf-&gt;output_words.len);
+    b-&gt;memory = 1; // 标示缓冲区是内存缓冲
+    b-&gt;last_buf = 1; // 标示整个响应最后一个缓冲区，nginx会立即发送缓冲的所有数据
+
+    // 设置 request 的 header
+    r-&gt;headers_out.status = NGX_HTTP_OK;
+    r-&gt;headers_out.content_length_n = hlcf-&gt;output_words.len \
+    + sizeof("hello_world, ") - 1;
+
+    // 发送 request
+    rc = ngx_http_send_header(r);
+    if (rc == NGX_ERROR || rc &gt; NGX_OK || r-&gt;header_only) {
+        return rc;
+    }
+
+    return ngx_http_output_filter(r, &amp;out[0]);
+}
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="配置和编译">配置和编译</h2>
+
+<p>在Nginx文件夹下</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir ngx_http_hello_world_module
+cd ngx_http_hello_world_module
+touch ngx_http_hello_world_module.c
+touch config
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">ngx_http_hello_world_module.c</code>是主要的函数，<code class="language-plaintext highlighter-rouge">config</code>是配置文件。</p>
+
+<p>在配置文件中加入</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ngx_addon_name=ngx_http_hello_module
+HTTP_MODULES="$HTTP_MODULES ngx_http_hello_world_module"
+NGX_ADDON_SRCS="$NGX_ADDON_SRCS $ngx_addon_dir/ngx_http_hello_world_module.c"
+</code></pre></div></div>
+
+<p>这个config文件的内容就是告诉nginx的编译脚本，该如何进行编译。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./configure  --add-module=/home/hy/Desktop/nginx/ngx_http_hello_world_module
+make
+make install
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">add-module</code>后接上文中新建目录的路径。</p>
+
+<hr />
+
+<p>##使用</p>
+
+<p>在<code class="language-plaintext highlighter-rouge">/usr/local/nginx/conf</code>路径下的<code class="language-plaintext highlighter-rouge">nginx.conf</code>文件中加入</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>location /hello_world 
+{
+    hello_world testing!!!;
+}
+</code></pre></div></div>
+
+<p>访问<code class="language-plaintext highlighter-rouge">http://127.0.0.1/hello_world</code>即可看见成功的页面。</p>
+
+<p><img src="/assets/images/nginx-5-1.png" alt="" /></p>
+
+<hr />
+
+<p>##参考</p>
+
+<p><a href="http://blog.csdn.net/poechant/article/details/7627828">http://blog.csdn.net/poechant/article/details/7627828</a></p>
+
+<p><a href="http://kb.cnblogs.com/page/98352/">http://kb.cnblogs.com/page/98352/</a></p>
+
+<p><a href="http://wiki.nginx.org/3rdPartyModules">http://wiki.nginx.org/3rdPartyModules</a></p>
+:ET

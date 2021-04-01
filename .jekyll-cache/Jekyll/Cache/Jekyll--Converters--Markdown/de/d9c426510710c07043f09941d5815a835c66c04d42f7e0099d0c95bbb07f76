@@ -1,0 +1,215 @@
+I"K+<p>前段时间有<a href="https://github.com/Huangtuzhi/ife-task">百度前端学院 2016 春季班</a>的培训项目，刚好可以跟着系统学习一遍表示层面的技术。从 3.14 完成组队到现在做完第一二阶段任务大概用了一个多月时间，受益良多。任务分为 HTML/CSS 和 JavaScript 两部分，安排的内容十分合理，将庞大的前端技术抽析重点进行系统编排。本文对春季班的任务作一个回顾和总结。</p>
+
+<hr />
+
+<h2 id="htmlcss-部分">HTML/CSS 部分</h2>
+
+<hr />
+
+<h3 id="垂直居中的九种写法">垂直居中的九种写法</h3>
+
+<p>不一定有九种了，茴香豆还不一定有九种吃法。最好的一种是使用绝对定位来实现。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background-color: #ccc;
+    height: 200px;
+    width: 400px;
+    margin-left: -200px;
+    margin-top: -100px;
+}
+</code></pre></div></div>
+
+<p>top:50% 表示 container 左上角离浏览器窗口上边沿二分之一个浏览器高度的距离，然后使用二分之一容器高度的距离作为 margin-top 来修正，这样容器在浏览器中就垂直居中了。同理可得水平居中。效果见任务 4「<a href="http://htmlpreview.github.io/?https://github.com/Huangtuzhi/ife-task/blob/master/state01/task004/index.html">任务四：定位和居中问题</a>」。</p>
+
+<hr />
+
+<h3 id="移动端布局和-webview">移动端布局和 WebView</h3>
+
+<p>在任务 11「<a href="http://htmlpreview.github.io/?https://github.com/Huangtuzhi/ife-task/blob/master/state01/task011/index.html">移动Web页面布局实践 </a>」中，使用 viewport 来控制网页在移动端高度和宽度的自适应显示。适配移动端的页面会加入下面这一行</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, 
+ user-scalable=0" name="viewport"&gt; 
+</code></pre></div></div>
+
+<p>css 中的距离大小要由原来的 px 更改为 rem。rem (font size of the root element) 作为移动端的基本单位，设置 html 中的 font-size 就可以同步控制网页中的大小样式。</p>
+
+<p>微信的内嵌浏览器使用的是 WebView，当查看分享时打开的页面就是使用 WebView 呈现的。手机淘宝客户端也在页面中使用了 WebView。淘宝页面这种经常变化很大，对动画和流程性没要求的话，会优先使用 WebView。所以 App 的原则是经常变用 WebView，不经常变就 Native。</p>
+
+<p>可以通过下列方式判断 APP 使用的哪种技术。打开开发者模式———显示布局边界。若是整块区域有边界，则是 WebView。如果每个元素都有边界，则不是。</p>
+
+<hr />
+
+<h3 id="flex-布局">Flex 布局</h3>
+
+<p>Flexbox 弹性布局的出现是为了解决复杂的web布局，这种布局方式很灵活。容器的子元素可以任意方向进行排列。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.flex-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+</code></pre></div></div>
+
+<p>这样 flex-container 中的 div 就是在水平方向自动适应的。效果见任务 10「<a href="http://htmlpreview.github.io/?https://github.com/Huangtuzhi/ife-task/blob/master/state01/task010/index.html">Flexbox 布局练习</a>」。</p>
+
+<hr />
+
+<h2 id="javascript-部分">JavaScript 部分</h2>
+
+<hr />
+
+<h3 id="事件代理机制">事件代理机制</h3>
+
+<p>事件代理机制是指把事件处理器添加到父级元素，避免把事件处理器添加到多个子级元素上。现在有这样一种场景，页面初始化时子级元素还不存在，这时 DOM 树中只存在父级元素，但这些子级元素需要绑定点击事件。这时就可以使用事件代理。在任务 16「<a href="https://github.com/Huangtuzhi/ife-task/blob/master/state02/task016/task.js">事件代理机制和表单验证</a>」中可以看到典型应用。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>document.getElementById('aqi-table').addEventListener("click", function(e) {
+    if(e.target &amp;&amp; e.target.nodeName == "BUTTON") {
+        var city = e.target.parentNode.parentNode.firstChild.firstChild.nodeValue;
+        console.log("something");
+    }
+})
+</code></pre></div></div>
+
+<hr />
+<h3 id="用--选取元素">用 $ 选取元素</h3>
+
+<p>选取元素时可以使用 <code class="language-plaintext highlighter-rouge">document.querySelector()</code> 或者 <code class="language-plaintext highlighter-rouge">document.getElementByID()</code>。可以定义一个函数来简化这种写法，函数名取为 $，和 jQuery 的使用方法类似。在任务 35「<a href="https://github.com/Huangtuzhi/ife-task/blob/master/state02/task035/task.js">听指令的小方块-命令解析</a>」中可以看到典型应用。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function $(id) {
+  return document.querySelector(id);
+}
+
+$('#buildButton').onclick = function() {
+    buildRandomWalls();
+}
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="排序可视化">排序可视化</h3>
+
+<p>任务 19「<a href="http://htmlpreview.github.io/?https://github.com/Huangtuzhi/ife-task/blob/master/state02/task019/task.html">基础练习</a>」需要可视化基本排序算法的过程。</p>
+
+<p>排序过程中的停顿使用 <code class="language-plaintext highlighter-rouge">setInterval()</code> 来实现。动画中表示数字的 bar 使用 div 来模拟。不同高度的 bar 使用不同的 RGB 值。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function renderQueue() {
+  content = ""
+  for (var ele in queue) {
+    content +="&lt;div class='outer'&gt;";
+    content += "&lt;button class='bar' style='height: " + queue[ele] +
+    "px;background-color:#2288" + queue[ele] + "'&gt;&lt;/button&gt;";
+    content +="&lt;/div&gt;";
+  }
+  document.getElementById('show-box').innerHTML = content;
+}
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="树的遍历及查询">树的遍历及查询</h3>
+
+<p>任务 24「<a href="http://htmlpreview.github.io/?https://github.com/Huangtuzhi/ife-task/blob/master/state02/task024/task.html">JavaScript和树</a>」需要展示和遍历多叉树。DOM 树本来就是树结构，只需要实现遍历算法即可。遍历的时候将遍历的元素保存在数组 orderQueue 中，遍历结束后调用 renderTree() 函数来可视化遍历和查找过程。这里需要注意逻辑（Controller）和可视化（View）要分离。</p>
+
+<p>下面是先序遍历的实现：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function preOrder(root) {
+  orderQueue.push(root);
+  for (var i = 0; i &lt; root.childElementCount; i++)
+  {
+    if (root.children[i] != null)
+      preOrder(root.children[i]);
+  }
+}
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="设计模式">设计模式</h3>
+
+<p>任务 26「<a href="http://htmlpreview.github.io/?https://github.com/Huangtuzhi/ife-task/blob/master/state02/task026/task.html">行星与飞船</a>」要求使用 Mediator 设计模式。行星上指挥官的指挥信号发往 ，Mediator 再发送给飞船。指挥官负责发送 JSON 信号 <code class="language-plaintext highlighter-rouge">{id: 1, content: 'stop'}</code> 给 Mediator。</p>
+
+<p>发送信号调用方式为：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mediator.executeCommand({id: 1, content: "stop"});
+</code></pre></div></div>
+
+<p>Mediator 构造如下：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var mediator = (function() {
+  return {
+    executeCommand: function(command) {
+      var excute = function() {
+        if (command.content == "build") {
+          var newShip = new spaceshipModule(shipID - 1);
+          return;
+        }
+        if (command.content == "start") {
+          shipQueue[command.id - 1].fly();
+          return;
+        }
+
+        if (command.content == "stop") {
+          shipQueue[command.id - 1].stop();
+        }
+      }
+
+    }
+  }
+})();
+</code></pre></div></div>
+
+<p>Mediator 负责飞船的建造、飞行、停止等控制。使用 Mediator 设计模式可以将两个模块解耦。</p>
+
+<hr />
+
+<h3 id="a-寻路算法">A* 寻路算法</h3>
+
+<p>寻路算法是整个课程中自己最想实现的，它是一个最简单的 AI，用来寻找从起点到终点的最优路径。这个算法竞赛「<a href="http://codecraft.huawei.com/home/detail">未来网络·寻路</a>」也和寻路有关。
+由这个任务可以看出前端学院的课程设置是非常系统而且独到的，前期注重基础和工程，后期加入复杂的模块设计和算法。</p>
+
+<p>A* 寻路算法是回溯算法的一种，在 <a href="https://github.com/Huangtuzhi/ife-task/blob/master/state02/task036/findPath.js">findPath.js</a> 中，使用 openList 和 closeList 来分别保存未遍历的点和已遍历的点。每次遍历时在 openList 取满足某个要求最优的点（F 值最小的点）继续遍历，和深度优先遍历有点像。遍历寻找出来的路径用链表来保存，遍历的下一个节点指向它的上一个节点（上一个节点是下一节点的 parent）。</p>
+
+<p>每个节点定义如下</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function Point(x, y)
+{
+    this.x = x;
+    this.y = y;
+    this.G = 0;
+    this.H = 0;
+    this.F = 0;
+    this.parent = null;
+
+    this.updateF = function() {
+        this.F = this.G + this.H;
+    };
+}
+</code></pre></div></div>
+
+<p>其中 H 表示从当前点 a 到终点 B 的估算成本（不走斜边）</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function calculateH(a) {
+    var len = 10 * (Math.abs(pointB.x - a.x) + Math.abs(pointB.y - a.y));
+    return len;
+}
+</code></pre></div></div>
+
+<p>G 表示从起点 A 到当前点 a 的距离。F 是 G 和 H 的和。效果见任务 36「<a href="http://htmlpreview.github.io/?https://github.com/Huangtuzhi/ife-task/blob/master/state02/task036/task.html">听指令的小方块</a>」。</p>
+
+<hr />
+
+<h2 id="参考">参考</h2>
+
+<p><a href="https://isux.tencent.com/web-app-rem.html">web app变革之rem</a></p>
+
+<p><a href="http://www.html-js.com/article/2434">A* 寻路算法</a></p>
+
+<p><a href="http://qiao.github.io/PathFinding.js/visual/">寻路算法可视化实现</a></p>
+
+<p><a href="https://www.zhihu.com/question/35683612/answer/64628667">https://www.zhihu.com/question/35683612/answer/64628667</a></p>
+:ET

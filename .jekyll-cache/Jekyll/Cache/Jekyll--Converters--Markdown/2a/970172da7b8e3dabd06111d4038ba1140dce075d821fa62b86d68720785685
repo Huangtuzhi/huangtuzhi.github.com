@@ -1,0 +1,162 @@
+I"s<p>操作系统管理内存中的物理页面，担任着内存分配的职责。应用程序可以通过类似malloc的函数向操作系统申请物理页面。在使用完物理页面之后，通过类似delete的释放函数释放这些页面。</p>
+
+<p>但是有些物理页面无法被主动释放，如一直被占用，如缓存页面。操作系统需要提供页面回收算法来进行页面回收。</p>
+
+<p>一般来说，用于页缓存的物理页面无法被页面的使用者主动释放，因为它们不知道这些页面何时应该被释放。操作系统内核本身使用的物理页面不再Linux操作系统的回收范围之内，它不需要占用太多的内存。</p>
+
+<hr />
+
+<h2 id="页面回收">页面回收</h2>
+<p>Linux的页面回收是基于LRU(Least Recently Used,最近最少使用)算法的。它采取的策略是，在最近时间段内被访问的数据在以后被访问的概率大，而一直没被访问的页面在未来比较短的时间也不会被频繁访问到。这样的页面成为了页面回收的第一选择。</p>
+
+<p>LRU算法的基本原理很简单，为每个物理页面绑定一个计数器，用以标识该页面的访问频度。操作系统内核进行页面回收的时候就可以根据页面的计数器的值来确定要回收哪些页面。然而，在硬件上提供这种支持的体系结构很少，Linux 操作系统没有办法依靠这样一种页计数器去跟踪每个页面的访问情况，所以，Linux 在页表项中增加了一个 Accessed 位，当页面被访问到的时候，该位就会被硬件自动置位。该位被置位表示该页面还很年轻，不能被换出去。此后，在系统的运行过程中，该页面的年龄会被操作系统更改。</p>
+
+<p>在Linux 中，操作系统对LRU的实现主要是基于一对双向链表：active 链表和 inactive 链表，这两个链表是 Linux 操作系统进行页面回收所依赖的关键数据结构，每个内存区域都存在一对这样的链表。</p>
+
+<p>具体关于Linux中LRU实现参见[1]。</p>
+
+<hr />
+
+<h2 id="lru缓存">LRU缓存</h2>
+<p>在LeetCode中曾排名第一的有这样一个题：</p>
+
+<blockquote>
+  <p>Design and implement a data structure for Least Recently Used (LRU) cache. It should support the following operations: get and set.</p>
+</blockquote>
+
+<blockquote>
+  <p>get(key) - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.</p>
+</blockquote>
+
+<blockquote>
+  <p>set(key, value) - Set or insert the value if the key is not already present. When the cache reached its capacity, it should invalidate the least recently used item before inserting a new item.</p>
+</blockquote>
+
+<p>这个数据结构就是模拟LRU缓存的实现。</p>
+
+<p>我们采取一个双向链表用来存储键值对，加入哈希表实现O(1)的检索。当数据被使用(或者新数据加入）时，放到链表尾。链表尾表示最近被使用的数据。当数据溢出，则删除未被频繁使用的头节点。</p>
+
+<p>先设计这样一个存放键值对的数据结构，其中加入了结构体构造函数，用参数列表将所有的数据成员初始化置零。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>struct LRUStruct
+{
+    int key;
+    int value;
+    LRUStruct *pre;
+    LRUStruct *next;
+    LRUStruct(int k=0,int v=0,LRUStruct *p=NULL,LRUStruct *n=NULL):key(k),value(v),pre(p),next(n){}
+};
+</code></pre></div></div>
+
+<p>再设计一个头尾节点的数据结构，它不存储实际数据，只是用来把LRUStruct放到头和尾的中间。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>struct HeadTail
+{
+    LRUStruct head;
+    LRUStruct tail;
+    HeadTail(LRUStruct h,LRUStruct t):head(h),tail(t){}
+};
+</code></pre></div></div>
+
+<p>接着定义LRUCache类，加入unordered_map哈希表。key为int，对应数据输入的key。value为LRUStruct*，对应于表示整个数据的结构指针。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class LRUCache{
+public:
+    int size;
+    unordered_map&lt;int,LRUStruct*&gt; keyMap;
+    HeadTail ht;
+LRUCache(int capacity):ht(LRUStruct(),LRUStruct())
+{
+    size=capacity;
+}
+</code></pre></div></div>
+
+<p>当获取value时，用HashTable检索，如果存在则返回值，同时将节点放到链表tail节点的前面，表示最近使用过。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>int get(int key) {
+    if((keyMap.empty()) || (!keyMap.count(key))) return -1;
+    LRUStruct *ls=keyMap[key];
+    ls-&gt;pre-&gt;next=ls-&gt;next;
+    ls-&gt;next-&gt;pre=ls-&gt;pre;
+    insertTail(ls);
+    return ls-&gt;value;
+}
+</code></pre></div></div>
+
+<p>当设置value时，如果为空，则建立链表。如果能找到key，则把节点插到最后。如果没有这个节点，同时链表未满，也把节点插到最后。如果没有这个节点，同时链表已满，则删除head之后的节点，将新节点插到最后。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>void set(int key, int value) {
+    if (keyMap.empty())
+    {
+        LRUStruct *ls=new LRUStruct(key,value);
+        ht.head.next=ls;
+        ls-&gt;pre=&amp;ht.head;
+        ht.tail.pre=ls;
+        ls-&gt;next=&amp;ht.tail;
+        keyMap[key]=ls;
+        return;
+    }
+    if (keyMap.count(key))
+    {
+        LRUStruct *ls=keyMap[key];
+        ls-&gt;value=value;
+        ls-&gt;pre-&gt;next=ls-&gt;next;
+        ls-&gt;next-&gt;pre=ls-&gt;pre;
+        insertTail(ls);
+    }
+    
+    else
+    {
+        if(keyMap.size()&lt;size)
+        {
+            LRUStruct *ls=new LRUStruct(key,value);
+            insertTail(ls);
+            keyMap[key]=ls;
+        }
+        else
+        {
+            LRUStruct *p_tmp = ht.head.next;
+            keyMap.erase(p_tmp-&gt;key);
+            deleteHead();
+            LRUStruct *ls = new LRUStruct(key,value);
+            insertTail(ls);
+            keyMap[key] = ls;
+            delete p_tmp;
+        }
+    }
+    
+}
+void insertTail(LRUStruct *ls)
+{
+    ls-&gt;pre=ht.tail.pre;
+    ht.tail.pre-&gt;next=ls;
+    ls-&gt;next=&amp;ht.tail;
+    ht.tail.pre=ls;
+}
+   
+void deleteHead()
+{
+    ht.head.next=ht.head.next-&gt;next;
+    ht.head.next-&gt;pre=&amp;ht.head;
+}
+};
+</code></pre></div></div>
+
+<p>这就是整个LRU原理和结构的实现，只不过Linux内核中会更复杂一些。</p>
+
+<hr />
+
+<h2 id="reference">Reference</h2>
+<p>[1].http://www.ibm.com/developerworks/cn/linux/l-cn-pagerecycle/</p>
+
+<p>[2].https://oj.leetcode.com/problems/lru-cache/</p>
+
+<p>[3].http://my.oschina.net/lvyi/blog/346227</p>
+
+<p>[4].http://blog.csdn.net/beiyeqingteng/article/details/7010411</p>
+
+<p>[5].http://blog.csdn.net/zqpgood/article/details/6781195</p>
+
+<p>[6].Understanding the Linux Kernel</p>
+
+:ET

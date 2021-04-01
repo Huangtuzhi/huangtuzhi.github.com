@@ -1,0 +1,59 @@
+I"^<p>BOA是一个嵌入式的Web Server，小巧高效，支持CGI。html和php都能运行[1]。作为一种单任务Web服务器，Boa只能依次完成用户的请求，而不会fork出新的进程来处理并发连接请求。但boa支持CGI，能够为CGI程序fork出一个进程来执行。Boa的设计目标是速度和安全。</p>
+
+<hr />
+
+<h2 id="安装">安装</h2>
+<p>1.下载源码包，官网地址为http://www.boa.org/，选择Latest Released Version (0.94.13)。解压tar zxvf boa-0.94.13</p>
+
+<p>2.进入boa目录下/src源码目录，执行操作 <code class="language-plaintext highlighter-rouge">sudo apt-get install bison flex</code></p>
+
+<p>bison和flex是词法和语法的解释工具，用来生成中间代码。</p>
+
+<p>compat.h文件</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#ifdef HAVE_TM_GMTOFF
+#define TIMEZONE_OFFSET(foo) foo##-&gt;tm_gmtoff
+#else
+</code></pre></div></div>
+
+<p>改为</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#ifdef HAVE_TM_GMTOFF
+#define TIMEZONE_OFFSET(foo) foo-&gt;tm_gmtoff
+#else
+</code></pre></div></div>
+
+<p>log.c文件，注释掉：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if(dup2(error_log, STDERR_FILENO) == -1) 
+{
+DIE("unable to dup2 the error log");
+}
+</code></pre></div></div>
+
+<p>3.输入命令 sudo ./configure，生成默认makefile。然后make即生成boa可执行文件。</p>
+
+<hr />
+
+<h2 id="配置">配置</h2>
+
+<p>1.拷贝boa.conf 到新建的/etc/boa目录下。</p>
+
+<p>2.将User nobody和Group nogroup 分别改为:User 0和Group 0</p>
+
+<p>3.将路径ScriptAlias改为 /var/www/cagi-bin</p>
+
+<p>4.将默认端口地址改为 8080</p>
+
+<p>5.运行本机IP：8080即可看到放在/var/www下的index网页了。</p>
+
+<hr />
+
+<h2 id="reference">Reference</h2>
+<p>[1].http://catgatp.blog.163.com/blog/static/213089042012101010253311/</p>
+
+<p>[2].http://www.linuxidc.com/Linux/2013-07/87375p2.htm</p>
+
+<p>[3].http://blog.csdn.net/chenyu123123/article/details/8560770</p>
+
+:ET

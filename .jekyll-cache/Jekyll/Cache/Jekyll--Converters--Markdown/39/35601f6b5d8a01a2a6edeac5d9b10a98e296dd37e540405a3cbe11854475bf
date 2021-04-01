@@ -1,0 +1,176 @@
+I",<p>观察者模式也叫做发布-订阅(Publish-Subscribe)。Redis中有一个发布订阅功能，类似此模式。</p>
+
+<hr />
+
+<h2 id="redis-pubsub">Redis pub/sub</h2>
+
+<p>Redis作为一个pub/sub server，在订阅者和发布者之间起到了消息路由的功能。订阅者可以通过subscrible和psubscribe命令向redis server订阅自己感兴趣的消息类型。当发布者通过publish命令向redis server发送特定类型的消息时，该消息类型(通道)的所有client都会被<strong>推送</strong>此消息。</p>
+
+<p>做以下实验：</p>
+
+<p>1.启动redis-server</p>
+
+<p>2.启动一个redis-cli A订阅一个使用通配符的通道(*表示任意字符串):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>127.0.0.1:6379&gt; PSUBSCRIBE news.* 
+Reading messages... (press Ctrl-C to quit)
+1) "psubscribe"
+2) "news.*"
+3) (integer) 1
+
+</code></pre></div></div>
+
+<p>3.启动一个redis-cli B订阅一个特定的通道:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>127.0.0.1:6379&gt; SUBSCRIBE news.sports
+Reading messages... (press Ctrl-C to quit)
+1) "subscribe"
+2) "news.sports"
+3) (integer) 1
+
+</code></pre></div></div>
+
+<p>4.启动一个redis-cli C发布消息:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>127.0.0.1:6379&gt; publish news.sports "basketball win"
+(integer) 2
+</code></pre></div></div>
+
+<p>可以看到client A打印：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1) "pmessage"
+2) "news.*"
+3) "news.sports"
+4) "basketball win"
+</code></pre></div></div>
+
+<p>client B打印：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1) "message"
+2) "news.sports"
+3) "basketball win"
+</code></pre></div></div>
+<p>发布消息的client C返回的(integer)2表示有两个redis-cli连接收到了此消息。</p>
+
+<p>这就是Redis的订阅发布功能，常见的应用场景有：多人聊天，邮件服务器，记录站点操作日志，站内信等。</p>
+
+<hr />
+
+<h2 id="观察者模式">观察者模式</h2>
+
+<p>观察者模式定义了一种这样的场景，当一个对象的状态发生改变时，所有和它有关系的对象都应该得到通知并自动更新此对象。</p>
+
+<p>现在实现一个简单的博客订阅的例子。当博主发布新文章时，那些订阅的读者就会收到通知，然后产生相应的动作(查看，收藏，转载)。</p>
+
+<hr />
+
+<h2 id="uml图">UML图</h2>
+
+<p>用一个奇葩的在线软件画的，限制免费用户使用20个parameter。所以省去了构造和析构函数。线也无法连接，于是我开启了PS。</p>
+
+<p><img src="/assets/images/observer-1.png" alt="图片" /></p>
+
+<hr />
+
+<h2 id="实现">实现</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Observer
+{
+public:
+    Observer() {};
+    virtual ~Observer() {};
+    virtual void Update() {};
+};
+
+class Blog
+{
+public:
+    Blog() {}
+    virtual ~Blog() {}
+    void Notify()
+    {
+        for(auto ob: observers)
+            ob-&gt;Update();
+    }
+    void Attach(Observer* observer)
+    {
+        observers.push_back(observer);
+    }
+    void Detach(Observer* observer)
+    {
+        observers.remove(observer);
+    }
+    
+    virtual string GetStatus() 
+    { 
+        return m_status; 
+    }
+    virtual void SetStatus(string status) 
+    { 
+        m_status = status; 
+    }
+private:
+    list&lt;Observer*&gt; observers;
+protected:
+    string m_status; //让子类可以访问
+};
+
+class GithubBlog: public Blog
+{
+public:
+    GithubBlog(string name): blogname(name) {}
+    ~GithubBlog() {}
+    string GetStatus() { return m_status; }
+    void SetStatus(string status) 
+    { 
+        m_status = "GithubBlog-" + blogname + "通知" + status; 
+        this-&gt;Notify();
+    }
+
+private:
+    string blogname;
+};
+
+class SomeObserver: public Observer
+{
+public:
+    SomeObserver(string name, Blog* blog): 
+        _name(name),
+        _blog(blog) {}
+    ~SomeObserver() {}
+    void Update()
+    {
+        string status = _blog-&gt;GetStatus();
+        cout &lt;&lt; "用户：" &lt;&lt; _name &lt;&lt; " " &lt;&lt; status &lt;&lt; endl;
+    }
+
+private:
+    string _name;
+    Blog* _blog;
+};
+
+int main()
+{
+    Blog *tecblog = new GithubBlog("青碧");
+    Observer *user1 = new SomeObserver("兔之", tecblog);
+    tecblog-&gt;Attach(user1);
+    Observer *user2 = new SomeObserver("小司", tecblog);
+    tecblog-&gt;Attach(user2);
+    tecblog-&gt;SetStatus("C++之观察者模式");
+    //tecblog-&gt;Notify();
+    delete tecblog;
+    delete user1;
+    delete user2;
+    return 0;
+}
+
+</code></pre></div></div>
+<p>核心的逻辑是在Blog中保存指向所有Observer的指针，而在具体的观察者类中保存指向需要观察Blog的指针(观察多个时为链表)。</p>
+
+<hr />
+
+<h2 id="reference">Reference</h2>
+<p>[1].http://www.wzxue.com</p>
+
+<p>[2].http://blog.csdn.net/wuzhekai1985/article/details/6674984</p>
+:ET

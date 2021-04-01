@@ -1,0 +1,85 @@
+I"j<p>我们知道shared_ptr是C++11的新标准，可以自动回收动态内存。同时它也可以管理其它资源。</p>
+
+<p>比如网络编程里的连接。</p>
+
+<hr />
+
+<h2 id="语法">语法</h2>
+<p>shared_ptr语法如下：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>shared_ptr&lt;T&gt; p(q, d)
+</code></pre></div></div>
+
+<p>p接管了内置指针q所指对象的所有权。q必须保证能强制转换为T*类型。</p>
+
+<p>p将调用回调函数d来代替delete回收资源。</p>
+
+<hr />
+
+<h2 id="应用">应用</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>struct destination
+{
+    string ip;
+    int port;
+    destination(string _ip, int _port): ip(_ip), port(_port){};
+};
+
+struct connection
+{
+    string ip;
+    int port;
+    connection(string _ip, int _port): ip(_ip), port(_port){};
+};
+
+connection connect(destination *d)
+{
+    shared_ptr&lt;connection&gt; pConn(new connection(d-&gt;ip, d-&gt;port));
+    cout &lt;&lt; "creating connection(" &lt;&lt; pConn.use_count() &lt;&lt; ")" &lt;&lt; endl;
+    return *pConn;
+}
+
+connection disconnect(connection&amp; p)
+{
+    cout &lt;&lt; "connection close(" &lt;&lt; p.ip &lt;&lt; ":" &lt;&lt; p.port &lt;&lt; ")" &lt;&lt; endl;
+}
+
+void deleter(connection* p)
+{
+    disconnect(*p);
+}
+
+void f(destination &amp;d)
+{
+    connection c = connect(&amp;d);
+    //shared_ptr&lt;connection&gt; p(&amp;c, deleter);
+    shared_ptr&lt;connection&gt; p(&amp;c, [](connection* p)
+                             {disconnect(*p);});
+    cout &lt;&lt; "Resource has been reaped\n";
+}
+
+int main()
+{
+    destination des("202.201.13.12", 8888);
+    f(des);
+}
+
+</code></pre></div></div>
+<p>如上所示，当f退出时，p被销毁，connection会被正确关闭。</p>
+
+<p>程序打印结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>creating connection(1)
+
+Resource has been reaped
+
+connection close(202.201.13.12:8888)
+
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="reference">Reference</h2>
+<p>[1].C++ Primer. P416.</p>
+
+:ET

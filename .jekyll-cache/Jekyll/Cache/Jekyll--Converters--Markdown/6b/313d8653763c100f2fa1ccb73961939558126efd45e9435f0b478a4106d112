@@ -1,0 +1,189 @@
+I"�<p>awk 是一个强大的文本分析工具，相对于 grep 的查找，sed 的编辑，awk 在其对数据分析并生成报告时，显得尤为强大。简单来说 awk 就是把文件<strong>逐行</strong>的读入，以<strong>空格</strong>为默认分隔符将每行切片，切开的部分再进行各种分析处理。</p>
+
+<p>基本的语法是</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>awk 'BEGIN{ print something} pattern {commands} \
+END{print something}' file
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="awk-begin用法">AWK BEGIN用法</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo -e "line1\nline2" | awk 'BEGIN{ print "start"} { print } \
+ END { print "END" }'
+start
+line1
+line2
+END
+</code></pre></div></div>
+
+<hr />
+<h2 id="特殊变量">特殊变量</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo -e "line1 f2 f3 \n line2 f4 f5\n line3 f6 f7" | awk '{
+print "Line no:"NR",No of fields:"NF, "$0="$0, "$1="$1,"$2="$2, "$3="$3 }'
+
+Line no:1, No of fields:3 $0=line1 f2 f3  $1=line1 $2=f2 $3=f3
+Line no:2, No of fields:3 $0= line2 f4 f5 $1=line2 $2=f4 $3=f5
+Line no:3, No of fields:3 $0= line3 f6 f7 $1=line3 $2=f6 $3=f7
+</code></pre></div></div>
+
+<p>NR:当前行号</p>
+
+<p>NF:当前行字段数量</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ seq 5 | awk 'BEGIN { getline;print "Read ahead first line", $0} \
+{print $0}'
+Read ahead first line 1
+2
+3
+4
+5
+</code></pre></div></div>
+<p>$0:当前行内容</p>
+
+<p>$1:当前行第一个字段内容</p>
+
+<p>$2:当前行第二个字段内容</p>
+
+<p>Shell 自带的还有其他的一些特殊变量</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$0 这个程式的执行名字
+$n 这个程式的第n个参数值，n=1..9
+$* 这个程式的所有参数,此选项参数可超过9个。
+$# 这个程式的参数个数
+$$ 这个程式的PID(脚本运行的当前进程ID号)
+$! 执行上一个背景指令的PID(后台运行的最后一个进程的进程ID号)
+$? 执行上一个指令的返回值 (显示最后命令的退出状态。0表示没有错误，其他任何值表明有错误)
+$- 显示shell使用的当前选项，与set命令功能相同
+$@ 跟$*类似，但是可以当作数组用
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="设置字段定界符">设置字段定界符</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ awk 'BEGIN { FS=":" }{print $NF}' /etc/passwd
+/bin/bash
+/usr/sbin/nologin
+/usr/sbin/nologin
+/usr/sbin/nologin
+/bin/sync
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="从-awk-中读取命令的输出">从 awk 中读取命令的输出</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ echo | awk '{ "grep root /etc/passwd" | getline cmdout; print cmdout }'
+root:x:0:0:root:/root:/bin/bash
+</code></pre></div></div>
+<hr />
+
+<h2 id="单词计数">单词计数</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#！/bin/bash
+
+if [ $# -ne 1 ];
+then
+    echo "Usage: $0 filename";
+    exit -1
+fi
+
+filename=$1
+
+egrep -o "\b[a-zA-Z]+\b" $filename | \
+
+awk '{ count[$0]++ }
+END{ printf("%-14s%s\n", "word", "count");
+for(ind in count)
+{ printf("%-14s%d\n", ind, count[ind]); }
+
+}'
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">egrep -o</code> 这一行将文本中每一个单词单独作一行输出，为了下面解析方便。</p>
+
+<p>awk 对每行的一个单词计数，主要是利用关联数组的特性，使用 <code class="language-plaintext highlighter-rouge">count[$0]++</code> 来存储 Key-Value 计数。</p>
+
+<p>输出如下：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>word          count
+dfs           1
+gds           2
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="文件去重">文件去重</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#！/bin/bash
+
+ls -lS --time-style=long-iso | awk 'BEGIN {
+    getline; getline;
+    name1=$8; size=$5
+}
+{
+    name2=$8;
+    if ( size==$5 )
+    {
+        "md5sum "name1 | getline; csum1=$1;
+        "md5sum "name2 | getline; csum2=$1;
+        if ( csum1==csum2)
+        {
+            print name1; print name2
+        }
+    };
+
+    size=$5; name1=name2;
+}' | sort -u &gt; duplicate_files
+
+cat duplicate_files | xargs -I {} md5sum {} | sort | uniq -w 32 |\
+ awk '{ print
+"^"$2"$" }' | sort -u &gt; duplicate_sample
+
+echo Removing
+comm duplicate_files duplicate_sample -2 -3 | tee /dev/stderr | xargs rm  
+echo Removed duplicates files successfully.
+</code></pre></div></div>
+<p>这段代码用来对文件进行去重。</p>
+
+<p>BEGIN 后的代码z只执行一次，去掉第一行计数。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>total 1068
+-rw-r--r-- 1 huangyi huangyi 1048576 2015-11-15 10:44 junk.data
+-rw-rw-rw- 1 huangyi huangyi     761 2015-11-15 18:32 remove_duplicates.sh
+-rw-r--r-- 1 huangyi huangyi      79 2015-11-15 17:39 duplicate_sample
+</code></pre></div></div>
+
+<p>name1 存储第八列的文件名，size 存储第五列的文件大小。</p>
+
+<p>接下来的代码对比相近两行的 md5 值来判断文件是否相同。</p>
+
+<p><code class="language-plaintext highlighter-rouge">size=$5; name1=name2;</code> 用来更新比较行。</p>
+
+<p>duplicate_files 存储的是有重复的文件。</p>
+
+<hr />
+
+<h2 id="github-push-自动脚本">Github push 自动脚本</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/bin/bash
+modified_files=`git status | awk ' /modified:/ {print $2}'`
+git add $modified_files
+git status
+git commit -m "commit from tool"
+git push origin master
+</code></pre></div></div>
+<p>一般对文件比较多的操作就是修改，因此可以用此脚本 push 到 Github 上。</p>
+
+<p>awk 找出修改文件的路径，多个文件的路径会用空格隔开。</p>
+
+<hr />
+
+<h2 id="参考">参考</h2>
+
+<p><a href="https://www.gnu.org/software/gawk/manual/html_node/Using-BEGIN_002fEND.html">https://www.gnu.org/software/gawk/manual/html_node/Using-BEGIN_002fEND.html</a></p>
+
+<p><a href="http://book.douban.com/subject/6889456/">Linux Shell 脚本攻略</a></p>
+
+:ET

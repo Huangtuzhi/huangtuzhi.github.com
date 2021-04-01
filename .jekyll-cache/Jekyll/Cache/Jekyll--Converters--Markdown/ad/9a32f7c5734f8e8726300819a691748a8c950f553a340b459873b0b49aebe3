@@ -1,0 +1,197 @@
+I"e<div id="tag_cloud">
+
+<a href="#Driver" title="Driver" rel="1">Driver</a>
+
+<a href="#Kernel" title="Kernel" rel="1">Kernel</a>
+
+<a href="#RTOS" title="RTOS" rel="1">RTOS</a>
+
+<a href="#ARM" title="ARM" rel="2">ARM</a>
+
+<a href="#hardware" title="hardware" rel="1">hardware</a>
+
+<a href="#linux" title="linux" rel="3">linux</a>
+
+<a href="#FIR" title="FIR" rel="1">FIR</a>
+
+<a href="#kernel" title="kernel" rel="1">kernel</a>
+
+<a href="#shell" title="shell" rel="1">shell</a>
+
+<a href="#VAD" title="VAD" rel="1">VAD</a>
+
+<a href="#andriod" title="andriod" rel="1">andriod</a>
+
+<a href="#tool" title="tool" rel="1">tool</a>
+
+<a href="#C" title="C" rel="1">C</a>
+
+<a href="#python" title="python" rel="1">python</a>
+
+<a href="#LeetCode" title="LeetCode" rel="1">LeetCode</a>
+
+<a href="#服务器" title="服务器" rel="1">服务器</a>
+
+</div>
+
+<ul class="listing">
+
+  <li class="listing-seperator" id="Driver">Driver</li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-29">2014-06-29</time>
+  <a href="http://huangtuzhi.github.com/2014/06/29/2440ARM/" title="S3C2440的GPIO控制驱动">S3C2440的GPIO控制驱动</a>
+  </li>
+
+
+  <li class="listing-seperator" id="Kernel">Kernel</li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-29">2014-06-29</time>
+  <a href="http://huangtuzhi.github.com/2014/06/29/schedule/" title="进程调度函数schedule()解读">进程调度函数schedule()解读</a>
+  </li>
+
+
+  <li class="listing-seperator" id="RTOS">RTOS</li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-30">2014-06-30</time>
+  <a href="http://huangtuzhi.github.com/2014/06/30/GSM/" title="AT指令控制GSM/GPRS模块上网连接服务器">AT指令控制GSM/GPRS模块上网连接服务器</a>
+  </li>
+
+
+  <li class="listing-seperator" id="ARM">ARM</li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-30">2014-06-30</time>
+  <a href="http://huangtuzhi.github.com/2014/06/30/stm32handler/" title="STM32跳入HardFault Handler中断分析">STM32跳入HardFault Handler中断分析</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-30">2014-06-30</time>
+  <a href="http://huangtuzhi.github.com/2014/06/30/armserver/" title="如何优雅地用ARM开发板搭建服务器">如何优雅地用ARM开发板搭建服务器</a>
+  </li>
+
+
+  <li class="listing-seperator" id="hardware">hardware</li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-30">2014-06-30</time>
+  <a href="http://huangtuzhi.github.com/2014/06/30/cc2530/" title="CC2530外围电路设计调试">CC2530外围电路设计调试</a>
+  </li>
+
+
+  <li class="listing-seperator" id="linux">linux</li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-30">2014-06-30</time>
+  <a href="http://huangtuzhi.github.com/2014/06/30/init/" title="Linux文件目录/etc/init和/etc/init.d的前世今生">Linux文件目录/etc/init和/etc/init.d的前世今生</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-30">2014-06-30</time>
+  <a href="http://huangtuzhi.github.com/2014/06/30/designated/" title="结构体Desinated initializer在linux内核中的使用">结构体Desinated initializer在linux内核中的使用</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-30">2014-06-30</time>
+  <a href="http://huangtuzhi.github.com/2014/06/30/daemon/" title="Start A Daemon">Start A Daemon</a>
+  </li>
+
+
+  <li class="listing-seperator" id="FIR">FIR</li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-30">2014-06-30</time>
+  <a href="http://huangtuzhi.github.com/2014/06/30/fir2/" title="有限长滤波器在血压测量中的运用">有限长滤波器在血压测量中的运用</a>
+  </li>
+
+
+  <li class="listing-seperator" id="kernel">kernel</li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-30">2014-06-30</time>
+  <a href="http://huangtuzhi.github.com/2014/06/30/mutex/" title="内核同步机制之Mutex Exclusion">内核同步机制之Mutex Exclusion</a>
+  </li>
+
+
+  <li class="listing-seperator" id="shell">shell</li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-30">2014-06-30</time>
+  <a href="http://huangtuzhi.github.com/2014/06/30/shellmysql/" title="简单shell脚本检测mysql运行情况">简单shell脚本检测mysql运行情况</a>
+  </li>
+
+
+  <li class="listing-seperator" id="VAD">VAD</li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-30">2014-06-30</time>
+  <a href="http://huangtuzhi.github.com/2014/06/30/svm-vad/" title="基于SVM的语音端点检测">基于SVM的语音端点检测</a>
+  </li>
+
+
+  <li class="listing-seperator" id="andriod">andriod</li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-30">2014-06-30</time>
+  <a href="http://huangtuzhi.github.com/2014/06/30/threadexception/" title="andriod访问网络NetworkOnMainThreadException解决方法">andriod访问网络NetworkOnMainThreadException解决方法</a>
+  </li>
+
+
+  <li class="listing-seperator" id="tool">tool</li>
+
+  <li class="listing-item">
+  <time datetime="2014-07-02">2014-07-02</time>
+  <a href="http://huangtuzhi.github.com/2014/07/02/githubblog/" title="github上搭建个人博客">github上搭建个人博客</a>
+  </li>
+
+
+  <li class="listing-seperator" id="C">C</li>
+
+  <li class="listing-item">
+  <time datetime="2014-07-05">2014-07-05</time>
+  <a href="http://huangtuzhi.github.com/2014/07/05/huffmancode/" title="Huffman树的C实现">Huffman树的C实现</a>
+  </li>
+
+
+  <li class="listing-seperator" id="python">python</li>
+
+  <li class="listing-item">
+  <time datetime="2014-08-13">2014-08-13</time>
+  <a href="http://huangtuzhi.github.com/2014/08/13/PythonCallSqlite/" title="SQLite数据库的访问">SQLite数据库的访问</a>
+  </li>
+
+
+  <li class="listing-seperator" id="LeetCode">LeetCode</li>
+
+  <li class="listing-item">
+  <time datetime="2014-11-13">2014-11-13</time>
+  <a href="http://huangtuzhi.github.com/2014/11/13/PascalTriangle/" title="Pascal's Triangle">Pascal's Triangle</a>
+  </li>
+
+
+  <li class="listing-seperator" id="服务器">服务器</li>
+
+  <li class="listing-item">
+  <time datetime="2015-12-13">2015-12-13</time>
+  <a href="http://huangtuzhi.github.com/2015/12/13/toptopic/" title="换个 timeline 看知乎">换个 timeline 看知乎</a>
+  </li>
+
+
+</ul>
+
+<script src="/media/js/jquery.tagcloud.js" type="text/javascript" charset="utf-8"></script>
+
+<script language="javascript">
+$.fn.tagcloud.defaults = {
+    size: {start: 1, end: 1, unit: 'em'},
+      color: {start: '#f8e0e6', end: '#ff3333'}
+};
+
+$(function () {
+    $('#tag_cloud a').tagcloud();
+});
+</script>
+
+:ET

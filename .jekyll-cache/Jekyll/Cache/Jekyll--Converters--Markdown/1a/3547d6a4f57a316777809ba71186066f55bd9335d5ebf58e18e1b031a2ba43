@@ -1,0 +1,497 @@
+I"�I<div id="tag_cloud">
+
+<a href="#ARM" title="ARM" rel="3">ARM (3)</a>
+
+<a href="#Linux" title="Linux" rel="1">Linux (1)</a>
+
+<a href="#Hardware" title="Hardware" rel="1">Hardware (1)</a>
+
+<a href="#hardware" title="hardware" rel="2">hardware (2)</a>
+
+<a href="#linux" title="linux" rel="10">linux (10)</a>
+
+<a href="#C&amp;&amp;C++" title="C&amp;&amp;C++" rel="15">C&amp;&amp;C++ (15)</a>
+
+<a href="#algorithm" title="algorithm" rel="7">algorithm (7)</a>
+
+<a href="#Network" title="Network" rel="2">Network (2)</a>
+
+<a href="#Algorithm" title="Algorithm" rel="2">Algorithm (2)</a>
+
+<a href="#tool" title="tool" rel="6">tool (6)</a>
+
+<a href="#network" title="network" rel="1">network (1)</a>
+
+<a href="#arm" title="arm" rel="4">arm (4)</a>
+
+<a href="#c&amp;&amp;c++" title="c&amp;&amp;c++" rel="5">c&amp;&amp;c++ (5)</a>
+
+<a href="#c&amp;&amp;C++" title="c&amp;&amp;C++" rel="1">c&amp;&amp;C++ (1)</a>
+
+<a href="#python" title="python" rel="3">python (3)</a>
+
+<a href="#服务器" title="服务器" rel="7">服务器 (7)</a>
+
+<a href="#web" title="web" rel="3">web (3)</a>
+
+<a href="#server" title="server" rel="2">server (2)</a>
+
+<a href="#分布式" title="分布式" rel="1">分布式 (1)</a>
+
+</div>
+
+<ul class="listing">
+
+  <li class="listing-seperator" id="ARM">ARM</li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-30">2014-06-30</time>
+  <a href="http://huangtuzhi.github.com/2014/06/30/stm32handler/" title="STM32跳入HardFault Handler中断分析">STM32跳入HardFault Handler中断分析</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-30">2014-06-30</time>
+  <a href="http://huangtuzhi.github.com/2014/06/30/armserver/" title="如何优雅地用ARM开发板搭建服务器">如何优雅地用ARM开发板搭建服务器</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-29">2014-06-29</time>
+  <a href="http://huangtuzhi.github.com/2014/06/29/2440ARM/" title="S3C2440的GPIO控制驱动">S3C2440的GPIO控制驱动</a>
+  </li>
+
+
+  <li class="listing-seperator" id="Linux">Linux</li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-29">2014-06-29</time>
+  <a href="http://huangtuzhi.github.com/2014/06/29/schedule/" title="进程调度函数schedule()解读">进程调度函数schedule()解读</a>
+  </li>
+
+
+  <li class="listing-seperator" id="Hardware">Hardware</li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-30">2014-06-30</time>
+  <a href="http://huangtuzhi.github.com/2014/06/30/GSM/" title="AT指令控制GSM/GPRS模块上网连接服务器">AT指令控制GSM/GPRS模块上网连接服务器</a>
+  </li>
+
+
+  <li class="listing-seperator" id="hardware">hardware</li>
+
+  <li class="listing-item">
+  <time datetime="2014-07-07">2014-07-07</time>
+  <a href="http://huangtuzhi.github.com/2014/07/07/m3/" title="M3外围电路设计调试">M3外围电路设计调试</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-30">2014-06-30</time>
+  <a href="http://huangtuzhi.github.com/2014/06/30/cc2530/" title="CC2530外围电路设计调试">CC2530外围电路设计调试</a>
+  </li>
+
+
+  <li class="listing-seperator" id="linux">linux</li>
+
+  <li class="listing-item">
+  <time datetime="2014-12-30">2014-12-30</time>
+  <a href="http://huangtuzhi.github.com/2014/12/30/KernelWriteFile/" title="内核中读写文件">内核中读写文件</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-11-20">2014-11-20</time>
+  <a href="http://huangtuzhi.github.com/2014/11/20/RCU/" title="LRU缓存机制">LRU缓存机制</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-11-13">2014-11-13</time>
+  <a href="http://huangtuzhi.github.com/2014/11/13/ManualSleep/" title="手工休眠问题">手工休眠问题</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-08-27">2014-08-27</time>
+  <a href="http://huangtuzhi.github.com/2014/08/27/printk/" title="害群之马printk">害群之马printk</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-08-15">2014-08-15</time>
+  <a href="http://huangtuzhi.github.com/2014/08/15/wait_interruptible/" title="wait_event_interruptible的唤醒问题">wait_event_interruptible的唤醒问题</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-07-11">2014-07-11</time>
+  <a href="http://huangtuzhi.github.com/2014/07/11/rcS/" title="嵌入式linux /etc/init.d/rcS文件解读">嵌入式linux /etc/init.d/rcS文件解读</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-07-03">2014-07-03</time>
+  <a href="http://huangtuzhi.github.com/2014/07/03/audio/" title="实时获取麦克风语音信号">实时获取麦克风语音信号</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-30">2014-06-30</time>
+  <a href="http://huangtuzhi.github.com/2014/06/30/mutex/" title="内核同步机制之Mutex Exclusion">内核同步机制之Mutex Exclusion</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-30">2014-06-30</time>
+  <a href="http://huangtuzhi.github.com/2014/06/30/init/" title="Linux文件目录/etc/init和/etc/init.d的前世今生">Linux文件目录/etc/init和/etc/init.d的前世今生</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-30">2014-06-30</time>
+  <a href="http://huangtuzhi.github.com/2014/06/30/daemon/" title="Start A Daemon">Start A Daemon</a>
+  </li>
+
+
+  <li class="listing-seperator" id="C&amp;&amp;C++">C&amp;&amp;C++</li>
+
+  <li class="listing-item">
+  <time datetime="2015-06-06">2015-06-06</time>
+  <a href="http://huangtuzhi.github.com/2015/06/06/raiiMutex/" title="RAII实现的mutex资源类">RAII实现的mutex资源类</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2015-05-17">2015-05-17</time>
+  <a href="http://huangtuzhi.github.com/2015/05/17/observer/" title="C++观察者模式">C++观察者模式</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2015-05-09">2015-05-09</time>
+  <a href="http://huangtuzhi.github.com/2015/05/09/httpserver/" title="HTTP服务器实现">HTTP服务器实现</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2015-05-06">2015-05-06</time>
+  <a href="http://huangtuzhi.github.com/2015/05/06/memorypool/" title="C++内存池实现">C++内存池实现</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2015-05-01">2015-05-01</time>
+  <a href="http://huangtuzhi.github.com/2015/05/01/stringvec/" title="实现vector内存管理类">实现vector内存管理类</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2015-04-26">2015-04-26</time>
+  <a href="http://huangtuzhi.github.com/2015/04/26/iteratorpattern/" title="C++迭代器模式">C++迭代器模式</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2015-04-02">2015-04-02</time>
+  <a href="http://huangtuzhi.github.com/2015/04/02/shared_ptr/" title="智能指针进行资源管理">智能指针进行资源管理</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-10-09">2014-10-09</time>
+  <a href="http://huangtuzhi.github.com/2014/10/09/QTNote5/" title="QT学习笔记5">QT学习笔记5</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-10-03">2014-10-03</time>
+  <a href="http://huangtuzhi.github.com/2014/10/03/uIP/" title="uIP移植和分析">uIP移植和分析</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-09-20">2014-09-20</time>
+  <a href="http://huangtuzhi.github.com/2014/09/20/QTNote4/" title="QT学习笔记4">QT学习笔记4</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-09-12">2014-09-12</time>
+  <a href="http://huangtuzhi.github.com/2014/09/12/QTNote3/" title="QT学习笔记3">QT学习笔记3</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-09-11">2014-09-11</time>
+  <a href="http://huangtuzhi.github.com/2014/09/11/QTNote2/" title="QT学习笔记2">QT学习笔记2</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-09-10">2014-09-10</time>
+  <a href="http://huangtuzhi.github.com/2014/09/10/QTNote1/" title="QT学习笔记1">QT学习笔记1</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-08-14">2014-08-14</time>
+  <a href="http://huangtuzhi.github.com/2014/08/14/STL_study1/" title="STL Vector学习笔记">STL Vector学习笔记</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-30">2014-06-30</time>
+  <a href="http://huangtuzhi.github.com/2014/06/30/designated/" title="结构体Desinated initializer在linux内核中的使用">结构体Desinated initializer在linux内核中的使用</a>
+  </li>
+
+
+  <li class="listing-seperator" id="algorithm">algorithm</li>
+
+  <li class="listing-item">
+  <time datetime="2015-03-20">2015-03-20</time>
+  <a href="http://huangtuzhi.github.com/2015/03/20/offerpractice/" title="SwordOffer有意思的算法题">SwordOffer有意思的算法题</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2015-03-19">2015-03-19</time>
+  <a href="http://huangtuzhi.github.com/2015/03/19/dessignpattern/" title="遇到的设计模式">遇到的设计模式</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-11-22">2014-11-22</time>
+  <a href="http://huangtuzhi.github.com/2014/11/22/MaxLen/" title="二叉树最大距离">二叉树最大距离</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-07-07">2014-07-07</time>
+  <a href="http://huangtuzhi.github.com/2014/07/07/mfcc/" title="语音信号MFCC算法简析">语音信号MFCC算法简析</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-07-07">2014-07-07</time>
+  <a href="http://huangtuzhi.github.com/2014/07/07/fft/" title="又见FFT">又见FFT</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-07-05">2014-07-05</time>
+  <a href="http://huangtuzhi.github.com/2014/07/05/huffmancode/" title="Huffman树的C实现">Huffman树的C实现</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-30">2014-06-30</time>
+  <a href="http://huangtuzhi.github.com/2014/06/30/fir2/" title="有限长滤波器在血压测量中的运用">有限长滤波器在血压测量中的运用</a>
+  </li>
+
+
+  <li class="listing-seperator" id="Network">Network</li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-30">2014-06-30</time>
+  <a href="http://huangtuzhi.github.com/2014/06/30/threadexception/" title="andriod访问网络NetworkOnMainThreadException解决方法">andriod访问网络NetworkOnMainThreadException解决方法</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-30">2014-06-30</time>
+  <a href="http://huangtuzhi.github.com/2014/06/30/shellmysql/" title="简单shell脚本检测mysql运行情况">简单shell脚本检测mysql运行情况</a>
+  </li>
+
+
+  <li class="listing-seperator" id="Algorithm">Algorithm</li>
+
+  <li class="listing-item">
+  <time datetime="2015-04-10">2015-04-10</time>
+  <a href="http://huangtuzhi.github.com/2015/04/10/AlibabaRecommand/" title="移动推荐算法设计">移动推荐算法设计</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-06-30">2014-06-30</time>
+  <a href="http://huangtuzhi.github.com/2014/06/30/svm-vad/" title="基于SVM的语音端点检测">基于SVM的语音端点检测</a>
+  </li>
+
+
+  <li class="listing-seperator" id="tool">tool</li>
+
+  <li class="listing-item">
+  <time datetime="2015-12-13">2015-12-13</time>
+  <a href="http://huangtuzhi.github.com/2015/12/13/toptopic/" title="换个 timeline 看知乎">换个 timeline 看知乎</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2015-11-16">2015-11-16</time>
+  <a href="http://huangtuzhi.github.com/2015/11/16/text-awk/" title="文本利器 AWK">文本利器 AWK</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-11-10">2014-11-10</time>
+  <a href="http://huangtuzhi.github.com/2014/11/10/KnowlegdeStructure/" title="知识结构">知识结构</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-11-02">2014-11-02</time>
+  <a href="http://huangtuzhi.github.com/2014/11/02/BOA/" title="BOA服务器安装配置">BOA服务器安装配置</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-10-05">2014-10-05</time>
+  <a href="http://huangtuzhi.github.com/2014/10/05/JobAnalysis/" title="拉勾网职位需求分析">拉勾网职位需求分析</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-07-02">2014-07-02</time>
+  <a href="http://huangtuzhi.github.com/2014/07/02/githubblog/" title="github上搭建个人博客">github上搭建个人博客</a>
+  </li>
+
+
+  <li class="listing-seperator" id="network">network</li>
+
+  <li class="listing-item">
+  <time datetime="2014-08-13">2014-08-13</time>
+  <a href="http://huangtuzhi.github.com/2014/08/13/PythonCallSqlite/" title="SQLite数据库的访问">SQLite数据库的访问</a>
+  </li>
+
+
+  <li class="listing-seperator" id="arm">arm</li>
+
+  <li class="listing-item">
+  <time datetime="2014-10-13">2014-10-13</time>
+  <a href="http://huangtuzhi.github.com/2014/10/13/SNULL/" title="SNULL网络设备驱动">SNULL网络设备驱动</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-08-28">2014-08-28</time>
+  <a href="http://huangtuzhi.github.com/2014/08/28/webvideo/" title="基于V4L2的视频远程监控">基于V4L2的视频远程监控</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-08-28">2014-08-28</time>
+  <a href="http://huangtuzhi.github.com/2014/08/28/webleds/" title="网页控制IO分析">网页控制IO分析</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-08-14">2014-08-14</time>
+  <a href="http://huangtuzhi.github.com/2014/08/14/NFS/" title="ARM下挂载NFS文件系统">ARM下挂载NFS文件系统</a>
+  </li>
+
+
+  <li class="listing-seperator" id="c&amp;&amp;c++">c&amp;&amp;c++</li>
+
+  <li class="listing-item">
+  <time datetime="2014-12-27">2014-12-27</time>
+  <a href="http://huangtuzhi.github.com/2014/12/27/redis/" title="Redis分析">Redis分析</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-12-17">2014-12-17</time>
+  <a href="http://huangtuzhi.github.com/2014/12/17/Singleten/" title="仿singleten模式的Client-Server方法">仿singleten模式的Client-Server方法</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-11-11">2014-11-11</time>
+  <a href="http://huangtuzhi.github.com/2014/11/11/BOASourse3/" title="BOA源码笔记3">BOA源码笔记3</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-11-08">2014-11-08</time>
+  <a href="http://huangtuzhi.github.com/2014/11/08/BOASourse2/" title="BOA源码笔记2">BOA源码笔记2</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2014-11-07">2014-11-07</time>
+  <a href="http://huangtuzhi.github.com/2014/11/07/BOASource1/" title="BOA源码笔记1">BOA源码笔记1</a>
+  </li>
+
+
+  <li class="listing-seperator" id="c&amp;&amp;C++">c&amp;&amp;C++</li>
+
+  <li class="listing-item">
+  <time datetime="2014-11-13">2014-11-13</time>
+  <a href="http://huangtuzhi.github.com/2014/11/13/PascalTriangle/" title="Pascal's Triangle">Pascal's Triangle</a>
+  </li>
+
+
+  <li class="listing-seperator" id="python">python</li>
+
+  <li class="listing-item">
+  <time datetime="2015-04-27">2015-04-27</time>
+  <a href="http://huangtuzhi.github.com/2015/04/27/upvote/" title="Reddit的Upvote功能简单实现">Reddit的Upvote功能简单实现</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2015-03-05">2015-03-05</time>
+  <a href="http://huangtuzhi.github.com/2015/03/05/DistributedProcess/" title="分布式进程">分布式进程</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2015-03-03">2015-03-03</time>
+  <a href="http://huangtuzhi.github.com/2015/03/03/mapreduce/" title="python中map和reduce的应用">python中map和reduce的应用</a>
+  </li>
+
+
+  <li class="listing-seperator" id="服务器">服务器</li>
+
+  <li class="listing-item">
+  <time datetime="2015-06-04">2015-06-04</time>
+  <a href="http://huangtuzhi.github.com/2015/06/04/reverseProxy/" title="使用Nginx反向代理Flask站点">使用Nginx反向代理Flask站点</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2015-06-03">2015-06-03</time>
+  <a href="http://huangtuzhi.github.com/2015/06/03/nginx6/" title="Nginx源码分析(6)">Nginx源码分析(6)</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2015-06-02">2015-06-02</time>
+  <a href="http://huangtuzhi.github.com/2015/06/02/nginx5/" title="Nginx源码分析(5)">Nginx源码分析(5)</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2015-06-01">2015-06-01</time>
+  <a href="http://huangtuzhi.github.com/2015/06/01/nginx4/" title="Nginx源码分析(4)">Nginx源码分析(4)</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2015-05-31">2015-05-31</time>
+  <a href="http://huangtuzhi.github.com/2015/05/31/nginx3/" title="Nginx源码分析(3)">Nginx源码分析(3)</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2015-05-30">2015-05-30</time>
+  <a href="http://huangtuzhi.github.com/2015/05/30/nginx2/" title="Nginx源码分析(2)">Nginx源码分析(2)</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2015-05-29">2015-05-29</time>
+  <a href="http://huangtuzhi.github.com/2015/05/29/nginx1/" title="Nginx源码分析(1)">Nginx源码分析(1)</a>
+  </li>
+
+
+  <li class="listing-seperator" id="web">web</li>
+
+  <li class="listing-item">
+  <time datetime="2016-01-08">2016-01-08</time>
+  <a href="http://huangtuzhi.github.com/2016/01/08/develop-search-engine/" title="自制简单搜索引擎">自制简单搜索引擎</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2015-12-25">2015-12-25</time>
+  <a href="http://huangtuzhi.github.com/2015/12/25/docker-web-app/" title="在 Docker 中完整部署 Web 应用">在 Docker 中完整部署 Web 应用</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2015-07-17">2015-07-17</time>
+  <a href="http://huangtuzhi.github.com/2015/07/17/json/" title="说说JSON序列化">说说JSON序列化</a>
+  </li>
+
+
+  <li class="listing-seperator" id="server">server</li>
+
+  <li class="listing-item">
+  <time datetime="2015-09-21">2015-09-21</time>
+  <a href="http://huangtuzhi.github.com/2015/09/21/concurrentlock/" title="KV系统实现并发锁">KV系统实现并发锁</a>
+  </li>
+
+  <li class="listing-item">
+  <time datetime="2015-09-13">2015-09-13</time>
+  <a href="http://huangtuzhi.github.com/2015/09/13/serverTree/" title="后台开发之路">后台开发之路</a>
+  </li>
+
+
+  <li class="listing-seperator" id="分布式">分布式</li>
+
+  <li class="listing-item">
+  <time datetime="2015-10-29">2015-10-29</time>
+  <a href="http://huangtuzhi.github.com/2015/10/29/zookeeper-scene/" title="ZooKeeper使用场景">ZooKeeper使用场景</a>
+  </li>
+
+
+</ul>
+
+<script src="/media/js/jquery.tagcloud.js" type="text/javascript" charset="utf-8"></script>
+
+<script language="javascript">
+$.fn.tagcloud.defaults = {
+    size: {start: 1, end: 1, unit: 'em'},
+      color: {start: '#f8e0e6', end: '#ff3333'}
+};
+
+$(function () {
+    $('#tag_cloud a').tagcloud();
+});
+</script>
+
+:ET

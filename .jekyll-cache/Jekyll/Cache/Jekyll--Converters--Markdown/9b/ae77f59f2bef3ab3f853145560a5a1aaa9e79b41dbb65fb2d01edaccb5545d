@@ -1,0 +1,141 @@
+I")<p>这段时间在看<strong>C++ Primer</strong>,才发现我喜欢的是<strong>C++ Primer Plus</strong>。前面那本书感觉比较零散，后者讲的非常透彻，比如引用的由来和用途，即使是在Kindle上看也能理解清楚。抽出本科上课的那本电子工业出版社的<strong>C++程序设计基础</strong>，看着很亲切，大概是因为编的简单。</p>
+
+<p>想着把C++的基础打牢一些，光看书敲例子代码似乎不能很好的理解提高。于是结合QTCreater复习C++的同时学习一下怎么写嵌入式系统的GUI界面。</p>
+
+<hr />
+<h2 id="qtcreater安装">QTCreater安装</h2>
+<p>QTCreater比较大，可能还需要安装OpenGL函数库，开发包等。我使用原始的命令进行安装，亲测可用，快速方便。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get install qt4-dev-tools #开发包 　　
+sudo apt-get install qtcreator     #IDE　　
+sudo apt-get install qt4-doc       #开发帮助文档 　
+sudo apt-get install qt4-qtconfig  #配置工具 　　
+sudo apt-get install qt4-demos     #DEMO源码 
+</code></pre></div></div>
+
+<hr />
+<h2 id="一张图">一张图</h2>
+
+<p>下图说明了QT窗口所有控件的继承家族关系。其中QDialog是各种对话框的基类，QMainWindow是带有菜单栏和工具栏的主创口类，两者都继承自Qwidget。所有的窗口部件都继承自Qwidget。</p>
+
+<p><img src="/assets/images/QT1.png" alt="图片" /></p>
+
+<hr />
+<h2 id="例子才不用helloworld">例子才不用HelloWorld</h2>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="cp">#include "mainwindow.h"
+#include &lt;QApplication&gt;
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">QApplication</span> <span class="n">a</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+    <span class="n">QWidget</span> <span class="o">*</span><span class="n">widget</span><span class="o">=</span><span class="n">new</span> <span class="n">QWidget</span><span class="p">;</span>
+    <span class="n">widget</span><span class="o">-&gt;</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s">"This is widget"</span><span class="p">);</span>
+
+    <span class="n">QLabel</span> <span class="o">*</span><span class="n">label</span><span class="o">=</span><span class="n">new</span> <span class="n">QLabel</span><span class="p">();</span>
+    <span class="c1">//Default parameter of parent is 0, so it is a window.</span>
+    <span class="n">label</span><span class="o">-&gt;</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s">"This is label"</span><span class="p">);</span>
+    <span class="n">label</span><span class="o">-&gt;</span><span class="n">setText</span><span class="p">(</span><span class="s">"This is Text of label"</span><span class="p">);</span>
+    <span class="n">label</span><span class="o">-&gt;</span><span class="n">resize</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="mi">150</span><span class="p">);</span>
+    <span class="n">label</span><span class="o">-&gt;</span><span class="n">show</span><span class="p">();</span>
+
+    <span class="n">QLabel</span> <span class="o">*</span><span class="n">label2</span><span class="o">=</span><span class="n">new</span> <span class="n">QLabel</span><span class="p">(</span><span class="n">widget</span><span class="p">);</span>
+    <span class="c1">//Default parameter of parent is widget</span>
+    <span class="n">label2</span><span class="o">-&gt;</span><span class="n">setText</span><span class="p">((</span><span class="s">"Label is part of Widget"</span><span class="p">));</span>
+    <span class="n">label2</span><span class="o">-&gt;</span><span class="n">resize</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span><span class="mi">200</span><span class="p">);</span>
+    <span class="n">label2</span><span class="o">-&gt;</span><span class="n">show</span><span class="p">();</span>
+
+    <span class="n">widget</span><span class="o">-&gt;</span><span class="n">show</span><span class="p">();</span>
+    <span class="k">return</span> <span class="n">a</span><span class="p">.</span><span class="n">exec</span><span class="p">();</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>程序定义了一个QWidget类对象的指针widget和两个QLable对象指针label与label2。其中label没有父窗口，而label2在widget中，widget是父窗口。</p>
+
+<p>QMainWindow和QDialog子类是一般的窗口类型。窗口是没有父部件的部件，成为顶级部件(top-level widget),与其相对的是非窗口部件，又称为子部件(child widget).</p>
+
+<hr />
+<h2 id="signal-and-slot">SIGNAL AND SLOT</h2>
+<p>在一些自己写的继承类中会看到宏定义<code class="language-plaintext highlighter-rouge">Q_OBJECT</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class MainWindow : public QMainWindow
+{
+    Q_OBJECT
+    public:
+    ...
+}
+</code></pre></div></div>
+
+<p>它定义如下：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#define Q_OBJECT \
+public: \
+Q_OBJECT_CHECK \
+static const QMetaObject staticMetaObject; \
+virtual const QMetaObject *metaObject() const; \
+virtual void *qt_metacast(const char *); \
+QT_TR_FUNCTIONS \
+virtual int qt_metacall(QMetaObject::Call, int, void **); 
+private: \
+Q_DECL_HIDDEN_STATIC_METACALL static void  \
+qt_static_metacall(QObject *, QMetaObject::Call, int, void **); \
+struct QPrivateSignal {};
+</code></pre></div></div>
+
+<blockquote>
+  <p>The Q_OBJECT macro at the beginning of the class definition is necessary for all classes that define signals or slots。</p>
+</blockquote>
+
+<p>只有加入了Q_OBJECT，自己定义的类中才能使用QT中的SIGNAL&amp;&amp;SLOT机制。</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="cp">#include &lt;QApplication&gt;
+#include &lt;QTextEdit&gt;
+#include &lt;QPushButton&gt;
+#include &lt;QVBoxLayout&gt;
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">QApplication</span> <span class="n">a</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+    <span class="n">QTextEdit</span> <span class="o">*</span><span class="n">textEdit</span><span class="o">=</span><span class="n">new</span> <span class="n">QTextEdit</span><span class="p">;</span>
+    <span class="n">QPushButton</span> <span class="o">*</span><span class="n">quitbutton</span><span class="o">=</span><span class="n">new</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s">"&amp;Quit"</span><span class="p">);</span>
+
+    <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span><span class="n">quitbutton</span><span class="p">,</span><span class="n">SIGNAL</span><span class="p">(</span><span class="n">clicked</span><span class="p">()),</span><span class="n">qApp</span><span class="p">,</span><span class="n">SLOT</span><span class="p">(</span><span class="n">quit</span><span class="p">()));</span>
+
+    <span class="n">QVBoxLayout</span> <span class="o">*</span><span class="n">layout</span><span class="o">=</span><span class="n">new</span> <span class="n">QVBoxLayout</span><span class="p">;</span>
+    <span class="n">layout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">textEdit</span><span class="p">);</span>
+    <span class="n">layout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">quitbutton</span><span class="p">);</span>
+
+    <span class="n">QWidget</span> <span class="n">window</span><span class="p">;</span>
+    <span class="n">window</span><span class="p">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">layout</span><span class="p">);</span>
+    <span class="n">window</span><span class="p">.</span><span class="n">show</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="n">a</span><span class="p">.</span><span class="n">exec</span><span class="p">();</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>运行生成的GUI界面如下：</p>
+
+<p><img src="/assets/images/QT2.png" alt="图片" /></p>
+
+<p>这段程序中使用<code class="language-plaintext highlighter-rouge">connect(quitbutton,SIGNAL(clicked()),qApp,SLOT(quit()))</code>来关联<code class="language-plaintext highlighter-rouge">quitbutton</code>和<code class="language-plaintext highlighter-rouge">quit()</code>，就像事件驱动一样。这就是使用了SIGNAL&amp;&amp;SLOT机制。</p>
+
+<p>在官方文档上这么描述SIGNAL&amp;&amp;SLOT机制的由来</p>
+
+<blockquote>
+  <p>In GUI programming, when we change one widget, we often want another widget to be notified. More generally, we want objects of any kind to be able to communicate with one another.</p>
+</blockquote>
+
+<p>可以看出这个机制和CallBack回调机制很像，它将两个对象的事件进行绑定，一个事件的执行造成另一个事件的触发。绑定的方式如图所示：</p>
+
+<p><img src="/assets/images/QT3.png" alt="图片" /></p>
+
+<p>这个例子中把quitbutton提交的信号发送到系统调用quit槽中，如果点击按钮，界面就会退出。</p>
+
+<hr />
+<h2 id="reference">Reference</h2>
+<p>[1].http://www.qter.org/?page_id=161</p>
+
+<p>[2].http://qt-project.org/doc/qt-4.8/gettingstartedqt.html#hello-notepad</p>
+
+<p>[3].http://www.ibm.com/developerworks/cn/linux/guitoolkit/qt/signal-slot/index.html</p>
+
+<p>[4].http://qt-project.org/doc/qt-4.8/signalsandslots.html</p>
+:ET

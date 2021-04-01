@@ -1,0 +1,159 @@
+I"�7<p>前面的一篇文章说到MINI2440 ARM开发板可以跑HTTP服务器，因此可以在上面开发一些web应用。甚至可以进行视频远程监控。</p>
+
+<p>远程视频监控的原理和控制IO口类似，都是首先必须有一个web服务器。在视频监控方案中，程序读取linux底层的USB摄像头驱动获取视频数据，然后经由服务器通过TCP/IP协议传到网页上进行显示。传输的视频图像数据格式采用流媒体编码。这种流媒体编码格式适应于网络传输并进行实时显示，不像rmvb或者mp4这种格式必须全部下载完毕才能解码播放。它把视频分成更小的单元来进行压缩编码并传输。</p>
+
+<p>现在有两种方案来实现远程视频监控：</p>
+
+<p>1.基于开源项目MJPEG-Streamer,利用V4L2底层驱动，把MJPEG格式转换为流媒体进行传输，然后在浏览器中通过访问内建的网页来浏览视频。</p>
+
+<p>2.接近真实的IP-camera方案，也是利用V4L2视频驱动，配合ffmpe,X264的软件解码，通过UDP上传至PC显示。USB摄像头得到的数据格式一般是YUV422，可以利用开源库进行编解码。</p>
+
+<hr />
+<h2 id="mipeg-streamer方案">MIPEG-Streamer方案</h2>
+<p>MIPEG-Streamer是一个开源项目，托管在github上[1]。它可以支持CMOS，USB摄像头。不支持MJPEG格式的USB摄像头也可以使用。笔者采用的安装步骤如下：</p>
+
+<p>1.到网站<code class="language-plaintext highlighter-rouge">https://code.google.com/p/mjpg-streamer-mini2440</code>下载binary package compiled for mini2440 based on r9。也可以下载源码自己进行编译。</p>
+
+<p>2.把下载的文件通过FTP或者NFS传到ARM开发板上。新建目录<code class="language-plaintext highlighter-rouge">mkdir WebVideo</code>并解压到此目录下。</p>
+
+<p>3.由于自己使用的USB摄像头没有MJPG支持，运行脚本<code class="language-plaintext highlighter-rouge">start_uvc_yuv.sh</code>。</p>
+
+<p>4.查看arm开发板上的ip地址，在PC浏览器中输入<code class="language-plaintext highlighter-rouge">ip:8080/?action=stream</code>就可以看见摄像头的视频了。</p>
+
+<p>终端显示如下:</p>
+
+<p><img src="/assets/images/webvideo.png" alt="图片" /></p>
+
+<hr />
+<h2 id="ip-camera方案">IP-Camera方案</h2>
+<p>IP-Camera的方案像IP电话的IP包一样，获取视频数据后压缩传输，然后在客户端进行解码。里面最重要的部分是<strong>业务逻辑</strong>，语言和API调用只是基础。</p>
+
+<p>笔者采用[3]中提到的方式进行编译调试，主要分为两部分。一个是ARM上的Server程序，一个是PC上的Shower程序。它们都需要使用库ffmpeg来进行视频编解码，Server是编码，Shower是解码。因此Server的ffmpeg需要交叉编译为arm版本，PC上的ffmpeg编译为PC版本。</p>
+
+<hr />
+<h2 id="编译动态链接库so">编译动态链接库.so</h2>
+<p>ARM上linux内核没有提供IP-Camera应用程序处理视频图像的函数库，可以选择直接把处理视频图像的源代码加入到应用程序中交叉编译。或者把这些库编译成动态链接库.so，直接拷贝到开发板里。</p>
+
+<p>静态链接库和动态链接库主要有下面的区别：</p>
+
+<p>1.静态链接库对函数库的链接是放在编译期间（compile time）完成的。所有相关的对象文件(object file)与牵涉到的函数库(library)被链接并合成一个可执行文件(executable file)。程序在运行时，与函数库无关，所有需要的函数已拷贝到可执行文件中。所以这些函数库被成为静态库(static libaray)，文件名为“libxxx.a”的形式</p>
+
+<p>2.动态链接库（dynamic link library）技术可以把库函数的链接载入推迟到程序运行期间(runtime)。</p>
+
+<p>现在需要交叉编译的动态链接库(依赖库)有3个：对其他软件底层支持的zlib.so，支持编译ffmpeg的x264.so，进行视频处理的ffmpeg.so。</p>
+
+<p>编译zlib的步骤：</p>
+
+<p>1.解压zlib-1.2.5.tar.gz   <code class="language-plaintext highlighter-rouge">tar -xzvf zlib-1.2.5.tar.gz</code></p>
+
+<p>2.运行configure配置makefile <code class="language-plaintext highlighter-rouge">./configure /opt/WebVideo</code>默认配置后会在当前目录下生成Makefile</p>
+
+<p>3.修改Makefile以便能够用arm-linux-gcc编译,把gcc改成arm-linux-gcc，ar改成arm-linux-ar即可。</p>
+
+<p>4.然后<code class="language-plaintext highlighter-rouge">make</code>，<code class="language-plaintext highlighter-rouge">make install</code>,在/opt/WebVideo目录下就能看见<code class="language-plaintext highlighter-rouge">/lib</code> <code class="language-plaintext highlighter-rouge">/include</code> <code class="language-plaintext highlighter-rouge">/bin</code>文件夹了。</p>
+
+<p>编译好的zlib.so库可以用<code class="language-plaintext highlighter-rouge">nm -D libz.so</code> 命令查看支持哪些函数调用，如图所示：</p>
+
+<p><img src="/assets/images/webvideo1.png" alt="图片" /></p>
+
+<p>x264.so和ffmpeg.so的编译方法一样。</p>
+
+<hr />
+<h2 id="编译server">编译Server</h2>
+<p>Makefile如下：</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="nl">all:</span><span class="n">webcam_server</span> 
+  
+<span class="n">CC</span><span class="o">=</span><span class="n">arm</span><span class="k">-</span><span class="n">linux</span><span class="k">-</span><span class="n">g</span><span class="o">+</span><span class="k">+</span>
+<span class="n">LD</span><span class="o">=</span><span class="n">arm</span><span class="k">-</span><span class="n">linux</span><span class="k">-</span><span class="n">ld</span>
+<span class="n">CXXFLAGS</span><span class="o">=</span>  <span class="k">-</span><span class="n">c</span> <span class="k">-</span><span class="n">g</span> <span class="k">-</span><span class="n">O0</span> <span class="k">-</span><span class="n">fPIC</span> <span class="k">-</span><span class="n">I</span><span class="p">.</span><span class="o">/</span><span class="n">ffmpeg</span><span class="o">/</span><span class="n">include</span> <span class="k">-</span><span class="n">L</span><span class="p">.</span><span class="o">/</span><span class="n">ffmpeg</span><span class="o">/</span><span class="n">lib</span>  
+    
+<span class="n">OBJS_SERVER</span><span class="o">=</span>  <span class="n">capture</span><span class="p">.</span><span class="n">o</span> <span class="n">vcompress</span><span class="p">.</span><span class="n">o</span> <span class="n">sender</span><span class="p">.</span><span class="n">o</span> <span class="n">server</span><span class="p">.</span><span class="n">o</span>
+<span class="n">LIBS_SERVER</span><span class="o">=</span>  <span class="k">-</span><span class="n">lavcodec</span> <span class="k">-</span><span class="n">lswscale</span> <span class="k">-</span><span class="n">lavutil</span> <span class="k">-</span><span class="n">lx264</span> <span class="k">-</span><span class="n">lpthread</span> <span class="k">-</span><span class="n">lz</span>
+
+<span class="p">.</span><span class="n">cpp</span><span class="p">.</span><span class="n">o</span><span class="o">:</span>
+       <span class="err">$</span><span class="p">(</span><span class="n">CC</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">CXXFLAGS</span><span class="p">)</span> <span class="err">$</span><span class="o">&lt;</span>
+    
+<span class="n">webcam_server</span><span class="o">:</span> <span class="err">$</span><span class="p">(</span><span class="n">OBJS_SERVER</span><span class="p">)</span>
+       <span class="err">$</span><span class="p">(</span><span class="n">CC</span><span class="p">)</span> <span class="k">-</span><span class="n">o</span> <span class="err">$@</span> <span class="err">$</span><span class="o">^</span> <span class="k">-</span><span class="n">L</span><span class="p">.</span><span class="o">/</span><span class="n">ffmpeg</span><span class="o">/</span><span class="n">lib</span> <span class="err">$</span><span class="p">(</span><span class="n">LIBS_SERVER</span><span class="p">)</span>
+  
+<span class="n">clean</span><span class="o">:</span>
+       <span class="n">rm</span> <span class="k">-</span><span class="n">f</span> <span class="o">*</span><span class="p">.</span><span class="n">o</span>
+       <span class="n">rm</span> <span class="k">-</span><span class="n">f</span> <span class="n">webcam_server</span></code></pre></figure>
+
+<hr />
+<h2 id="编译shower">编译Shower</h2>
+<p>Shower的显示采用X11库，所以先下载依赖包</p>
+
+<p><code class="language-plaintext highlighter-rouge">sudo apt-get intall libx11-dev</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">sudo apt-get install libxext-dev</code></p>
+
+<p>libxext-dev对应于头文件X11/extensions/XShm.h，编译的时候还遇到很多问题，比如链接库找不到[10]等等。细节不在这里贴出。</p>
+
+<p>Makefile如下：</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="nl">all:</span> <span class="n">webcam_shower</span>
+<span class="n">CC</span><span class="o">=</span><span class="n">g</span><span class="o">+</span><span class="k">+</span>
+<span class="n">LD</span><span class="o">=</span><span class="n">ld</span>
+    
+<span class="n">CXXFLAGS</span><span class="o">=</span>  <span class="k">-</span><span class="n">c</span> <span class="k">-</span><span class="n">g</span> <span class="k">-</span><span class="n">O0</span> <span class="k">-</span><span class="n">fPIC</span> <span class="k">-</span><span class="n">I</span><span class="p">.</span><span class="o">/</span><span class="n">ffmpeg</span><span class="o">/</span><span class="n">include</span> <span class="k">-</span><span class="n">L</span><span class="p">.</span><span class="o">/</span><span class="n">ffmpeg</span><span class="o">/</span><span class="n">lib</span>  
+
+<span class="n">OBJS_SHOWER</span><span class="o">=</span>  <span class="n">vshow</span><span class="p">.</span><span class="n">o</span> <span class="n">shower</span><span class="p">.</span><span class="n">o</span>
+<span class="n">LIBS_SHOWER</span><span class="o">=</span>  <span class="k">-</span><span class="n">lavcodec</span> <span class="k">-</span><span class="n">lswscale</span> <span class="k">-</span><span class="n">lavutil</span> <span class="k">-</span><span class="n">lx11</span> <span class="k">-</span><span class="n">lXext</span>
+    
+<span class="p">.</span><span class="n">cpp</span><span class="p">.</span><span class="n">o</span><span class="o">:</span>
+<span class="err">$</span><span class="p">(</span><span class="n">CC</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">CXXFLAGS</span><span class="p">)</span> <span class="err">$</span><span class="o">&lt;</span>
+    
+<span class="n">webcam_shower</span><span class="o">:</span> <span class="err">$</span><span class="p">(</span><span class="n">OBJS_SHOWER</span><span class="p">)</span>
+<span class="err">$</span><span class="p">(</span><span class="n">CC</span><span class="p">)</span> <span class="k">-</span><span class="n">o</span> <span class="err">$@</span> <span class="err">$</span><span class="o">^</span> <span class="k">-</span><span class="n">L</span><span class="p">.</span><span class="o">/</span><span class="n">ffmpeg</span><span class="o">/</span><span class="n">lib</span> <span class="err">$</span><span class="p">(</span><span class="n">LIBS_SHOWER</span><span class="p">)</span>
+    
+<span class="n">clean</span><span class="o">:</span>
+<span class="n">rm</span> <span class="k">-</span><span class="n">f</span> <span class="o">*</span><span class="p">.</span><span class="n">o</span>
+<span class="n">rm</span> <span class="k">-</span><span class="n">f</span> <span class="n">webcam_shower</span></code></pre></figure>
+
+<hr />
+<h2 id="视频采集方式">视频采集方式</h2>
+<p>操作系统一般把系统使用的内存分为用户空间和内核空间。而内核空间的数据用户空间是无法直接访问的。现在USB摄像头采集到的数据暂存在内核空间上，用户不能直接访问该段内存，必须通过某些手段来转换地址。一般有下列这几种方式：</p>
+
+<p>1.read、write方式:在用户空间和内核空间不断拷贝数据，这种方式占用了大量用户内存空间，效率不高。</p>
+
+<p>2.内存映射方式：把设备里的内存映射到应用程序中的内存空间，直接处理设备内存，这是一种有效的方式。mmap函数就是使用这种方式。mmap操作提供了一种机制,让用户程序直接访问设备内存,这种机制相比较在用户空间和内核空间互相拷贝数据效率更高。在要求高性能的应用中比较常用,比如在X window服务器中用mmap可以迅速而便捷地访问显卡内存。</p>
+
+<p>3.用户指针模式：内存片段由应用程序自己分配。(? 这个的具体意思还没查到)</p>
+
+<hr />
+<h2 id="结果分析">结果分析</h2>
+<p>在PC上可以看到ARM传送过来的视频图像，但是非常卡，远不如MIPEG-Streamer方案流畅。
+<img src="/assets/images/webvideo3.png" alt="图片" /></p>
+
+<p>右边数据是在ARM上的编码结果，左边数据是PC上的显示结果。</p>
+
+<p>整个IP-Camera的流程和<strong>业务逻辑</strong>如下：</p>
+
+<p><img src="/assets/images/webvideo4.png" alt="图片" /></p>
+
+<h2 id="reference">Reference</h2>
+
+<p>[1].https://github.com/vfonov/mjpg-streamer</p>
+
+<p>[2].http://blog.chinaunix.net/uid-26696487-id-3076027.html</p>
+
+<p>[3].http://blog.csdn.net/ghostyu/article/details/7371310</p>
+
+<p>[4].http://blog.csdn.net/sunkwei/article/details/6530343</p>
+
+<p>[5].https://code.google.com/p/mjpg-streamer-mini2440/</p>
+
+<p>[6].http://blog.chinaunix.net/uid-26851094-id-3270803.html</p>
+
+<p>[7].LDD. Page 417~419.</p>
+
+<p>[8].http://blog.chinaunix.net/uid-25299072-id-3199359.html</p>
+
+<p>[9].http://blog.chinaunix.net/uid-7396260-id-2056610.html</p>
+
+<p>[10].http://blog.csdn.net/shaoyizhe2006/article/details/7958625</p>
+
+<p>[11].http://blog.chinaunix.net/uid-26611383-id-3976154.html</p>
+:ET

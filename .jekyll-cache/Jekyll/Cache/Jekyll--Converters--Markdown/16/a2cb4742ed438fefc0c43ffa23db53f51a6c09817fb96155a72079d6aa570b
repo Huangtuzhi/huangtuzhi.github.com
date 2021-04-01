@@ -1,0 +1,146 @@
+I"[2<p>鹅厂开发网和办公网是分离的，办公网可以上外网，开发网需要在一个 OA 管理网站上请求授权后有 2 小时连接外网的时间。所以需要每隔 2 小时去这个 OA 网站上点击一下按钮，真不知道这样开发网限制连外网有个毛用。幸好这个 OA 网站不能抢月饼，于是想写一个 JS 脚本来有事没事续一秒。</p>
+
+<p>刚好在知乎看到一个妹子分享了自己如何用代码解决生活问题的，<a href="https://github.com/hanax/should-i-reply">should-i-reply</a>。前段时间也曾预研过 Chrome 插件写法。于是学着写一个简单的插件。功能不复杂，也遇到了一些问题，主要是找找自己做项目的感觉。</p>
+
+<hr />
+
+<h2 id="chrome-插件结构">Chrome 插件结构</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>|-- Out
+|   |-- content.js    //插件后台执行代码
+|   |-- icon.png      //插件图标
+|   |-- main.css
+|   |-- manifest.json //插件配置
+|   |-- Out.crx       //可以直接安装的插件
+|   |-- popup.html    //点击插件的弹窗页面
+|   |-- popup.js
+|   `-- README.md
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">mainfest.json</code> 定义了插件的配置</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+    "manifest_version": 2,
+    "name":    "Out Devnet",
+    "version": "0.1",
+    "background": {
+        "persistent": false,
+        "scripts": ["background.js"]
+    },
+    "content_scripts": [{        
+        "matches": ["http://oa.com/*"],
+        "js":      ["content.js"]
+    }],
+    "browser_action": {
+        "default_icon": "icon.png",
+        "default_popup": "popup.html"
+    },
+
+    "permissions": ["activeTab"],
+
+    "icons": { "48": "icon.png" }
+}
+</code></pre></div></div>
+<p><code class="language-plaintext highlighter-rouge">backgroud</code> 字段指明 <code class="language-plaintext highlighter-rouge">background.js</code> 为在后台永远默默执行的代码。<code class="language-plaintext highlighter-rouge">content_scripts</code> 字段指明当我们在地址栏打开 <code class="language-plaintext highlighter-rouge">http://oa.com/*</code> 匹配的网站时，它会去执行 <code class="language-plaintext highlighter-rouge">content.js</code>，相当于监听正则表达式匹配的网站。<code class="language-plaintext highlighter-rouge">default_popup</code> 字段指明点击插件按钮时弹出来的框的页面内容 <code class="language-plaintext highlighter-rouge">popup.html</code>，其实就是一个普通网页，如下所示，它需要单独的 <code class="language-plaintext highlighter-rouge">popup.js</code> 来进行交互。弹窗页面的 js 是打开后执行一次，生命周期和普通网页一样。</p>
+
+<p><img src="/assets/images/chrome-plunge-1.jpg" alt="image" /></p>
+
+<p>完成这个需求只需要打开一个 OA 网站的 tab 放在一边，在 <code class="language-plaintext highlighter-rouge">content.js</code> 里监听页面中的剩余时间，当剩余时间小于 N 分钟时，提交按钮事件就可以达到目的了。但这个按钮一天只能点 6 次，超过之后必须输入验证码。这时就无能为力了。</p>
+
+<hr />
+
+<h2 id="排期迭代">排期迭代</h2>
+
+<p>功能虽然简单，也要一步步来，分为三期迭代。</p>
+
+<p>一期：跑通 Chrome 插件的例子，理解原理机制</p>
+
+<p>二期：在插件弹窗页面实时显示访问开发网剩余时间；不需要验证码授权时，剩余时间小于阈值则自动授权</p>
+
+<p>三期：需要验证码授权时，把验证码显示在弹窗里，提醒输入验证码后进行授权。后来发现这个功能不好做，验证码模块的 HTML 代码是写在 iframe 中的，这是一个跨域问题啊（敲黑板）！</p>
+
+<hr />
+
+<h2 id="主要逻辑">主要逻辑</h2>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">$</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">accessInternet</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">$</span><span class="p">(</span><span class="dl">"</span><span class="s2">#btnDevTempVisit</span><span class="dl">"</span><span class="p">).</span><span class="nx">click</span><span class="p">();</span>
+    <span class="kd">var</span> <span class="nx">myDate</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">myDate</span><span class="p">.</span><span class="nx">toLocaleString</span><span class="p">()</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">: A click been excuted</span><span class="dl">"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">getLeftTime</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">reload</span><span class="p">();</span>
+	<span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="dl">"</span><span class="s2">blue_color</span><span class="dl">"</span><span class="p">)[</span><span class="mi">1</span><span class="p">].</span><span class="nx">innerHTML</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">hourStartPos</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="dl">"</span><span class="s2">小时</span><span class="dl">"</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">miniteStartPos</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="dl">"</span><span class="s2">分钟</span><span class="dl">"</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">text</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="nx">miniteStartPos</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">miniteStartPos</span><span class="p">)));</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">hourStartPos</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">text</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="nx">miniteStartPos</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> 
+    <span class="nx">miniteStartPos</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">15</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">//请求下授权</span>
+        <span class="nx">accessInternet</span><span class="p">();</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">text</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="nx">miniteStartPos</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">miniteStartPos</span><span class="p">)));</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">init</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">setInterval</span><span class="p">(</span><span class="nx">getLeftTime</span> <span class="p">,</span><span class="mi">600000</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">init</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>主要逻辑在后台代码 <code class="language-plaintext highlighter-rouge">content.js</code> 中，使用 <code class="language-plaintext highlighter-rouge">setInterval</code> 定时功能固定时间去检测访问情况。</p>
+
+<p>比较奇怪的是单独直接打开 <code class="language-plaintext highlighter-rouge">popup.html</code>，它会调用 <code class="language-plaintext highlighter-rouge">popup.js</code>，里面也会执行 Ajax 请求 OA 网站，但会出现跨域错误。显然站点服务端是不支持跨域的。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>XMLHttpRequest cannot load http://xxxx/NetVisit. 
+No 'Access-Control-Allow-Origin' header is present on the requested resource. 
+Origin 'null' is therefore not allowed access.
+</code></pre></div></div>
+
+<p>那么写在插件里 JS 又是怎么达到目的的呢。那是因为 Chrome 插件是浏览器自产自销的，不受限于同源策略。</p>
+
+<blockquote>
+  <p>普通网页能够使用 XMLHttpRequest 对象发送或者接受服务器数据, 但是它们受限于同源策略. 扩展可以不受该限制. 任何扩展只要它先获取了跨域请求许可，就可以进行跨域请求。</p>
+</blockquote>
+
+<p>这里的 Ajax 请求也会带上本地的 Cookie。</p>
+
+<hr />
+
+<h3 id="iframe-跨域问题">iframe 跨域问题</h3>
+
+<p>页面引用了单独的验证码模块，一旦使用 <code class="language-plaintext highlighter-rouge">getElementById</code> 类似的方法，就会出现</p>
+
+<blockquote>
+  <p>Blocked a frame with origin from accessing a cross-origin frame</p>
+</blockquote>
+
+<p>的错误，<a href="http://stackoverflow.com/questions/25098021/securityerror-blocked-a-frame-with-origin-from-accessing-a-cross-origin-frame">stackoverflow</a> 上也有讨论。显然在不侵入验证码模块时，无法让两个窗口进行通信，<del>不不，多贵的电脑也不行</del>，HTML5 的 <code class="language-plaintext highlighter-rouge">postMessage</code> 方案也不行。</p>
+
+<p>道哥「白帽子讲 Web 安全」中有一节讲利用 <code class="language-plaintext highlighter-rouge">postMessage</code> 去进行 XSS 攻击。这个 API 不受同源策略限制，允许一个 window（当前窗口、弹窗、iframe 等）对象往其他 window 发送文本消息，从而实现窗口信息传递。</p>
+
+<p>不过毕竟是 Chrome 的插件，还是有方法获取 iframe 的内容的：使用 <code class="language-plaintext highlighter-rouge">content_scripts</code> 的 <code class="language-plaintext highlighter-rouge">all_frames = true</code> 选项。<code class="language-plaintext highlighter-rouge">content_scripts</code> 是打开匹配的网站时，<code class="language-plaintext highlighter-rouge">content.js</code> 进行加载，获取到验证码后和 popup 弹窗进行通信，把提醒消息和验证码发到弹窗。弹窗手动输入验证码后发送消息到 <code class="language-plaintext highlighter-rouge">content.js</code> 发起授权。</p>
+
+<hr />
+
+<h2 id="参考">参考</h2>
+
+<p><a href="http://www.alibuybuy.com/posts/15130.html">让张总泪流满面的 CTRL+V 出现了</a></p>
+
+<p><a href="https://book.douban.com/subject/10546925/">白帽子讲 Web 安全 6.2.2</a></p>
+
+<p><a href="http://stackoverflow.com/questions/25098021/securityerror-blocked-a-frame-with-origin-from-accessing-a-cross-origin-frame">http://stackoverflow.com/questions/25098021/securityerror-blocked-a-frame-with-origin-from-accessing-a-cross-origin-frame</a></p>
+
+<p><a href="http://open.chrome.360.cn/html/dev_xhr.html">http://open.chrome.360.cn/html/dev_xhr.html</a></p>
+
+<p><a href="http://blog.allenm.me/2010/11/chrome-extension-cannot-read-iframe/">http://blog.allenm.me/2010/11/chrome-extension-cannot-read-iframe/</a></p>
+
+<p><a href="http://stackoverflow.com/questions/8917593/do-chrome-extensions-access-iframes">http://stackoverflow.com/questions/8917593/do-chrome-extensions-access-iframes</a></p>
+
+:ET

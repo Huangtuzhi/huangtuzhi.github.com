@@ -1,0 +1,107 @@
+I"-<p>在看一个豆瓣FM项目的QT程序。里面用到了类似单例模式（singleten）的客户端-服务器方法，用来控制该程序只能运行一个实例进程。</p>
+
+<hr />
+<h2 id="singleten">singleten</h2>
+<p>所谓的单例模式是指一个类只有一个实例，并提供一个访问它的全局访问点，参见_大话设计模式_ P213。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Singleton
+{
+    private:
+    Singleton(){}
+    static Singleton *instance;
+    public:
+    static Singleton* GetInstance()
+    {
+        if(instance == NULL)
+        instance = new Singleton();
+        return instance;
+    }
+}
+</code></pre></div></div>
+
+<p>可以看出此类的构造函数为私有，因此不能用new来实例化对象。只能通过静态方法(方法调用独立于对象)：</p>
+
+<p>` Singleton *p1 =  Singleton :: GetInstance() `</p>
+
+<hr />
+<h2 id="使用qlocalsocket">使用QLocalSocket</h2>
+<p>我们再看一下QT里是采用什么方法。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>QLocalSocket socket;//Connect to the local server
+socket.connectToServer(LOCAL_SOCKET_NAME);
+if (socket.waitForConnected(500)) {
+        qWarning() &lt;&lt; "There is already a instance running, /
+        raising it up";
+        return 0;
+}
+
+QLocalServer server(&amp;w);
+ w.connect(&amp;server, &amp;QLocalServer::newConnection, [&amp;] () {
+     if (w.isHidden())
+         w.show();
+     else
+         w.activateWindow();
+     qDebug() &lt;&lt; "Raise window";
+    }
+);
+server.listen(LOCAL_SOCKET_NAME);
+
+</code></pre></div></div>
+
+<p>这里，先用QLocalSocket新建连接来连接本地服务器，如果能连上，说明已经存在服务器，即有一个实例进程了。这时退出。</p>
+
+<p>QLocalServer则新建一个服务器，同时监听客户端消息。</p>
+
+<hr />
+
+<h2 id="读写锁机制">读写锁机制</h2>
+<p>在_APUE_守护进程一节也谈到了当守护进程只有一个副本运行时,我们可以这样做:</p>
+
+<blockquote>
+  <p>每一个守护进程创建一个有固定名字的文件,并在该文件整体上加一把写锁,那么允创建一把这样的写锁。在此之创建写锁的尝试
+都会失败，这向后续守进副本指明已有一个副本正在运行。</p>
+</blockquote>
+
+<p>至于其应用，可以参加<a href="https://github.com/zonyitoo/sysuh3c/blob/cpp0x/src/main.cpp">A SYSU H3C Client in *NIX</a>。</p>
+
+<p>示例如下：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#define LOCKFILE "/var/run/daemon.pid"
+#define LOCKMODE (S_IRUSR |S_IWUSR |S_IRGRP |S_IROTH)
+
+//extern int lockfile(int);
+
+int already_running(void)
+{
+    int fd;
+    char buf[16];
+
+    fd = open(LOCKFILE, O_RDWR|O_CREAT, LOCKMODE);
+    if(fd &lt; 0){
+        syslog(LOG_ERR, "can't open %s: %s", LOCKFILE, strerror(errno));
+        exit(1);
+    }
+    if(lockf(fd, F_TLOCK, 0) &lt; 0){
+       // if(errno == EACCES || errno == EAGAIN){
+       //     close(fd);
+        syslog(LOG_ERR, "can't lock %s: %s", LOCKFILE, strerror(errno));
+            return 1;
+        }
+    ftruncate(fd, 0);//将文件大小置为0
+    sprintf(buf, "%ld", (long)getpid());
+    write(fd, buf, strlen(buf)+1);
+    return 0;
+}
+
+</code></pre></div></div>
+
+<hr />
+<h2 id="reference">Reference</h2>
+<p>[1].http://www.raychase.net/2556</p>
+
+<p>[2].http://blog.csdn.net/hackbuteer1/article/details/7460019</p>
+
+<p>[3].http://blog.csdn.net/yangxiao_0203/article/details/11492137</p>
+
+<p>[4].APUE. Page380</p>
+:ET

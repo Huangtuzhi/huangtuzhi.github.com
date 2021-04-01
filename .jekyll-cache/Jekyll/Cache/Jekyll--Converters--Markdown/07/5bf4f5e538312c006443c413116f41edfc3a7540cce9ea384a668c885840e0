@@ -1,0 +1,74 @@
+I"v<p>这部分主要设计实现一个基本的电话簿GUI界面。</p>
+
+<hr />
+<h2 id="头文件addressbookh">头文件AddressBook.h</h2>
+<p>定义AddressBook的类。电话簿需要2个Qlabel标签(Name Address)，2个输入域(相当于文本框）。</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc">    <span class="n">class</span> <span class="n">AddressBook</span> <span class="o">:</span> <span class="n">public</span> <span class="n">QWidget</span>
+    <span class="p">{</span>
+        <span class="n">Q_OBJECT</span>
+    <span class="nl">public:</span>
+        <span class="n">AddressBook</span><span class="p">(</span><span class="n">QWidget</span> <span class="o">*</span><span class="n">parent</span> <span class="o">=</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="nl">private:</span>
+        <span class="n">QLineEdit</span> <span class="o">*</span><span class="n">nameLine</span><span class="p">;</span>
+        <span class="n">QTextEdit</span> <span class="o">*</span><span class="n">addressText</span><span class="p">;</span>
+    <span class="p">};</span>
+    </code></pre></figure>
+
+<hr />
+<h2 id="源文件addressbookcpp">源文件AddressBook.cpp</h2>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="n">AddressBook</span><span class="o">::</span><span class="n">AddressBook</span><span class="p">(</span><span class="n">QWidget</span> <span class="o">*</span><span class="n">parent</span><span class="p">)</span> <span class="o">:</span>
+    <span class="n">QWidget</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QLabel</span> <span class="o">*</span><span class="n">nameLabel</span><span class="o">=</span><span class="n">new</span> <span class="n">QLabel</span><span class="p">(</span><span class="n">tr</span><span class="p">(</span><span class="s">"Name:"</span><span class="p">));</span>
+    <span class="n">nameLine</span><span class="o">=</span><span class="n">new</span> <span class="n">QLineEdit</span><span class="p">;</span>
+
+    <span class="n">QLabel</span> <span class="o">*</span><span class="n">addressLabel</span><span class="o">=</span><span class="n">new</span> <span class="n">QLabel</span><span class="p">(</span><span class="n">tr</span><span class="p">(</span><span class="s">"Address"</span><span class="p">));</span>
+    <span class="n">addressText</span><span class="o">=</span><span class="n">new</span> <span class="n">QTextEdit</span><span class="p">;</span>
+
+    <span class="n">QGridLayout</span> <span class="o">*</span><span class="n">mainLayout</span><span class="o">=</span><span class="n">new</span> <span class="n">QGridLayout</span><span class="p">;</span>
+    <span class="n">mainLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">nameLabel</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+    <span class="n">mainLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">nameLine</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+    <span class="n">mainLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">addressLabel</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">Qt</span><span class="o">::</span><span class="n">AlignTop</span><span class="p">);</span>
+    <span class="n">mainLayout</span><span class="o">-&gt;</span><span class="n">addWidget</span><span class="p">(</span><span class="n">addressText</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+
+    <span class="n">setLayout</span><span class="p">(</span><span class="n">mainLayout</span><span class="p">);</span>
+    <span class="n">setWindowTitle</span><span class="p">(</span><span class="s">"Simple Address Book"</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+<p><code class="language-plaintext highlighter-rouge">AddressBook::AddressBook(QWidget *parent) :QWidget(parent)</code>的意思是</p>
+
+<blockquote>
+  <p>The constructor of AddressBook accepts a QWidget parameter, parent. By convention, we pass this parameter to the base class’s constructor.</p>
+</blockquote>
+
+<p>其实就是带参数的构造函数的初始化，遵循如下规则：</p>
+
+<p><code class="language-plaintext highlighter-rouge">构造函数名（参数表）：数据成员1（参数表），数据成员2（参数表）</code></p>
+
+<p>Qwidget=parent，把parent参数传递给基类构造函数。</p>
+
+<hr />
+
+<h2 id="main函数">Main函数</h2>
+<p>修改Main函数如下：</p>
+
+<figure class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="cp">#include "addressbook.h"
+#include &lt;QApplication&gt;
+</span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">QApplication</span> <span class="n">app</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+    <span class="n">AddressBook</span> <span class="n">addressbook</span><span class="p">;</span>
+    <span class="n">addressbook</span><span class="p">.</span><span class="n">show</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="n">app</span><span class="p">.</span><span class="n">exec</span><span class="p">();</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>运行结果如图
+<img src="/assets/images/QT3-1.png" alt="图片" /></p>
+
+<hr />
+<h2 id="reference">Reference</h2>
+<p>[1].http://qt-project.org/doc/qt-4.8/tutorials-addressbook-part1.html</p>
+:ET
