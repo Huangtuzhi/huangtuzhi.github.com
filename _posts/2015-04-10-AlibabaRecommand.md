@@ -126,7 +126,7 @@ GetFeature31day.py用来提取31天的特征样本和进行预测
 
 --------------------------------------
 
-##Reference##
+## Reference
 [1].http://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
 
 [2].http://oilbeater.com

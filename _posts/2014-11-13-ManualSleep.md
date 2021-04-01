@@ -14,7 +14,7 @@ tags: []
 
 -----------------------------------------------------------
 
-##手工休眠##
+## 手工休眠
 
     ssize_t device_read(struct file *file,char *buffer,
     size_t length, loff_t *offset)
@@ -106,7 +106,7 @@ read为阻塞读，ioctl设置ed[ED_TX_DEVICE].busy为1。当内核要发数据�
     
 --------------------------------------------------------------------
 
-##Reference##
+## Reference
 [1].http://www.linuxidc.com/Linux/2011-10/44429p2.htm
 
 [2].http://blog.sina.com.cn/s/blog_5f84dc840100v3j1.html

@@ -28,7 +28,7 @@ EE是一个很尴尬的专业，CS和传统电子信息科学的交叉学科。�
 
 --------------------------------------------------------------------
 
-##Reference##
+## Reference
 
 [1].http://victorsavkin.com/post/14885946737/30-minute-exercise-to-become-a-better-programmer
 

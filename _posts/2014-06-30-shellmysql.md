@@ -9,7 +9,7 @@ tags: [shell]
 阿里云服务器上的mysql服务经常挂掉，每次需要自己去重启nginx，php，mysql服务器。其实只需要写一个简单的shell脚本监测mysql的运行进程，一旦这个进程消失就重启服务器。同时把脚本加入到系统服务中。为了不占用过多的资源，让脚本1分钟检查一次。
 
 -----------------
-##Monitor Shell##
+## Monitor Shell
     <!-- lang: shell -->
     #!/bin/bash
     #Supported by Letian
@@ -27,7 +27,7 @@ tags: [shell]
     done
 
 -----------------------------------
-##加入系统服务##
+## 加入系统服务
 还需要把脚本添加为系统服务，让脚本开机自启动。本方法采用适用于linux-ubuntu与Debian系统中的update-rc.d(创建/注册系统服务) 。
 
 + 编写服务脚本放在/etc/init.d下。
@@ -44,7 +44,7 @@ start 90 1 2 3 4 5 . : 表示在1、2、3、4、5这五个运行级别中，按�
 stop 52 0 6 . ：表示在0、6这两个运行级别中，按照先后顺序，由小到大，第52个停止这个脚本的运行。
 
 -----------------------------------
-##关于update-rc.d##
+## 关于update-rc.d
 
 > update-rc.d  updates   the   System   V   style   init   script   links  /etc/rcrunlevel.d/NNname  whose  target is the script /etc/init.d/name.  These links are run  by  init  when  it  changes  runlevels;  they  are generally  used  to  start  and  stop  system services such as daemons. runlevel  is  one  of  the  runlevels  supported   by   init,   namely, 0123456789S,  and  NN  is the two-digit sequence number that determines  where in the sequence init will run the scripts.
 
@@ -57,7 +57,7 @@ ubuntu与Debian 的update-rc.d与RH的chkconfig工具相类似。然而chkconfig
 
 
 ----------------------------------------------
-##Reference##
+## Reference
 
 [1].http://blog.csdn.net/aa2650/article/details/6304049
 

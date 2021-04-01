@@ -10,7 +10,7 @@ tags: []
 
 -------------------------------------
 
-##QThread和QTimer设置
+## QThread和QTimer设置
 
 当子类化QThread时，构造函数在旧线程中执行，然而run()在新线程中执行。如果一个成员变量的访问来自两个函数，然后从两个不同的线程访问变量，需要检查这样做是否安全。
 
@@ -43,7 +43,7 @@ void Request::run()
 ```
 ---------------------------------------
 
-##QT事件循环机制##
+## QT事件循环机制
 
 在上面的run()之后有一个exec()函数，它会进入事件循环。
 
@@ -62,7 +62,7 @@ while ( !app_exit_loop )
 
 ------------------------------------------
 
-#QT垃圾回收机制
+## QT垃圾回收机制
 
 在程序中有很多地方new了一个对象并没有delete，这样会不会造成内存泄漏呢。
 
@@ -74,7 +74,7 @@ while ( !app_exit_loop )
 
 ---------------------------------------
 
-##多端口监听实现##
+## 多端口监听实现
 
 port的配置文件这么定义
 
@@ -100,7 +100,7 @@ for(int i = 0; i < port_list.size(); i++)
 
 ---------------------------------------
 
-##incomingConnection虚函数
+## incomingConnection虚函数
 
 它是一个虚函数，当服务器收到连接请求时，它被QTcpServer调用。它在底层创建一个QTcpSocket，设置socket描述符并把描述符加入内部的列表(内部可能用select进行数据异步读写)。当重载这个函数时，可以改变服务器收到连接请求时的行为，相当于实现了一个hook。这样就可以在这个函数里实现http服务器。
 
@@ -117,7 +117,7 @@ void Server::incomingConnection(int socketDescriptor)
 
 -----------------------------------
 
-##Request类
+## Request类
 
 Request是QThread的子类，它对每一个描述符新建一个线程来处理它，实质就是处理每个client的请求。Request类的核心是Request::run()，它还实现了incommingConnection新建socket的base功能，通过start()来进行调用。
 
@@ -143,7 +143,7 @@ void Request::run()
 
 ------------------------------------
 
-##onReadyRead函数
+## onReadyRead函数
 
 这个函数里开始解析client发过来的request数据，并构造封装response数据。
 
@@ -169,7 +169,7 @@ onReadyRead函数里的执行顺序如下：
 
 -------------------------------------
 
-##状态记录
+## 状态记录
 
 基于Redis的C官方客户端hiredis封装一个类Database，用来记录访问的数据。
 
@@ -190,7 +190,7 @@ sudo ldconfig
 
 -------------------------------------
 
-#UI namespace
+## UI namespace
 
 ```
 namespace Ui {
@@ -236,13 +236,13 @@ MonitorUI::MonitorUI(QWidget *parent) :
 
 -------------------------------------
 
-##总结
+## 总结
 
 Singleton Pattern用在日志系统和配置系统中，这个例子中不是线程安全的。Singleton Pattern的实例具有和程序一样的生存期,因为instance是new出来的，它一直存在时。所以析构函数没有机会调用了。这里会产生memory leak。
 
 ------------------------------------
 
-##Reference##
+## Reference
 [1].http://blog.chinaunix.net/uid-27685749-id-3847998.html
 
 [2].http://www.linuxidc.com/Linux/2011-03/33810p2.htm

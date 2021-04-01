@@ -21,14 +21,14 @@ tags: [ARM]
 这个是我最好的作品。我喜欢建造它的过程。
 
 -------------------------------------
-##Building a tiny ARM-based server##
+## Building a tiny ARM-based server
 
 大约一年前，我拿到了一个NAS设备——这是一个相当古老低耗能基于ARM的文件服务器。按照现代的标准，它被认为过时。然而我知道从我获得它的那一天我会非常享受改造它。
 
 我的职业是一个程序员。我诚恳认为编程和生活是分开的，可以有这样一种可能它们都能被提高。
 
 -------------------------------------------------
-##Disassembling and soldering ##
+## Disassembling and soldering 
 
 首先我必须把整个东西拆开，这样我才能按照我的想法去搭建这个世界。按照其他工程师的指导，我足足拆了半个小时才拆开它。我把机器里面的两个光驱拆出来，连接到我的外部USB/SATA附件。迅速地检测了一下它的功能。
 
@@ -54,7 +54,7 @@ Pin 4 = Tx
     minicom -D /dev/ttyUSB0 -b 115200
 
 ---------------------------------
-##U-booting from no BIOS whatsoever##
+## U-booting from no BIOS whatsoever
 
 下面讲的就是怎么对160G的硬盘分区，然后启动内核。
 
@@ -62,7 +62,7 @@ Pin 4 = Tx
 I proceeded to copy the first three partitions (including the partition table) to my 160GB drive (via dd). I then used fdisk to fix the size of the 4th partition to be the remaining space of my drive.
 
 -----------------------------
-##Installing Debian (and some thoughts about Windows)##
+## Installing Debian (and some thoughts about Windows)
 
 这一段主要是讲如何安装Debian操作系统，和怎么看待linux和windows的差别。
 
@@ -92,7 +92,7 @@ I proceeded to copy the first three partitions (including the partition table) t
 然后作者讲述怎么安装邮件服务器Exim，网络服务器Nginx
 
 ------------------------
-##Conclusion - UNIX glory##
+## Conclusion - UNIX glory
 
 > In plain words, UNIX power put to use - in the tiny server, in my phone, in my tablet. All 3 of them, running on ARM processors. To be honest, I didn't expect that ; 15 years ago I was sure that Intel and MS had cornered the galaxy... but somehow, Linux managed to change all that.
 

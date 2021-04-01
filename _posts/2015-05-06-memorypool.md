@@ -10,7 +10,7 @@ tags: []
 
 --------------------------------
 
-##系统调用##
+## 系统调用
 我们先测试系统调用new/delete的用时。
 
 ```
@@ -49,7 +49,7 @@ int main()
 用时为**604124400ns**。系统的new是在堆上分配资源，每次执行都会分配然后销毁。
 
 -------------------------------------------------
-##简单的内存池##
+## 简单的内存池
 
 ```
 #include <iostream>
@@ -87,7 +87,7 @@ int main()
 
 
 ---------------------------------------------
-##MemPool定义##
+## MemPool定义
 
 ```
 class CMemPool
@@ -131,7 +131,7 @@ m_pMemBlock指向分配的那块大小为m_ulBlockSize的大内存的地址。m_
 
 -----------------------------------------
 
-##MemPool实现##
+## MemPool实现
 
 ```
 CMemPool::CMemPool(unsigned long ulUnitNum, unsigned long ulUnitSize):
@@ -237,7 +237,7 @@ pCurUnit要减去struct _Unit是为了从存储单元得到管理头的位置，
 
 -----------------------------------------------------
 
-##测试##
+## 测试
 
 ```
 #include "mempool.h"
@@ -315,7 +315,7 @@ int main()
 ```
 --------------------------------------
 
-##结果##
+## 结果
 
 从下图可以看出，只有当程序频繁地用系统调用malloc/free或者new/delete分配内存时，内存池有价值。
 
@@ -325,7 +325,7 @@ int main()
 
 --------------------------------------
 
-##Reference##
+## Reference
 [1].http://www.codeproject.com/Articles/27487/Why-to-use-memory-pool-and-how-to-implement-it
 
 [2].http://www.codeproject.com/Articles/15527/C-Memory-Pool

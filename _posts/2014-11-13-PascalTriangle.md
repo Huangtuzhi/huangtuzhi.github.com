@@ -10,7 +10,7 @@ tags: [LeetCode]
 
 -----------------------------------------------------------
 
-##Pascal's Triangle##
+## Pascal's Triangle
 
 Given numRows, generate the first numRows of Pascal's triangle.For example, given numRows = 5,Return
  
@@ -57,7 +57,7 @@ Given numRows, generate the first numRows of Pascal's triangle.For example, give
 
 ----------------------------------------
 
-##Same Tree##
+## Same Tree
 
 Given two binary trees, write a function to check if they are equal or not.
 Two binary trees are considered equal if they are structurally identical and the nodes have the same value. 
@@ -86,7 +86,7 @@ Two binary trees are considered equal if they are structurally identical and the
 
 ----------------------------------------
 
-## Min Stack##
+##  Min Stack
 
 Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
 
@@ -133,7 +133,7 @@ getMin() -- Retrieve the minimum element in the stack.
 
 ---------------------------------------------------------
 
-##Sqrt(x)##
+## Sqrt(x)
 
 Implement int sqrt(int x).Compute and return the square root of x.
 
@@ -161,7 +161,7 @@ Implement int sqrt(int x).Compute and return the square root of x.
  
 --------------------------------------------------------------------
 
-##Reference##
+## Reference
 
 [1].https://oj.leetcode.com/
 

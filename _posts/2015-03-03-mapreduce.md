@@ -12,7 +12,7 @@ map和reduce在那篇经典的论文 _MapReduce: Simplified Data Processing on L
 
 ------------------------------------------------------------------
 
-##map##
+## map
 map(function, iterable, ...)的第一个参数是一个函数，第二个参数接受一个iterable对象（字符串，列表，元组等）。该函数返回一个列表。如：
 
 ```
@@ -51,7 +51,7 @@ print result
 
 -------------------------------------------------------
 
-##reduce##
+## reduce
 reduce(function, iterable[, initializer])把函数从左到右累积作用在元素上，产生一个数值。如reduce(lambda x, y: x+y, [1, 2, 3, 4, 5])就是计算((((1+2)+3)+4)+5)。
 
 Python提供的sum()函数可以接受一个list并求和，现实现一个prod()函数，可以接受一个list并利用reduce()求积。
@@ -67,7 +67,7 @@ print prod([1, 3, 5, 7])
 
 -----------------------------------------------------------------
 
-##map和reduce##
+## map和reduce
 我们可以综合利用map和reduce来完成一个简单的字符串到数字的程序。
 
 ```
@@ -85,7 +85,7 @@ print str2int('12345')
 
 ----------------------------------------------------
 
-##filter##
+## filter
 filter(function, iterable)使用function的规则滤除iterable对象中不满足规则的元素。
 
 ```
@@ -126,7 +126,7 @@ print result2
 
 ---------------------------------------------------
 
-##Reference##
+## Reference
 [1].https://docs.python.org/2/library/functions.html#reduce
 
 [2].http://www.liaoxuefeng.com/

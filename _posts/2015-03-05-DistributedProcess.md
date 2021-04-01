@@ -12,7 +12,7 @@ tags: []
 
 --------------------------------------------
 
-##Master节点##
+## Master节点
 
 ```
 #!/usr/bin/env python
@@ -74,7 +74,7 @@ if __name__ == '__main__':
 
 ----------------------------------------
 
-##Worker节点##
+## Worker节点
 
 ```
 #!/usr/bin/env 
@@ -112,7 +112,7 @@ print('worker exit.')
 
 -----------------------------------------
 
-##测试结果##
+## 测试结果
 先运行`task_manager.py`如下
 
 ![图片](/assets/images/DistributedProcess1.png)
@@ -128,7 +128,7 @@ print('worker exit.')
 
 --------------------------------------------------
 
-##References##
+## References
 
 [1].http://blog.csdn.net/fireroll/article/details/38895485
 

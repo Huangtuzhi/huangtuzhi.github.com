@@ -37,7 +37,7 @@ Also see StrictMode.
 简单地说，就是一个APP如果在**主线程**中请求网络操作，将会抛出此异常。Android这个设计是为了防止网络请求时间过长而导致界面假死的情况发生。关于 StrictMode类控制，请见[2]。
 
 -----------------------------------------------------
-##References##
+## References
 [1].http://www.2cto.com/kf/201402/281526.html
 
 [2].http://hb.qq.com/a/20110914/000054.htm

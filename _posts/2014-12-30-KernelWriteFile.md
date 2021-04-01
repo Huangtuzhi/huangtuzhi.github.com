@@ -12,7 +12,7 @@ tags: []
 
 ----------------------------------------
 
-##打开文件##
+## 打开文件
 filp_open()在kernel中可以打开文件，其原形如下：
 
 ```strcut file* filp_open(const char* filename, int open_mode, int mode);```
@@ -21,7 +21,7 @@ filp_open()在kernel中可以打开文件，其原形如下：
 
 --------------------------------------------------
 
-##读写文件##
+## 读写文件
 kernel中文件的读写操作可以使用vfs\_read()和vfs\_write，在使用这两个函数前需要说明一下get\_fs()和 set_fs()这两个函数。
 
 vfs\_read() 和vfs_write()两函数的原形如下：
@@ -48,7 +48,7 @@ set_fs(old_fs);
 还有一些其它的内核函数也有用__user修饰的参数，在kernel中需要用kernel空间的内存代替时，都可以使用类似办法。
 
 ---------------------------------------------------
-##示例##
+## 示例
 
 ```
 void WriteSerial(char* buf)
@@ -71,7 +71,7 @@ void WriteSerial(char* buf)
 
 ----------------------------------------------------
 
-##Reference##
+## Reference
 [1].http://blog.sina.com.cn/s/blog_6f3ff2c90100mph8.html
 
 [2].http://soft.chinabyte.com/os/421/11398421.shtml

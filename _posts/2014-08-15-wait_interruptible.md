@@ -14,7 +14,7 @@ LDD在第十章**中断处理** 中说：
 所以可以得到上面一个问题的答案，是在中断服务子函数中通知read进程可以读数据了。
 
 --------------------------------------------------------------------
-##wait_event_interruptible函数##
+## wait_event_interruptible函数
 先看函数的源代码
 
 {% highlight objc %}
@@ -60,7 +60,7 @@ LDD在第十章**中断处理** 中说：
 + `signal_pending( current )`检查当前进程是否有信号处理，返回不为0表示有信号需要处理。如果等待事件没有来临&&没有来自处理器的信号，进行schedule调度。schedule调度可以参见[进程函数schedule解读](http://huangtuzhi.github.io/2014/06/29/schedule)。调度会将当前置为TASK_INTERRUPTIBLE状态的进程从runqueue中删除，此进程不再参与调度，除非通过其他函数将这个进程重新放入到runqueue队列中，这个就是wake_up_interruptible()函数的作用。如果有来自处理器的信号(系统调用,如ctrl+c)，当收到-ERESTARTSYS这个返回值后,会调用系统调用（ctrl+c)。
 
 ------------------------------------------------------------------
-##如何唤醒被wait_event_interruptuble睡眠的进程##
+## 如何唤醒被wait_event_interruptuble睡眠的进程
 
 由上面的分析可以看出唤醒被wait_event_interruptuble睡眠的进程需要两个条件：
 
@@ -71,7 +71,7 @@ LDD在第十章**中断处理** 中说：
 
 
 --------------------------------------------------------------------
-##Reference##
+## Reference
 
 [1].http://blog.csdn.net/tommy_wxie/article/details/12448913
 

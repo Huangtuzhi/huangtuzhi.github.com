@@ -5,7 +5,7 @@ description: "sqlite"
 category: network
 tags: [python]
 ---
-##安装sqlite3##
+## 安装sqlite3
 
 sqlite是一个轻型的关系型数据库。它的设计目标是针对嵌入式设备，目前已经在很多嵌入式产品中使用了它。也可以实现像[用户登录验证](http://www.linuxidc.com/Linux/2012-04/58069.htm)这样的功能。
 
@@ -32,14 +32,14 @@ sqlite是一个轻型的关系型数据库。它的设计目标是针对嵌入�
        2|wangrubi|24
 
 --------------------------------------------
-##sqlite python库##
+## sqlite python库
 
 sqlite库已经成为了python的标准库，接口和使用说明参见[1]。
 
 > SQLite is a C library that provides a lightweight disk-based database that doesn’t require a separate server process and allows accessing the database using a nonstandard variant of the SQL query language. sqlite3 was written by Gerhard Häring and provides a SQL interface compliant with the DB-API 2.0 specification。
 
 ----------------------------------------------
-##实现##
+## 实现
 
 把python库提供的操作函数封装成类和成员函数的方式来调用。
 
@@ -91,7 +91,7 @@ SqliteDB.close()
 
 
 -----------------------------------------------------------
-##总结##
+## 总结
 以上就是使用python操作sqlite数据库的简单例子，其实开始笔者想做的是用C++调用Python接口来操作sqlite数据库，借此复习一下python和C++。而且，sqlite[3]中已经直接提供了C/C++接口。
 
 如果在嵌入式系统中需要数据库存储用户数据(如GPS位置，传感器数据)或者大量的命令参数(如某些硬件控制的码表)，sqlite是一个不错的选择。
@@ -102,7 +102,7 @@ SqliteDB.close()
 
 
 --------------------------------------------
-##Reference##
+## Reference
 
 [1].http://docspy3zh.readthedocs.org/en/latest/library/sqlite3.html
 

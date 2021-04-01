@@ -6,7 +6,7 @@ category: C&&C++
 tags: [linux]
 ---
 
-##缘起##
+## 缘起
    在2.6内核版本中对ARM平台的支持引入了platform的概念（相当于板级支持包BSP），开发底层驱动设备时，首先要确认设备的资源信息，比如设备的地址【1】。
 设备的资源用结构体paltform_device来描述，定义在kernel\include\linux\platform_device.h【2】中
 
@@ -50,7 +50,7 @@ tags: [linux]
 {% endhighlight %}
 
 -----------------------------
-##解释##
+## 解释
 看到.start = PWM_REG_BASE这样的写法可能会比较陌生，这其实是C99中支持的结构体的指定初始化项目 【3】，就是不需要对结构体所有成员进行赋值，只对需要的成员赋值。
 现定义一个结构体：
 
@@ -74,7 +74,7 @@ struct book Redmansion={.value=1,};
  - 整个结构体外边不要忘记分号。
 
 ---------------------
-##测试: Red Mansion##
+## 测试: Red Mansion
 在windows VC++下写入如下测试代码，看能否支持这种赋值。
 
     <!-- lang: cpp -->
@@ -92,7 +92,7 @@ struct book Redmansion={.value=1,};
 当然译作Dream of the Red Mansion会比Chamber好些。
 
 ----------------------------
-##Reference##
+## Reference
 [1].http://blog.chinaunix.net/uid-24807808-id-3219820.html
 [2].http://lxr.free-electrons.com/source/include/linux/platform_device.h?a=sh
 [3].《C Primier Plus》。Page383
