@@ -105,4 +105,4 @@ do dd if=/dev/zero of=/dev/null & done && sleep MINUTEm
 进程退出后，业务正常，说明 BCP 方案生效，演习成功。
 
 
-> [如果你渴望和平，就必须做好战争的准备](https://www.bilibili.com/video/av22192156/)
+> [如果你渴望和平，就必须做好战争的准备 -- 天启者·卡尔玛](https://www.bilibili.com/video/av22192156/)
