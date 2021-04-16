@@ -7,7 +7,7 @@ tags:
 comments: yes
 ---
 
-> [Chaos Is A Ladder](https://www.youtube.com/watch?v=Naggi7ufrLc)
+> [Chaos Is A Ladder](https://www.youtube.com/watch?v=XSWMepI7yDg)
 
 现代战争中为了评估战力、保证军备强度会进行实战的军事演习，日常生活中也常常有消防演习、地震演习。消防演习真正发射了防空导弹，消防演习也真的点了一把火，另外我也真的[有一头牛](https://www.zhihu.com/question/370764915)。这些是真实的行动，不是推演、假设，要的效果就是和现实世界一样。也只有这样当灾难发生，我们的应对措施才有效。
 
