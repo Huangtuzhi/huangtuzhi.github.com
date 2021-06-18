@@ -15,7 +15,7 @@ comments: yes
 
 手机发出网络请求，请求会携带 IP 和 MAC 地址。IP 已经可以定位到手机在网络中的具体位置，为什么还需有 MAC 地址？没有 MAC 地址可以完成通信吗？
 
-先看一下 IP 报文协议，
+先看一下 IP 报文协议
 
 ![](https://tva1.sinaimg.cn/large/008i3skNgy1grmnoicbfjj31200eoafb.jpg)
 
