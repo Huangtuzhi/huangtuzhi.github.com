@@ -37,7 +37,7 @@ NS 一般用于配置全局负载均衡 GSLB。比如腾讯的一级域名 qq.co
 
 在域名服务商那里配置好 GSLB NS 后所有的域名解析都会交给 GSLB 来处理。GSLB 主要功能是可根据访问者的位置，提供就近接入能力，减少请求耗时。GSLB 相当于公司/个人定制的 DNS 域名解析器。
 
-在 GSLB 上给域名绑定服务器对应的公网 IP。这些映射表由运维负责维护和配置。
+在 GSLB 上给域名(payapp.weixin.com.cn)绑定服务器对应的公网 IP。这些映射表由运维负责维护和配置。
 
 ```
 payapp.weixin.com.cn 14.215.140.116
@@ -62,9 +62,9 @@ Nginx2=14.215.140.116;183.3.235.18;
 
 DNS 过程：客户端 -> GSLB -> 返回 payapp.weixin.com.cn 域名配置的一个 IP 14.215.140.116 
 
-TCP 连接过程：client -> TGW LD(Load banlance Director)-> RS(Real Server-这里是 Nginx)
+TCP 连接过程：client -> LVS LD(Load banlance Director)-> RS(Real Server-这里是 Nginx)
 
-TGW LD 和 RS 网卡上配置的都是 14.215.140.116，LD 会通过 IP 隧道技术将请求从 LD 转发到 RS。
+LVS LD 和 RS 网卡上配置的都是 14.215.140.116，LD 会通过 IP 隧道技术将请求从 LD 转发到 RS。
 
 ----
 
